@@ -1,10 +1,14 @@
 import { Navigate } from "react-router-dom";
-import { useAuth } from "../contexts/Authentication";
 import { ReactNode } from "react";
 
-export const ProtectedRoute = ({ children }: { children: ReactNode }) => {
-  const { session } = useAuth();
-  if (!session) {
+export const ProtectedRoute = ({
+  isAuthenticated,
+  children,
+}: {
+  isAuthenticated: boolean;
+  children: ReactNode;
+}) => {
+  if (!isAuthenticated) {
     return <Navigate to="/login" />;
   }
   return children;

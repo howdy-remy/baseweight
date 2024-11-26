@@ -1,9 +1,9 @@
-import { useState, useEffect, FormEventHandler } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "./lib/supabaseClient";
-import { Session } from "@supabase/supabase-js";
 import Avatar from "./Avatar";
 import { useAuth } from "./contexts/Authentication";
 import { Link } from "react-router";
+import { useGetPacksQuery } from "./services/packs";
 
 export default function Account() {
   const { session } = useAuth();
@@ -12,7 +12,9 @@ export default function Account() {
   const [website, setWebsite] = useState<string | null>(null);
   const [avatar_url, setAvatarUrl] = useState<string | null>(null);
   const [profiles, setProfiles] = useState<any[]>([]);
+  // const [packs, setPacks] = useState<any[]>([]);
 
+  const { data: packs, error } = useGetPacksQuery({ userId: session.user.id });
   useEffect(() => {
     let ignore = false;
     async function getProfiles() {
@@ -31,7 +33,7 @@ export default function Account() {
       setLoading(false);
     }
 
-    getProfiles();
+    // getProfiles();
 
     async function getProfile() {
       setLoading(true);
@@ -61,7 +63,7 @@ export default function Account() {
     return () => {
       ignore = true;
     };
-  }, [session]);
+  }, []);
 
   const updateProfile = async (event: SubmitEvent, avatarUrl: string) => {
     event.preventDefault();
@@ -145,6 +147,14 @@ export default function Account() {
         {profiles.map((profile) => (
           <Link key={profile.username} to={`profiles/${profile.username}`}>
             {profile.username}
+          </Link>
+        ))}
+      </div>
+      hey
+      <div>
+        {packs?.map((pack) => (
+          <Link key={pack.id} to={`packs/${pack.id}`}>
+            {pack.name}
           </Link>
         ))}
       </div>

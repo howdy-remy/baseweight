@@ -8,26 +8,25 @@ import { BrowserRouter, Route, Routes } from "react-router";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import { Profile } from "./Profile";
 import { useAuth } from "./contexts/Authentication";
+import { Pack } from "./features/pack/pack";
 
 function App() {
-  const { session } = useAuth();
+  const { session, isLoadingSession } = useAuth();
 
+  if (isLoadingSession) {
+    return <div>...loading ...</div>;
+  }
   if (!session) {
     return <Auth />;
   }
+
   return (
     <BrowserRouter>
       <Routes>
-        <Route
-          index
-          element={
-            <ProtectedRoute>
-              <Account />
-            </ProtectedRoute>
-          }
-        />
-        <Route path="login" element={<Auth />} />
+        <Route index element={<Account />} />
+        {/* <Route path="login" element={<Auth />} /> */}
         <Route path="/profiles/:username" element={<Profile />} />
+        <Route path="/packs/:packId" element={<Pack />} />
       </Routes>
     </BrowserRouter>
   );
