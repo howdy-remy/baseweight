@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import type { Action } from "@reduxjs/toolkit";
 import { packsApi } from "./services/packs";
+import { profileApi } from "./services/profile";
 
 interface CounterState {
   value: number;
@@ -20,9 +21,10 @@ function counterReducer(state: CounterState = { value: 0 }, action: Action) {
 export const store = configureStore({
   reducer: {
     [packsApi.reducerPath]: packsApi.reducer,
+    [profileApi.reducerPath]: profileApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(packsApi.middleware),
+    getDefaultMiddleware().concat(packsApi.middleware, profileApi.middleware),
 });
 
 // Infer the type of `store`

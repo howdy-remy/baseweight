@@ -9,13 +9,15 @@ import { ProtectedRoute } from "./components/ProtectedRoute";
 import { Profile } from "./Profile";
 import { useAuth } from "./contexts/Authentication";
 import { Pack } from "./features/pack/pack";
+import { Packs } from "./features/packs/packs";
 
 function App() {
   const { session, isLoadingSession } = useAuth();
 
   if (isLoadingSession) {
-    return <div>...loading ...</div>;
+    return <div>...loading...</div>;
   }
+
   if (!session) {
     return <Auth />;
   }
@@ -23,7 +25,8 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route index element={<Account />} />
+        <Route index element={<Packs />} />
+        <Route path="/account" element={<Account />} />
         {/* <Route path="login" element={<Auth />} /> */}
         <Route path="/profiles/:username" element={<Profile />} />
         <Route path="/packs/:packId" element={<Pack />} />
@@ -31,12 +34,4 @@ function App() {
     </BrowserRouter>
   );
 }
-
-// <div className="container" style={{ padding: "50px 0 100px 0" }}>
-// {!session ? (
-//   <Auth />
-// ) : (
-//   <Account key={session.user.id} session={session} />
-// )}
-// </div>
 export default App;

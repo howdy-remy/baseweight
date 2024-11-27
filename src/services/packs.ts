@@ -13,7 +13,7 @@ type Pack = {
         id: number;
         type: string;
         description: string;
-      }[];
+      };
     }[];
   }[];
 };
@@ -31,7 +31,9 @@ export const packsApi = createApi({
           .from("pack")
           .select("name, id")
           .eq("profile_id", userId);
-
+        if (error) {
+          return { error };
+        }
         return { data };
       },
     }),

@@ -1,4 +1,4 @@
-import { useParams } from "react-router";
+import { Link, useParams } from "react-router";
 import { useGetPackQuery } from "../../services/packs";
 
 export const Pack = () => {
@@ -12,6 +12,8 @@ export const Pack = () => {
 
   return (
     <div>
+      <Link to="/">home</Link>
+      <Link to="/account">account</Link>
       <p>{pack?.name}</p>
       {pack?.pack_category.map((packCategory) => (
         <>

@@ -1,102 +1,65 @@
-import { useState, useEffect } from "react";
+import { FormEventHandler, useEffect, useState } from "react";
 import { supabase } from "./lib/supabaseClient";
-import Avatar from "./Avatar";
 import { useAuth } from "./contexts/Authentication";
-import { Link } from "react-router";
-import { useGetPacksQuery } from "./services/packs";
+import {
+  useGetProfileQuery,
+  useUpdateProfileMutation,
+} from "./services/profile";
+import Avatar from "./Avatar";
 
 export default function Account() {
   const { session } = useAuth();
-  const [loading, setLoading] = useState<boolean>(true);
-  const [username, setUsername] = useState<string | null>(null);
-  const [website, setWebsite] = useState<string | null>(null);
-  const [avatar_url, setAvatarUrl] = useState<string | null>(null);
-  const [profiles, setProfiles] = useState<any[]>([]);
-  // const [packs, setPacks] = useState<any[]>([]);
+  const { data: profile } = useGetProfileQuery({ userId: session?.user.id });
 
-  const { data: packs, error } = useGetPacksQuery({ userId: session.user.id });
+  const [username, setUsername] = useState<string>("");
+  const [website, setWebsite] = useState<string>("");
+
   useEffect(() => {
-    let ignore = false;
-    async function getProfiles() {
-      setLoading(true);
-      const { data, error } = await supabase
-        .from("profiles")
-        .select("username");
-      if (!ignore) {
-        if (error) {
-          console.warn(error);
-        } else if (data) {
-          setProfiles(data);
-        }
-      }
-
-      setLoading(false);
+    if (!!profile) {
+      setUsername(profile.username);
+      setWebsite(profile.website);
     }
+  }, [profile]);
 
-    // getProfiles();
+  const [updateProfileMutation] = useUpdateProfileMutation();
 
-    async function getProfile() {
-      setLoading(true);
-      const { user } = session || {};
-
-      const { data, error } = await supabase
-        .from("profiles")
-        .select(`username, website, avatar_url`)
-        .eq("id", user?.id)
-        .single();
-
-      if (!ignore) {
-        if (error) {
-          console.warn(error);
-        } else if (data) {
-          setUsername(data.username);
-          setWebsite(data.website);
-          setAvatarUrl(data.avatar_url);
-        }
-      }
-
-      setLoading(false);
-    }
-
-    getProfile();
-
-    return () => {
-      ignore = true;
-    };
-  }, []);
-
-  const updateProfile = async (event: SubmitEvent, avatarUrl: string) => {
-    event.preventDefault();
-
-    setLoading(true);
-    const { user } = session || {};
-
-    const updates = {
-      id: user?.id,
-      username,
-      website,
+  const updateAvatarUrl = async (avatarUrl: string) => {
+    if (!session || !profile) return;
+    updateProfileMutation({
+      id: session.user?.id,
+      username: profile.username,
+      website: profile.website,
       avatar_url: avatarUrl,
       updated_at: new Date(),
-    };
-
-    const { error } = await supabase.from("profiles").upsert(updates);
-
-    if (error) {
-      alert(error.message);
-    } else {
-      setAvatarUrl(avatarUrl);
-    }
-    setLoading(false);
+    });
   };
+
+  const updateProfile: FormEventHandler<HTMLFormElement> = async (event) => {
+    event.preventDefault();
+    if (!session || !profile) return;
+    updateProfileMutation({
+      id: session.user?.id,
+      username,
+      website,
+      avatar_url: profile.avatar_url,
+      updated_at: new Date(),
+    })
+      .unwrap()
+      .catch((error) => console.error("rejected", error));
+  };
+
+  if (!profile) {
+    return;
+  }
 
   return (
     <>
       <form onSubmit={updateProfile} className="form-widget">
         <Avatar
-          url={avatar_url}
+          url={profile.avatar_url}
           size={150}
-          onUpload={(event, url) => {
-            updateProfile(event, url);
+          onUpload={(_, url) => {
+            updateAvatarUrl(url);
           }}
         />
         <div>
@@ -108,8 +71,8 @@ export default function Account() {
           <input
             id="username"
             type="text"
-            required
-            value={username || ""}
+            name="username"
+            value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
         </div>
@@ -118,18 +81,14 @@ export default function Account() {
           <input
             id="website"
             type="url"
-            value={website || ""}
+            value={website}
             onChange={(e) => setWebsite(e.target.value)}
           />
         </div>
 
         <div>
-          <button
-            className="button block primary"
-            type="submit"
-            disabled={loading}
-          >
-            {loading ? "Loading ..." : "Update"}
+          <button className="button block primary" type="submit">
+            Update
           </button>
         </div>
 
@@ -143,21 +102,6 @@ export default function Account() {
           </button>
         </div>
       </form>
-      <div>
-        {profiles.map((profile) => (
-          <Link key={profile.username} to={`profiles/${profile.username}`}>
-            {profile.username}
-          </Link>
-        ))}
-      </div>
-      hey
-      <div>
-        {packs?.map((pack) => (
-          <Link key={pack.id} to={`packs/${pack.id}`}>
-            {pack.name}
-          </Link>
-        ))}
-      </div>
     </>
   );
 }
