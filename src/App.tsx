@@ -1,11 +1,7 @@
 import "./App.css";
-import { useState, useEffect } from "react";
-import { supabase } from "./lib/supabaseClient";
 import Auth from "./Auth";
 import Account from "./Account";
-import { Session } from "@supabase/supabase-js";
 import { BrowserRouter, Route, Routes } from "react-router";
-import { ProtectedRoute } from "./components/ProtectedRoute";
 import { Profile } from "./Profile";
 import { useAuth } from "./contexts/Authentication";
 import { Pack } from "./features/pack/pack";
