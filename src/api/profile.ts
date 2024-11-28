@@ -2,17 +2,11 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 import { supabase } from "../lib/supabaseClient";
 import { supabaseBaseQuery } from "./baseQuery";
 
-type Profile = {
-  username: string;
-  website: string;
-  avatar_url: string;
-};
-
 export const profileApi = createApi({
   reducerPath: "profileApi",
   baseQuery: supabaseBaseQuery,
   endpoints: (builder) => ({
-    getProfile: builder.query<Profile | null, { userId?: string }>({
+    getProfile: builder.query({
       queryFn: async ({ userId }) => {
         const { data, error } = await supabase
           .from("profiles")
@@ -25,10 +19,7 @@ export const profileApi = createApi({
         return { data };
       },
     }),
-    updateProfile: builder.mutation<
-      null,
-      Profile & { id: string; updated_at: Date }
-    >({
+    updateProfile: builder.mutation({
       queryFn: async (profile) => {
         const { data, error } = await supabase.from("profiles").upsert(profile);
         if (error) {
@@ -40,6 +31,4 @@ export const profileApi = createApi({
   }),
 });
 
-// Export hooks for usage in functional components, which are
-// auto-generated based on the defined endpoints
 export const { useGetProfileQuery, useUpdateProfileMutation } = profileApi;

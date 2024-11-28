@@ -3,7 +3,8 @@ import type { Action } from "@reduxjs/toolkit";
 import { packsApi } from "./api/packs";
 import { profileApi } from "./api/profile";
 import { itemsApi } from "./api/items";
-import { packCategoryItemApi } from "./api/packCategoryItem";
+import { categoriesItemApi } from "./api/category_item";
+import { categoriesApi } from "./api/categories";
 
 interface CounterState {
   value: number;
@@ -22,17 +23,19 @@ function counterReducer(state: CounterState = { value: 0 }, action: Action) {
 
 export const store = configureStore({
   reducer: {
+    [categoriesApi.reducerPath]: categoriesApi.reducer,
+    [categoriesItemApi.reducerPath]: categoriesItemApi.reducer,
     [itemsApi.reducerPath]: itemsApi.reducer,
     [packsApi.reducerPath]: packsApi.reducer,
     [profileApi.reducerPath]: profileApi.reducer,
-    [packCategoryItemApi.reducerPath]: packCategoryItemApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
+      categoriesApi.middleware,
+      categoriesItemApi.middleware,
       itemsApi.middleware,
       packsApi.middleware,
-      profileApi.middleware,
-      packCategoryItemApi.middleware
+      profileApi.middleware
     ),
 });
 

@@ -2,15 +2,15 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 import { supabase } from "../lib/supabaseClient";
 import { supabaseBaseQuery } from "./baseQuery";
 
-export const itemsApi = createApi({
-  reducerPath: "itemsApi",
+export const categoriesApi = createApi({
+  reducerPath: "categoriesApi",
   baseQuery: supabaseBaseQuery,
   endpoints: (builder) => ({
-    createItem: builder.mutation({
-      queryFn: async (item) => {
+    createCategory: builder.mutation({
+      queryFn: async (category) => {
         const { data, error } = await supabase
-          .from("items")
-          .insert(item)
+          .from("categories")
+          .insert(category)
           .select();
 
         if (error) {
@@ -23,4 +23,4 @@ export const itemsApi = createApi({
   }),
 });
 
-export const { useCreateItemMutation } = itemsApi;
+export const { useCreateCategoryMutation } = categoriesApi;

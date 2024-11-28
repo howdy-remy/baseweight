@@ -1,6 +1,4 @@
-Need to install the following packages:
-supabase@1.223.10
-Ok to proceed? (y) export type Json =
+export type Json =
   | string
   | number
   | boolean
@@ -11,7 +9,95 @@ Ok to proceed? (y) export type Json =
 export type Database = {
   public: {
     Tables: {
-      item: {
+      categories: {
+        Row: {
+          color: string | null
+          created_at: string
+          id: number
+          name: string | null
+          pack_id: number | null
+          profile_id: string | null
+        }
+        Insert: {
+          color?: string | null
+          created_at?: string
+          id?: number
+          name?: string | null
+          pack_id?: number | null
+          profile_id?: string | null
+        }
+        Update: {
+          color?: string | null
+          created_at?: string
+          id?: number
+          name?: string | null
+          pack_id?: number | null
+          profile_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pack_category_pack_id_fkey"
+            columns: ["pack_id"]
+            isOneToOne: false
+            referencedRelation: "packs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pack_category_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      categories_item: {
+        Row: {
+          category_id: number
+          created_at: string
+          id: number
+          item_id: number
+          profile_id: string
+        }
+        Insert: {
+          category_id: number
+          created_at?: string
+          id?: number
+          item_id: number
+          profile_id: string
+        }
+        Update: {
+          category_id?: number
+          created_at?: string
+          id?: number
+          item_id?: number
+          profile_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pack_category_item_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pack_category_item_item_id_fkey"
+            columns: ["item_id"]
+            isOneToOne: false
+            referencedRelation: "items"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "pack_category_item_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      items: {
         Row: {
           created_at: string
           description: string | null
@@ -49,7 +135,7 @@ export type Database = {
           },
         ]
       }
-      pack: {
+      packs: {
         Row: {
           created_at: string
           id: number
@@ -74,94 +160,6 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "pack_profile_id_fkey"
-            columns: ["profile_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      pack_category: {
-        Row: {
-          color: string | null
-          created_at: string
-          id: number
-          name: string | null
-          pack_id: number | null
-          profile_id: string | null
-        }
-        Insert: {
-          color?: string | null
-          created_at?: string
-          id?: number
-          name?: string | null
-          pack_id?: number | null
-          profile_id?: string | null
-        }
-        Update: {
-          color?: string | null
-          created_at?: string
-          id?: number
-          name?: string | null
-          pack_id?: number | null
-          profile_id?: string | null
-        }
-        Relationships: [
-          {
-            foreignKeyName: "pack_category_pack_id_fkey"
-            columns: ["pack_id"]
-            isOneToOne: false
-            referencedRelation: "pack"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "pack_category_profile_id_fkey"
-            columns: ["profile_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
-      pack_category_item: {
-        Row: {
-          created_at: string
-          id: number
-          item_id: number
-          pack_category_id: number
-          profile_id: string
-        }
-        Insert: {
-          created_at?: string
-          id?: number
-          item_id: number
-          pack_category_id: number
-          profile_id: string
-        }
-        Update: {
-          created_at?: string
-          id?: number
-          item_id?: number
-          pack_category_id?: number
-          profile_id?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "pack_category_item_item_id_fkey"
-            columns: ["item_id"]
-            isOneToOne: false
-            referencedRelation: "item"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "pack_category_item_pack_category_id_fkey"
-            columns: ["pack_category_id"]
-            isOneToOne: false
-            referencedRelation: "pack_category"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "pack_category_item_profile_id_fkey"
             columns: ["profile_id"]
             isOneToOne: false
             referencedRelation: "profiles"

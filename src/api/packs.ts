@@ -2,33 +2,14 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 import { supabase } from "../lib/supabaseClient";
 import { supabaseBaseQuery } from "./baseQuery";
 
-type Pack = {
-  name: string;
-  id: number;
-  pack_category: {
-    id: number;
-    name: string;
-    pack_category_item: {
-      item: {
-        id: number;
-        type: string;
-        description: string;
-      };
-    }[];
-  }[];
-};
-
-type PackForGetPacks = Pick<Pack, "id" | "name">;
-
-// Define a service using a base URL and expected endpoints
 export const packsApi = createApi({
   reducerPath: "packsApi",
   baseQuery: supabaseBaseQuery,
   endpoints: (builder) => ({
-    getPacks: builder.query<PackForGetPacks[] | null, { userId?: string }>({
+    getPacks: builder.query({
       queryFn: async ({ userId }) => {
         const { data, error } = await supabase
-          .from("pack")
+          .from("packs")
           .select("name, id")
           .eq("profile_id", userId);
         if (error) {
@@ -37,20 +18,20 @@ export const packsApi = createApi({
         return { data };
       },
     }),
-    getPack: builder.query<Pack | null, { packId?: string }>({
+    getPack: builder.query({
       queryFn: async ({ packId }) => {
         const { data, error } = await supabase
-          .from("pack")
+          .from("packs")
           .select(
             `
           id,
           name,
-          pack_category(
+          categories(
             id, 
             name,
-            pack_category_item(
+            categories_item(
             id,
-              item(
+              items(
                 id,
                 type, 
                 description
@@ -70,6 +51,4 @@ export const packsApi = createApi({
   }),
 });
 
-// Export hooks for usage in functional components, which are
-// auto-generated based on the defined endpoints
 export const { useGetPacksQuery, useGetPackQuery } = packsApi;
