@@ -1,10 +1,7 @@
 import { FormEventHandler, useEffect, useState } from "react";
 import { supabase } from "./lib/supabaseClient";
 import { useAuth } from "./contexts/Authentication";
-import {
-  useGetProfileQuery,
-  useUpdateProfileMutation,
-} from "./services/profile";
+import { useGetProfileQuery, useUpdateProfileMutation } from "./api/profile";
 import Avatar from "./Avatar";
 import { Layout } from "./components/Layout/Layout";
 

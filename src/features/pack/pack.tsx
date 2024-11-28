@@ -1,5 +1,5 @@
 import { Link, useParams } from "react-router";
-import { useGetPackQuery } from "../../services/packs";
+import { useGetPackQuery } from "../../api/packs";
 import { Layout } from "../../components/Layout/Layout";
 
 export const Pack = () => {

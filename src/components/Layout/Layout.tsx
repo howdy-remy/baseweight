@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import "./Layout.css";
 import { useAuth } from "../../contexts/Authentication";
-import { useGetProfileQuery } from "../../services/profile";
+import { useGetProfileQuery } from "../../api/profile";
 import Avatar from "../Avatar/Avatar";
 import { Link } from "react-router";
 

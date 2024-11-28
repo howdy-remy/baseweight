@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import type { Action } from "@reduxjs/toolkit";
-import { packsApi } from "./services/packs";
-import { profileApi } from "./services/profile";
+import { packsApi } from "./api/packs";
+import { profileApi } from "./api/profile";
 
 interface CounterState {
   value: number;

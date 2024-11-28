@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import { useGetPacksQuery } from "../../services/packs";
+import { useGetPacksQuery } from "../../api/packs";
 import { useAuth } from "../../contexts/Authentication";
 import React from "react";
 import { Layout } from "../../components/Layout/Layout";
