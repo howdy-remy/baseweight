@@ -14,6 +14,9 @@ export const ColorChip = ({ color, isLight }: ColorChipProps) => (
     <TextSansRegular color="lichen" size="mini">
       lichen
     </TextSansRegular>
+    <TextSansRegular color="sand" size="mini">
+      sand
+    </TextSansRegular>
     <TextSansRegular color="flour" size="mini">
       flour
     </TextSansRegular>

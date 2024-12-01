@@ -16,6 +16,7 @@ export const Colors: Story = {
       <Chips>
         <ColorChip color="moss" isLight />
         <ColorChip color="lichen" />
+        <ColorChip color="sand" />
         <ColorChip color="flour" />
         <ColorChip color="black" isLight />
         <ColorChip color="white" />

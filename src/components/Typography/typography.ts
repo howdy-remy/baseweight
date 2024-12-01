@@ -53,8 +53,7 @@ const TextSans = styled.p<{
   size?: "standard" | "mini" | "micro";
   color?: keyof typeof theme.colors;
 }>`
-  color: ${({ theme, color }) =>
-    !!color ? theme.colors[color] : theme.colors.black};
+  color: ${({ theme, color }) => (!!color ? theme.colors[color] : "inherit")};
   font-family: "Rubik", serif;
   font-size: ${({ theme, size }) => {
     switch (size) {

@@ -2,6 +2,7 @@ export default {
   colors: {
     moss: "#44584B",
     lichen: "#92AA9A",
+    sand: "#E3DBCF",
     flour: "#F8F6F3",
     black: "#000000",
     white: "#FFFFFF",
