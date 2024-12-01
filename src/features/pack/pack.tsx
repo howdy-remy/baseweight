@@ -2,19 +2,18 @@ import { Link, useParams } from "react-router";
 import { useGetPackQuery } from "../../api/packs";
 import { Layout } from "../../components/Layout/Layout";
 import { useState } from "react";
-import { useCreateItemMutation } from "../../api/items";
+import { Item, useCreateItemMutation } from "../../api/items";
 import { useAuth } from "../../contexts/Authentication";
 import { useCreateCategoriesItemMutation } from "../../api/category_item";
-import { useCreateCategoryMutation } from "../../api/categories";
+import { Category, useCreateCategoryMutation } from "../../api/categories";
+import {
+  CreateItemForm,
+  OnSubmitItemProps,
+} from "../../components/ItemForm/ItemForm";
 
 export const Pack = () => {
   const { session } = useAuth();
   let { packId } = useParams();
-
-  const [type, setType] = useState("");
-  const [description, setDescription] = useState("");
-  const [weight, setWeight] = useState(0);
-  const [quantity, setQuantity] = useState(0);
 
   const [categoryName, setCategoryName] = useState("");
   const [categoryColor, setCategoryColor] = useState("#000000");
@@ -23,30 +22,34 @@ export const Pack = () => {
   const [createItem] = useCreateItemMutation();
   const [createCategory] = useCreateCategoryMutation();
   const [createCategoriesItem] = useCreateCategoriesItemMutation();
-  const addItem = async (category) => {
-    const { data } = await createItem({
-      profile_id: session!.user.id,
+
+  const addItem =
+    (category: Category) =>
+    async ({
       type,
       description,
-      weight_in_grams: weight,
+      weightInGrams,
       quantity,
-    });
-    await createCategoriesItem({
-      profile_id: session!.user.id,
-      item_id: data?.[0].id,
-      pack_category_id: category.id,
-    });
+    }: OnSubmitItemProps) => {
+      const { data } = await createItem({
+        profile_id: session!.user.id,
+        type,
+        description,
+        weight_in_grams: weightInGrams,
+        quantity,
+      });
+      await createCategoriesItem({
+        profile_id: session!.user.id,
+        item_id: data?.[0].id,
+        category_id: category.id,
+      });
 
-    refetch();
-    setType("");
-    setDescription("");
-    setWeight(0);
-    setQuantity(0);
-  };
+      refetch();
+    };
 
   const addCategory = async () => {
     if (!pack) return;
-    const { data } = await createCategory({
+    await createCategory({
       name: categoryName,
       color: categoryColor,
       pack_id: pack.id,
@@ -67,64 +70,13 @@ export const Pack = () => {
         {pack?.categories.map((category) => (
           <>
             <p key={category.id}>{category.name}</p>
-            {category.categories_item.map((categoriesItem) => (
-              <p key={categoriesItem.items?.id}>
-                {categoriesItem.items?.type} :{" "}
-                {categoriesItem.items?.description}
+            {category.items.map((item) => (
+              <p key={item.id}>
+                {item.type} : {item.description}
               </p>
             ))}
 
-            <form
-              onSubmit={(event) => {
-                event.preventDefault();
-                addItem(category);
-              }}
-              className="form-widget"
-            >
-              <fieldset>
-                <label htmlFor="type">type</label>
-                <input
-                  id="type"
-                  type="text"
-                  value={type}
-                  placeholder="type"
-                  onChange={(e) => setType(e.target.value)}
-                />
-              </fieldset>
-              <fieldset>
-                <label htmlFor="description">description</label>
-                <input
-                  id="description"
-                  type="text"
-                  value={description}
-                  placeholder="description"
-                  onChange={(e) => setDescription(e.target.value)}
-                />
-              </fieldset>
-              <fieldset>
-                <label htmlFor="weight">weight</label>
-                <input
-                  id="weight"
-                  type="number"
-                  value={weight}
-                  onChange={(e) => setWeight(+e.target.value)}
-                  placeholder="weight"
-                />
-              </fieldset>
-              <fieldset>
-                <label htmlFor="quantity">quantity</label>
-                <input
-                  id="quantity"
-                  type="number"
-                  value={quantity}
-                  placeholder="quantity"
-                  onChange={(e) => setQuantity(+e.target.value)}
-                />
-              </fieldset>
-              <button className="button block primary" type="submit">
-                Add Item
-              </button>
-            </form>
+            <CreateItemForm onSubmit={addItem(category)} />
           </>
         ))}
         <p>category</p>

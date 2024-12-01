@@ -3,9 +3,8 @@ import { supabase } from "../lib/supabaseClient";
 import { supabaseBaseQuery } from "./baseQuery";
 
 export type CategoriesItem = {
-  profile_id: string;
-  pack_category_id: number;
-  item_id: number;
+  categoryId: number;
+  itemId: number;
 };
 
 export const categoriesItemApi = createApi({
@@ -13,7 +12,7 @@ export const categoriesItemApi = createApi({
   baseQuery: supabaseBaseQuery,
   endpoints: (builder) => ({
     createCategoriesItem: builder.mutation({
-      queryFn: async (categoriesItem: CategoriesItem) => {
+      queryFn: async (categoriesItem) => {
         const { data, error } = await supabase
           .from("categories_item")
           .insert(categoriesItem)
@@ -23,6 +22,7 @@ export const categoriesItemApi = createApi({
           console.error(error);
           return { error };
         }
+
         return { data };
       },
     }),

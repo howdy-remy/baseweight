@@ -1,6 +1,25 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { supabase } from "../lib/supabaseClient";
 import { supabaseBaseQuery } from "./baseQuery";
+import { Database } from "../types/database.types";
+
+export type Item = {
+  id: number;
+  description: string | null;
+  quantity: number | null;
+  type: string | null;
+  weightInGrams: number | null;
+};
+
+export const itemMapper: (
+  item: Database["public"]["Tables"]["items"]["Row"]
+) => Item = (item) => ({
+  id: item.id,
+  type: item.type,
+  description: item.description,
+  weightInGrams: item.weight_in_grams,
+  quantity: item.quantity,
+});
 
 export const itemsApi = createApi({
   reducerPath: "itemsApi",
@@ -17,7 +36,9 @@ export const itemsApi = createApi({
           console.error(error);
           return { error };
         }
-        return { data };
+
+        const mappedData = data.map(itemMapper);
+        return { data: mappedData };
       },
     }),
   }),

@@ -1,6 +1,23 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import { supabase } from "../lib/supabaseClient";
 import { supabaseBaseQuery } from "./baseQuery";
+import { type Database } from "../types/database.types";
+import { type Item } from "./items";
+
+export type Category = {
+  id?: number;
+  name?: string | null;
+  color?: string | null;
+  items?: Partial<Item>[];
+};
+
+export const categoryMapper: (
+  category: Database["public"]["Tables"]["categories"]["Row"]
+) => Category = (category) => ({
+  id: category.id,
+  name: category.name,
+  color: category.color,
+});
 
 export const categoriesApi = createApi({
   reducerPath: "categoriesApi",
@@ -17,7 +34,8 @@ export const categoriesApi = createApi({
           console.error(error);
           return { error };
         }
-        return { data };
+        const mappedData = data.map(categoryMapper);
+        return { data: mappedData };
       },
     }),
   }),
