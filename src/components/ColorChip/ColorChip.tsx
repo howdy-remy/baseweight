@@ -8,10 +8,20 @@ type ColorChipProps = {
 export const ColorChip = ({ color, isLight }: ColorChipProps) => (
   <Chip color={color}>
     <TextSansBold color={isLight ? "white" : "black"}>{color}</TextSansBold>
-    <TextSansRegular color="moss">moss</TextSansRegular>
-    <TextSansRegular color="lichen">lichen</TextSansRegular>
-    <TextSansRegular color="flour">flour</TextSansRegular>
-    <TextSansRegular color="black">black</TextSansRegular>
-    <TextSansRegular color="white">white</TextSansRegular>
+    <TextSansRegular color="moss" size="mini">
+      moss
+    </TextSansRegular>
+    <TextSansRegular color="lichen" size="mini">
+      lichen
+    </TextSansRegular>
+    <TextSansRegular color="flour" size="mini">
+      flour
+    </TextSansRegular>
+    <TextSansRegular color="black" size="mini">
+      black
+    </TextSansRegular>
+    <TextSansRegular color="white" size="mini">
+      white
+    </TextSansRegular>
   </Chip>
 );
