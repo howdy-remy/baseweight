@@ -10,6 +10,10 @@ import {
   CreateItemForm,
   OnSubmitItemProps,
 } from "../../components/ItemForm/ItemForm";
+import {
+  HeadingOne,
+  TextSansRegular,
+} from "../../components/Typography/typography";
 
 export const Pack = () => {
   const { session } = useAuth();
@@ -66,7 +70,8 @@ export const Pack = () => {
       <div>
         <Link to="/">home</Link>
         <Link to="/account">account</Link>
-        <p>{pack?.name}</p>
+        <HeadingOne as="h1">{pack?.name}</HeadingOne>
+        <TextSansRegular>Lorem ipsum</TextSansRegular>
         {pack?.categories.map((category) => (
           <>
             <p key={category.id}>{category.name}</p>
