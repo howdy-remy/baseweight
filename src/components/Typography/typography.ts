@@ -7,6 +7,7 @@ export const HeadingOne = styled.p`
   font-size: ${({ theme }) => theme.fontsizes.xl};
   line-height: 0.7;
   margin: 0;
+  margin-bottom: 7px;
 `;
 
 export const HeadingTwo = styled.p`

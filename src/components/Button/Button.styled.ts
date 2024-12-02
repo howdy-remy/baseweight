@@ -1,5 +1,7 @@
 import styled from "styled-components";
-import { ButtonProps } from "./Button";
+import { Button as HeadlessButton } from "@headlessui/react";
+
+import type { ButtonProps } from "./Button";
 
 export const Buttons = styled.div`
   display: flex;
@@ -7,7 +9,7 @@ export const Buttons = styled.div`
   gap: 8px;
 `;
 
-export const StyledButton = styled.button<{
+export const StyledButton = styled(HeadlessButton)<{
   $variant: ButtonProps["variant"];
   $size?: ButtonProps["size"];
   $expandWidth: ButtonProps["expandWidth"];
@@ -93,5 +95,9 @@ export const StyledButton = styled.button<{
           return theme.colors.lichen;
       }
     }};
+  }
+
+  &:focus {
+    outline: 1px solid rgb(2, 156, 253);
   }
 `;

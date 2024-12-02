@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Button as HeadlessButton } from "@headlessui/react";
 import { IconButtonProps } from "./IconButton";
 
 export const IconButtons = styled.div`
@@ -7,7 +8,7 @@ export const IconButtons = styled.div`
   gap: 8px;
 `;
 
-export const IconButtonWrapper = styled.button<{
+export const IconButtonWrapper = styled(HeadlessButton)<{
   $variant: IconButtonProps["variant"];
 }>`
   all: unset;

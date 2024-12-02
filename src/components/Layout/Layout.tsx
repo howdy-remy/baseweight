@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { type ReactNode, useState } from "react";
 import "./Layout.css";
 import { useAuth } from "../../contexts/Authentication";
 import { useGetProfileQuery } from "../../api/profile";
