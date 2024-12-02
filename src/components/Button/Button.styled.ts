@@ -3,6 +3,7 @@ import { ButtonProps } from "./Button";
 
 export const Buttons = styled.div`
   display: flex;
+  flex-direction: column;
   gap: 8px;
 `;
 
@@ -31,7 +32,7 @@ export const StyledButton = styled.button<{
         return "24px";
     }
   }};
-  width: ${({ $expandWidth }) => ($expandWidth ? "100%" : "auto")};
+  width: ${({ $expandWidth }) => ($expandWidth ? "100%" : "fit-content")};
   padding: ${({ theme, $size }) => {
     switch ($size) {
       case "small":

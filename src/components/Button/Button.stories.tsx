@@ -15,13 +15,13 @@ export const Primary: Story = {
     return (
       <Buttons>
         <Button variant="primary" size="small">
-          hey
+          Button/Primary/Small
         </Button>
         <Button variant="primary" size="medium">
-          hey
+          Button/Primary/Medium
         </Button>
         <Button variant="primary" size="large">
-          hey
+          Button/Primary/Large
         </Button>
       </Buttons>
     );
@@ -33,13 +33,13 @@ export const Secondary: Story = {
     return (
       <Buttons>
         <Button variant="secondary" size="small">
-          hey
+          Button/Secondary/Small
         </Button>
         <Button variant="secondary" size="medium">
-          hey
+          Button/Secondary/Medium
         </Button>
         <Button variant="secondary" size="large">
-          hey
+          Button/Secondary/Large
         </Button>
       </Buttons>
     );

@@ -3,6 +3,10 @@ import type { Meta, StoryObj } from "@storybook/react";
 import {
   HeadingOne,
   HeadingTwo,
+  TextMonoBold,
+  TextMonoBoldItalic,
+  TextMonoRegular,
+  TextMonoRegularItalic,
   TextSansBold,
   TextSansBoldItalic,
   TextSansRegular,
@@ -57,6 +61,11 @@ export const Typography: Story = {
         <TextSansBoldItalic size="micro">
           Text/Sans/Bold/Italic/Micro
         </TextSansBoldItalic>
+        <hr />
+        <TextMonoRegular>Text/Mono/Regular</TextMonoRegular>
+        <TextMonoRegularItalic>Text/Mono/Regular/Italic</TextMonoRegularItalic>
+        <TextMonoBold>Text/Mono/Bold</TextMonoBold>
+        <TextMonoBoldItalic>Text/Mono/Bold/Italic</TextMonoBoldItalic>
         <hr />
       </>
     );

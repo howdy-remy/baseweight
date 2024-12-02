@@ -5,7 +5,10 @@ import { useState } from "react";
 import { Item, useCreateItemMutation } from "../../api/items";
 import { useAuth } from "../../contexts/Authentication";
 import { useCreateCategoriesItemMutation } from "../../api/category_item";
-import { Category, useCreateCategoryMutation } from "../../api/categories";
+import {
+  type Category as CategoryType,
+  useCreateCategoryMutation,
+} from "../../api/categories";
 import {
   CreateItemForm,
   OnSubmitItemProps,
@@ -14,6 +17,7 @@ import {
   HeadingOne,
   TextSansRegular,
 } from "../../components/Typography/typography";
+import { Category } from "../../components/Category";
 
 export const Pack = () => {
   const { session } = useAuth();
@@ -28,7 +32,7 @@ export const Pack = () => {
   const [createCategoriesItem] = useCreateCategoriesItemMutation();
 
   const addItem =
-    (category: Category) =>
+    (category: CategoryType) =>
     async ({
       type,
       description,
@@ -74,7 +78,14 @@ export const Pack = () => {
         <TextSansRegular>Lorem ipsum</TextSansRegular>
         {pack?.categories.map((category) => (
           <>
-            <p key={category.id}>{category.name}</p>
+            <Category
+              key={category.id}
+              categoryName={category.name}
+              color="#abcabc"
+              quantity={100}
+              weight={88.88}
+              weightUnit="lb"
+            />
             {category.items.map((item) => (
               <p key={item.id}>
                 {item.type} : {item.description}

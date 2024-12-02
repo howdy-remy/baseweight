@@ -5,12 +5,14 @@ import theme from "../../styles/theme";
 export const HeadingOne = styled.p`
   font-family: "ForrestBold", serif;
   font-size: ${({ theme }) => theme.fontsizes.xl};
+  line-height: 0.7;
   margin: 0;
 `;
 
 export const HeadingTwo = styled.p`
   font-family: "ForrestBold", serif;
   font-size: ${({ theme }) => theme.fontsizes.l};
+  line-height: 0.7;
   margin: 0;
 `;
 
@@ -81,6 +83,43 @@ export const TextSansBold = styled(TextSans)`
 `;
 
 export const TextSansBoldItalic = styled(TextSans)`
+  font-style: italic;
+  font-weight: 700;
+`;
+
+// text mono ------------------------------------------------------------------/
+const TextMono = styled.p<{
+  size?: "standard" | "mini" | "micro";
+  color?: keyof typeof theme.colors;
+}>`
+  color: ${({ theme, color }) => (!!color ? theme.colors[color] : "inherit")};
+  font-family: "IBM Plex Mono", serif;
+  font-size: ${({ theme, size }) => {
+    switch (size) {
+      case "micro":
+        return theme.fontsizes.xs;
+      case "mini":
+        return theme.fontsizes.s;
+      case "standard":
+      default:
+        return theme.fontsizes.m;
+    }
+  }};
+  line-height: 1.4;
+  margin: 0;
+`;
+
+export const TextMonoRegular = styled(TextMono)``;
+
+export const TextMonoRegularItalic = styled(TextMono)`
+  font-style: italic;
+`;
+
+export const TextMonoBold = styled(TextMono)`
+  font-weight: 700;
+`;
+
+export const TextMonoBoldItalic = styled(TextMono)`
   font-style: italic;
   font-weight: 700;
 `;
