@@ -7,6 +7,8 @@ export const CategoryWrapper = styled.div`
 
   width: 100%;
   height: 40px;
+
+  padding: 0 ${({ theme }) => theme.spacing.m}px;
 `;
 
 export const Block = styled.div`

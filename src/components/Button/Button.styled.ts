@@ -32,7 +32,8 @@ export const StyledButton = styled.button<{
         return "24px";
     }
   }};
-  width: ${({ $expandWidth }) => ($expandWidth ? "100%" : "fit-content")};
+  width: ${({ theme, $expandWidth }) =>
+    $expandWidth ? `calc(100% - ${theme.spacing.l * 2}px)` : "fit-content"};
   padding: ${({ theme, $size }) => {
     switch ($size) {
       case "small":

@@ -83,7 +83,9 @@ export const packsApi = createApi({
               items(
                 id,
                 type, 
-                description
+                description,
+                weight_in_grams,
+                quantity
               )
             )
           )
