@@ -5,6 +5,8 @@ export default {
     sand: "#E3DBCF",
     flour: "#F8F6F3",
     black: "#000000",
+    stone: "#CACECB",
+    mist: "#EDEEED",
     white: "#FFFFFF",
   },
   fonts: {

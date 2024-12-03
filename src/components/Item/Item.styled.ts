@@ -1,5 +1,10 @@
 import styled from "styled-components";
-import { TextSansBold, TextSansRegular } from "../Typography";
+import {
+  TextMonoBoldItalic,
+  TextMonoRegularItalic,
+  TextSansBold,
+  TextSansRegular,
+} from "../Typography";
 
 export const Items = styled.div`
   display: flex;
@@ -33,6 +38,14 @@ export const Description = styled(TextSansRegular)`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+`;
+
+export const Weight = styled(TextMonoBoldItalic)`
+  text-align: right;
+`;
+
+export const Quantity = styled(TextMonoRegularItalic)`
+  text-align: right;
 `;
 
 export const Block = styled.div`

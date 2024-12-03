@@ -29,8 +29,8 @@ export const Dropdown = ({ label, items, useIconButton }: DropdownProps) => {
           gap: theme.spacing.s,
         }}
       >
-        {items.map(({ label, onClick }) => (
-          <MenuItem as="button" onClick={onClick}>
+        {items.map(({ label, onClick }, i) => (
+          <MenuItem as="button" onClick={onClick} key={i}>
             {label}
           </MenuItem>
         ))}

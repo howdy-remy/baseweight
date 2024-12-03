@@ -1,4 +1,5 @@
 import { DragHandle } from "../DragHandle";
+import { Dropdown } from "../Dropdown";
 import { IconButton } from "../IconButton";
 import {
   HeadingTwo,
@@ -22,6 +23,16 @@ export const Category = ({
   weight,
   weightUnit,
 }: CategoryProps) => {
+  const actions = [
+    {
+      label: "Edit",
+      onClick: () => console.log("edit!"),
+    },
+    {
+      label: "Delete",
+      onClick: () => console.log("delete!"),
+    },
+  ];
   return (
     <CategoryWrapper>
       <Block>
@@ -34,7 +45,7 @@ export const Category = ({
           {weight} {weightUnit}
         </TextMonoBoldItalic>
         <TextMonoRegularItalic>x {quantity}</TextMonoRegularItalic>
-        <IconButton variant="secondary" icon="menu" />
+        <Dropdown useIconButton={true} items={actions} />
       </Block>
     </CategoryWrapper>
   );

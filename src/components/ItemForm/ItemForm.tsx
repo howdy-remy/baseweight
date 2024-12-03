@@ -1,4 +1,7 @@
 import { FormEventHandler, useState } from "react";
+import { Input } from "../Input";
+import { Field } from "../Field";
+import { Button } from "../Button";
 
 export type OnSubmitItemProps = {
   type: string;
@@ -33,49 +36,45 @@ export const CreateItemForm = ({ onSubmit }: CreateItemFormProps) => {
 
   return (
     <form onSubmit={handleOnSubmit} className="form-widget">
-      <fieldset>
-        <label htmlFor="type">type</label>
-        <input
-          id="type"
+      <Field label="Type">
+        <Input
           type="text"
+          name="type"
           value={type}
           placeholder="type"
           onChange={(e) => setType(e.target.value)}
         />
-      </fieldset>
-      <fieldset>
-        <label htmlFor="description">description</label>
-        <input
-          id="description"
+      </Field>
+      <Field label="Description">
+        <Input
           type="text"
+          name="description"
           value={description}
           placeholder="description"
           onChange={(e) => setDescription(e.target.value)}
         />
-      </fieldset>
-      <fieldset>
-        <label htmlFor="weight">weight</label>
-        <input
-          id="weight"
+      </Field>
+      <Field label="Weight">
+        <Input
           type="number"
+          name="weight"
           value={weightInGrams}
-          onChange={(e) => setWeightInGrams(+e.target.value)}
           placeholder="weight"
+          onChange={(e) => setWeightInGrams(+e.target.value)}
         />
-      </fieldset>
-      <fieldset>
-        <label htmlFor="quantity">quantity</label>
-        <input
-          id="quantity"
+      </Field>
+      <Field label="Quantity">
+        <Input
           type="number"
+          name="quantity"
           value={quantity}
           placeholder="quantity"
           onChange={(e) => setQuantity(+e.target.value)}
         />
-      </fieldset>
-      <button className="button block primary" type="submit">
+      </Field>
+      <Button variant="primary" type="submit" size="large">
         Add Item
-      </button>
+      </Button>
     </form>
   );
 };

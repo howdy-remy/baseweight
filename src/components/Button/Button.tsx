@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ButtonHTMLAttributes, ReactNode } from "react";
 import { StyledButton } from "./Button.styled";
 
 export type ButtonProps = {
@@ -13,9 +13,15 @@ export const Button = ({
   variant,
   size = "medium",
   expandWidth,
-}: ButtonProps) => {
+  type,
+}: ButtonProps & React.ButtonHTMLAttributes<HTMLButtonElement>) => {
   return (
-    <StyledButton $variant={variant} $size={size} $expandWidth={expandWidth}>
+    <StyledButton
+      $variant={variant}
+      $size={size}
+      type={type}
+      $expandWidth={expandWidth}
+    >
       {children}
     </StyledButton>
   );
