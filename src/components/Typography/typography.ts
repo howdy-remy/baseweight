@@ -13,7 +13,7 @@ export const HeadingOne = styled.p`
 export const HeadingTwo = styled.p`
   font-family: "ForrestBold", serif;
   font-size: ${({ theme }) => theme.fontsizes.l};
-  line-height: 0.7;
+  line-height: 1.4;
   margin: 0;
 `;
 

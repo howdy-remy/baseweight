@@ -1,12 +1,13 @@
 import { DragHandle } from "../DragHandle";
 import { Dropdown } from "../Dropdown";
-import { IconButton } from "../IconButton";
+import { TextMonoBoldItalic, TextMonoRegularItalic } from "../Typography";
 import {
-  HeadingTwo,
-  TextMonoBoldItalic,
-  TextMonoRegularItalic,
-} from "../Typography";
-import { Block, CategoryColor, CategoryWrapper } from "./Category.styled";
+  CategoryColor,
+  CategoryName,
+  CategoryWrapper,
+  Quantity,
+  Weight,
+} from "./Category.styled";
 
 type CategoryProps = {
   categoryName?: string | null;
@@ -35,18 +36,14 @@ export const Category = ({
   ];
   return (
     <CategoryWrapper>
-      <Block>
-        <DragHandle />
-        <CategoryColor $color={color} />
-        <HeadingTwo>{categoryName}</HeadingTwo>
-      </Block>
-      <Block>
-        <TextMonoBoldItalic>
-          {weight} {weightUnit}
-        </TextMonoBoldItalic>
-        <TextMonoRegularItalic>x {quantity}</TextMonoRegularItalic>
-        <Dropdown useIconButton={true} items={actions} />
-      </Block>
+      <DragHandle />
+      <CategoryColor $color={color} />
+      <CategoryName as="h2">{categoryName}</CategoryName>
+      <Weight>
+        {weight} {weightUnit}
+      </Weight>
+      <Quantity>x {quantity}</Quantity>
+      <Dropdown useIconButton={true} items={actions} />
     </CategoryWrapper>
   );
 };
