@@ -1,6 +1,5 @@
 import { DragHandle } from "../DragHandle";
 import { Dropdown } from "../Dropdown";
-import { TextMonoBoldItalic, TextMonoRegularItalic } from "../Typography";
 import {
   CategoryColor,
   CategoryName,
@@ -40,7 +39,8 @@ export const Category = ({
       <CategoryColor $color={color} />
       <CategoryName as="h2">{categoryName}</CategoryName>
       <Weight>
-        {weight} {weightUnit}
+        {weight}
+        {weightUnit}
       </Weight>
       <Quantity>x {quantity}</Quantity>
       <Dropdown useIconButton={true} items={actions} />

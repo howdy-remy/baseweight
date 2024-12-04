@@ -9,6 +9,7 @@ export type Item = {
   quantity: number | null;
   type: string | null;
   weightInGrams: number | null;
+  categoryItemId?: number;
 };
 
 export const itemMapper: (
@@ -19,6 +20,7 @@ export const itemMapper: (
   description: item.description,
   weightInGrams: item.weight_in_grams,
   quantity: item.quantity,
+  categoryItemId: undefined,
 });
 
 export const itemsApi = createApi({

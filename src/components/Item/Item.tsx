@@ -11,9 +11,10 @@ import {
 
 type ItemProps = {
   item: ItemType;
+  onRemove: (id: number) => void;
 };
 
-export const Item = ({ item }: ItemProps) => {
+export const Item = ({ item, onRemove }: ItemProps) => {
   const actions = [
     {
       label: "Edit",
@@ -21,9 +22,15 @@ export const Item = ({ item }: ItemProps) => {
     },
     {
       label: "Remove",
-      onClick: () => console.log("remove!"),
+      onClick: () => {
+        if (!item.categoryItemId) {
+          return;
+        }
+        onRemove(item.categoryItemId);
+      },
     },
   ];
+
   return (
     <ItemWrapper>
       <DragHandle />

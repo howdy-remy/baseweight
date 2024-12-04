@@ -4,7 +4,10 @@ import { Layout } from "../../components/Layout/Layout";
 import { useState } from "react";
 import { type Item as ItemType, useCreateItemMutation } from "../../api/items";
 import { useAuth } from "../../contexts/Authentication";
-import { useCreateCategoriesItemMutation } from "../../api/category_item";
+import {
+  useCreateCategoriesItemMutation,
+  useDeleteCategoriesItemMutation,
+} from "../../api/categories_item";
 import {
   type Category as CategoryType,
   useCreateCategoryMutation,
@@ -34,6 +37,7 @@ export const Pack = () => {
   const [createItem] = useCreateItemMutation();
   const [createCategory] = useCreateCategoryMutation();
   const [createCategoriesItem] = useCreateCategoriesItemMutation();
+  const [deleteCategoriesItem] = useDeleteCategoriesItemMutation();
 
   const addItem =
     (category: CategoryType) =>
@@ -58,6 +62,11 @@ export const Pack = () => {
 
       refetch();
     };
+
+  const removeItem = async (id: number) => {
+    await deleteCategoriesItem(id);
+    refetch();
+  };
 
   const addCategory = async () => {
     if (!pack) return;
@@ -85,13 +94,17 @@ export const Pack = () => {
                 key={category.id}
                 categoryName={category.name}
                 color="#abcabc"
-                quantity={100}
-                weight={88.88}
-                weightUnit="lb"
+                quantity={category.totalQuantity}
+                weight={category.totalWeight}
+                weightUnit="g"
               />
               <Items>
                 {category.items.map((item) => (
-                  <Item key={item.id} item={item as ItemType} />
+                  <Item
+                    key={item.id}
+                    item={item as ItemType}
+                    onRemove={removeItem}
+                  />
                 ))}
                 <Button variant="secondary" size="large" expandWidth>
                   Add item

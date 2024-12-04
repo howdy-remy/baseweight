@@ -26,7 +26,25 @@ export const categoriesItemApi = createApi({
         return { data };
       },
     }),
+    deleteCategoriesItem: builder.mutation({
+      queryFn: async (categoriesItemId) => {
+        const { data, error } = await supabase
+          .from("categories_item")
+          .delete()
+          .eq("id", categoriesItemId);
+
+        if (error) {
+          console.error(error);
+          return { error };
+        }
+
+        return { data };
+      },
+    }),
   }),
 });
 
-export const { useCreateCategoriesItemMutation } = categoriesItemApi;
+export const {
+  useCreateCategoriesItemMutation,
+  useDeleteCategoriesItemMutation,
+} = categoriesItemApi;

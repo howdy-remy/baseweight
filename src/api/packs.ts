@@ -25,10 +25,17 @@ const packMapper = (
   }
 ) => {
   const mappedCategories = pack.categories.map((category) => {
+    let weight = 0;
+    let quantity = 0;
+
     const items = category.categories_item.map((categoryItem) => {
       const item = categoryItem.items as dbItem;
+      weight += item.weight_in_grams || 0;
+      quantity += item.quantity || 0;
+
       return {
         id: item.id,
+        categoryItemId: categoryItem.id,
         type: item.type,
         description: item.description,
         weightInGrams: item.weight_in_grams,
@@ -40,6 +47,8 @@ const packMapper = (
       name: category.name,
       color: category.color,
       items,
+      totalWeight: weight,
+      totalQuantity: quantity,
     };
   });
   return {

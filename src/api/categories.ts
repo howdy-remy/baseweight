@@ -9,6 +9,8 @@ export type Category = {
   name?: string | null;
   color?: string | null;
   items?: Partial<Item>[];
+  totalWeight?: number;
+  totalQuantity?: number;
 };
 
 export const categoryMapper: (
