@@ -1,13 +1,17 @@
-import { Link, useParams } from "react-router";
+import { useParams } from "react-router";
 import { useGetPackQuery } from "../../api/packs";
 import { Layout } from "../../components/Layout/Layout";
-import { useState } from "react";
-import { type Item as ItemType, useCreateItemMutation } from "../../api/items";
+import { ChangeEvent, useState } from "react";
+import {
+  useCreateItemMutation,
+  useLazySearchItemsQuery,
+} from "../../api/items";
 import { useAuth } from "../../contexts/Authentication";
 import {
+  CategoryItem,
   useCreateCategoriesItemMutation,
   useDeleteCategoriesItemMutation,
-} from "../../api/categories_item";
+} from "../../api/category_item";
 import {
   type Category as CategoryType,
   useCreateCategoryMutation,
@@ -24,7 +28,7 @@ import { Category } from "../../components/Category";
 import { Item } from "../../components/Item";
 import { Items } from "../../components/Item/Item.styled";
 import { PackWrapper } from "./pack.styled";
-import { Button } from "../../components/Button";
+import { AddItemToPack } from "../../components/AddItemToPack";
 
 export const Pack = () => {
   const { session } = useAuth();
@@ -38,6 +42,8 @@ export const Pack = () => {
   const [createCategory] = useCreateCategoryMutation();
   const [createCategoriesItem] = useCreateCategoriesItemMutation();
   const [deleteCategoriesItem] = useDeleteCategoriesItemMutation();
+  const [searchItems, { data: items, isLoading: isLoadingItems }] =
+    useLazySearchItemsQuery();
 
   const addItem =
     (category: CategoryType) =>
@@ -52,12 +58,12 @@ export const Pack = () => {
         type,
         description,
         weight_in_grams: weightInGrams,
-        quantity,
       });
       await createCategoriesItem({
         profile_id: session!.user.id,
         item_id: data?.[0].id,
         category_id: category.id,
+        quantity,
       });
 
       refetch();
@@ -77,6 +83,15 @@ export const Pack = () => {
     });
     refetch();
   };
+
+  const onSearchItems =
+    (category: CategoryType) =>
+    async (event: ChangeEvent<HTMLInputElement>) => {
+      await searchItems({
+        searchString: event.target.value,
+        excludeIds: category.categoryItems?.map(({ item }) => item.id),
+      });
+    };
 
   if (isLoading) {
     return "loading...";
@@ -99,16 +114,19 @@ export const Pack = () => {
                 weightUnit="g"
               />
               <Items>
-                {category.items.map((item) => (
+                {category.categoryItems.map((categoryItem) => (
                   <Item
-                    key={item.id}
-                    item={item as ItemType}
+                    key={categoryItem.id}
+                    categoryItem={categoryItem as CategoryItem}
                     onRemove={removeItem}
                   />
                 ))}
-                <Button variant="secondary" size="large" expandWidth>
-                  Add item
-                </Button>
+                <AddItemToPack onSearch={onSearchItems(category)} />
+                {items?.map((item) => (
+                  <p>
+                    {item.type} – {item.description}
+                  </p>
+                ))}
               </Items>
 
               <CreateItemForm onSubmit={addItem(category)} />

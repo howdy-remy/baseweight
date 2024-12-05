@@ -6,6 +6,7 @@ export type ButtonProps = {
   variant: "primary" | "secondary";
   size: "small" | "medium" | "large";
   expandWidth?: boolean;
+  onClick?: (event: MouseEvent) => void;
 };
 
 export const Button = ({
@@ -14,6 +15,7 @@ export const Button = ({
   size = "medium",
   expandWidth,
   type,
+  onClick,
 }: ButtonProps & React.ButtonHTMLAttributes<HTMLButtonElement>) => {
   return (
     <StyledButton
@@ -21,6 +23,7 @@ export const Button = ({
       $size={size}
       type={type}
       $expandWidth={expandWidth}
+      onClick={onClick}
     >
       {children}
     </StyledButton>

@@ -7,53 +7,56 @@ import { Database } from "../types/database.types";
 export type Pack = {
   id: number;
   name: string | null;
-  categories?: Category[];
+  categories: Category[];
 };
 
 type dbPack = Partial<Database["public"]["Tables"]["packs"]["Row"]>;
 type dbCategory = Partial<Database["public"]["Tables"]["categories"]["Row"]>;
 type dbCategoryItem = Partial<
-  Database["public"]["Tables"]["categories_item"]["Row"]
+  Database["public"]["Tables"]["category_item"]["Row"]
 >;
 type dbItem = Partial<Database["public"]["Tables"]["items"]["Row"]>;
 
-const packMapper = (
-  pack: dbPack & {
-    categories: (dbCategory & {
-      categories_item: (dbCategoryItem & { items: dbItem[] })[];
-    })[];
-  }
-) => {
-  const mappedCategories = pack.categories.map((category) => {
-    let weight = 0;
-    let quantity = 0;
+type pack = dbPack & {
+  categories: (dbCategory & {
+    category_item: (dbCategoryItem & { items: dbItem[] })[];
+  })[];
+};
 
-    const items = category.categories_item.map((categoryItem) => {
+const packMapper: (pack: pack) => Pack = (pack) => {
+  const mappedCategories = pack.categories.map((category) => {
+    let totalWeight = 0;
+    let totalQuantity = 0;
+
+    const categoryItems = category.category_item.map((categoryItem) => {
       const item = categoryItem.items as dbItem;
-      weight += item.weight_in_grams || 0;
-      quantity += item.quantity || 0;
+      totalWeight += item.weight_in_grams || 0;
+      totalQuantity += categoryItem.quantity || 0;
 
       return {
-        id: item.id,
-        categoryItemId: categoryItem.id,
-        type: item.type,
-        description: item.description,
-        weightInGrams: item.weight_in_grams,
-        quantity: item.quantity,
+        id: categoryItem.id || 0,
+        quantity: categoryItem.quantity || 0,
+        item: {
+          id: item.id || 0,
+          type: item.type || "",
+          description: item.description || "",
+          weightInGrams: item.weight_in_grams || 0,
+        },
       };
     });
+
     return {
-      id: category.id,
-      name: category.name,
-      color: category.color,
-      items,
-      totalWeight: weight,
-      totalQuantity: quantity,
+      id: category.id || 0,
+      name: category.name || "",
+      color: category.color || "#000000",
+      categoryItems,
+      totalWeight,
+      totalQuantity,
     };
   });
   return {
-    id: pack.id,
-    name: pack.name,
+    id: pack.id || 0,
+    name: pack.name || "",
     categories: mappedCategories,
   };
 };
@@ -87,14 +90,14 @@ export const packsApi = createApi({
             id, 
             name,
             color,
-            categories_item(
+            category_item(
               id,
+              quantity,
               items(
                 id,
                 type, 
                 description,
-                weight_in_grams,
-                quantity
+                weight_in_grams
               )
             )
           )

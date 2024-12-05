@@ -1,4 +1,4 @@
-import { type Item as ItemType } from "../../api/items";
+import { CategoryItem } from "../../api/category_item";
 import { DragHandle } from "../DragHandle";
 import { Dropdown } from "../Dropdown";
 import {
@@ -10,11 +10,11 @@ import {
 } from "./Item.styled";
 
 type ItemProps = {
-  item: ItemType;
+  categoryItem: CategoryItem;
   onRemove: (id: number) => void;
 };
 
-export const Item = ({ item, onRemove }: ItemProps) => {
+export const Item = ({ categoryItem, onRemove }: ItemProps) => {
   const actions = [
     {
       label: "Edit",
@@ -23,10 +23,7 @@ export const Item = ({ item, onRemove }: ItemProps) => {
     {
       label: "Remove",
       onClick: () => {
-        if (!item.categoryItemId) {
-          return;
-        }
-        onRemove(item.categoryItemId);
+        onRemove(categoryItem.id);
       },
     },
   ];
@@ -34,10 +31,10 @@ export const Item = ({ item, onRemove }: ItemProps) => {
   return (
     <ItemWrapper>
       <DragHandle />
-      <Type>{item.type}</Type>
-      <Description>{item.description}</Description>
-      <Weight>{item.weightInGrams}g</Weight>
-      <Quantity>x {item.quantity}</Quantity>
+      <Type>{categoryItem.item.type}</Type>
+      <Description>{categoryItem.item.description}</Description>
+      <Weight>{categoryItem.item.weightInGrams}g</Weight>
+      <Quantity>x {categoryItem.quantity}</Quantity>
       <Dropdown useIconButton={true} items={actions} />
     </ItemWrapper>
   );

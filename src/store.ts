@@ -3,7 +3,7 @@ import type { Action } from "@reduxjs/toolkit";
 import { packsApi } from "./api/packs";
 import { profileApi } from "./api/profile";
 import { itemsApi } from "./api/items";
-import { categoriesItemApi } from "./api/categories_item";
+import { categoriesItemApi } from "./api/category_item";
 import { categoriesApi } from "./api/categories";
 
 interface CounterState {

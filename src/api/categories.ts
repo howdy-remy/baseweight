@@ -2,15 +2,15 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 import { supabase } from "../lib/supabaseClient";
 import { supabaseBaseQuery } from "./baseQuery";
 import { type Database } from "../types/database.types";
-import { type Item } from "./items";
+import { type CategoryItem } from "./category_item";
 
 export type Category = {
-  id?: number;
-  name?: string | null;
-  color?: string | null;
-  items?: Partial<Item>[];
-  totalWeight?: number;
-  totalQuantity?: number;
+  id: number;
+  name: string | null;
+  color: string | null;
+  totalWeight: number;
+  totalQuantity: number;
+  categoryItems: CategoryItem[];
 };
 
 export const categoryMapper: (
@@ -19,6 +19,9 @@ export const categoryMapper: (
   id: category.id,
   name: category.name,
   color: category.color,
+  totalQuantity: 0,
+  totalWeight: 0,
+  categoryItems: [],
 });
 
 export const categoriesApi = createApi({

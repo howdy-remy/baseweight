@@ -1,3 +1,4 @@
+/* https://medium.com/@donald.walters/supabase-rtk-query-typescript-like-an-absolute-chad-6f477a32b0cc */
 import { AuthError, PostgrestError } from "@supabase/supabase-js";
 import { supabase } from "../lib/supabaseClient";
 import { BaseQueryFn } from "@reduxjs/toolkit/query";
