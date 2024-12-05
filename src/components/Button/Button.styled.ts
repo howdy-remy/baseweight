@@ -39,8 +39,8 @@ export const StyledButton = styled(HeadlessButton)<{
   padding: ${({ theme, $size }) => {
     switch ($size) {
       case "small":
-        return `0 ${theme.spacing.m}px`;
       case "medium":
+        return `0 ${theme.spacing.m}px`;
       case "large":
       default:
         return `0 ${theme.spacing.l}px`;

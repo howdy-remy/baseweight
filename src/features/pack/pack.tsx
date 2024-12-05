@@ -11,6 +11,7 @@ import {
   CategoryItem,
   useCreateCategoriesItemMutation,
   useDeleteCategoriesItemMutation,
+  useUpdateQuantityMutation,
 } from "../../api/category_item";
 import {
   type Category as CategoryType,
@@ -42,6 +43,8 @@ export const Pack = () => {
   const [createCategory] = useCreateCategoryMutation();
   const [createCategoriesItem] = useCreateCategoriesItemMutation();
   const [deleteCategoriesItem] = useDeleteCategoriesItemMutation();
+  const [updateQuantity] = useUpdateQuantityMutation();
+
   const [searchItems, { data: items, isLoading: isLoadingItems }] =
     useLazySearchItemsQuery();
 
@@ -71,6 +74,14 @@ export const Pack = () => {
 
   const removeItem = async (id: number) => {
     await deleteCategoriesItem(id);
+    refetch();
+  };
+
+  const updateItemQuantity = async (
+    categoryItemId: number,
+    quantity: number
+  ) => {
+    await updateQuantity({ categoryItemId, quantity });
     refetch();
   };
 
@@ -118,7 +129,8 @@ export const Pack = () => {
                   <Item
                     key={categoryItem.id}
                     categoryItem={categoryItem as CategoryItem}
-                    onRemove={removeItem}
+                    removeFromPack={removeItem}
+                    updateItemQuantity={updateItemQuantity}
                   />
                 ))}
                 <AddItemToPack onSearch={onSearchItems(category)} />

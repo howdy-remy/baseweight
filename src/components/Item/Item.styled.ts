@@ -19,7 +19,7 @@ export const ItemWrapper = styled.div`
   align-items: center;
   gap: ${({ theme }) => theme.spacing.m}px;
 
-  grid-template-columns: 6px max-content 1fr 80px 48px 24px;
+  grid-template-columns: 6px max-content 1fr 80px 93px 24px;
 
   width: 100%;
   height: 32px;
@@ -44,7 +44,14 @@ export const Weight = styled(TextMonoBoldItalic)`
   text-align: right;
 `;
 
-export const Quantity = styled(TextMonoRegularItalic)`
+export const Quantity = styled.div`
+  display: grid;
+  grid-template-columns: 24px 1fr 24px;
+  gap: ${({ theme }) => theme.spacing.m}px;
+  width: 100%;
+`;
+
+export const QuantityText = styled(TextMonoRegularItalic)`
   text-align: right;
 `;
 
