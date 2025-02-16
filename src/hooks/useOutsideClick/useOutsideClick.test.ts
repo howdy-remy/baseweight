@@ -33,7 +33,7 @@ describe("useOutsideClick", () => {
     const { result } = renderHook(() => useOutsideClick(callback));
 
     // Attach the ref to our container
-    if (result.current.current) {
+    if (result.current) {
       Object.defineProperty(result.current, "current", {
         value: container,
         writable: true,
@@ -48,7 +48,7 @@ describe("useOutsideClick", () => {
   it("should not call callback when clicking inside the referenced element", () => {
     const { result } = renderHook(() => useOutsideClick(callback));
 
-    if (result.current.current) {
+    if (result.current) {
       Object.defineProperty(result.current, "current", {
         value: container,
         writable: true,
@@ -86,7 +86,7 @@ describe("useOutsideClick", () => {
       initialProps: { cb: callback },
     });
 
-    if (result.current.current) {
+    if (result.current) {
       Object.defineProperty(result.current, "current", {
         value: container,
         writable: true,

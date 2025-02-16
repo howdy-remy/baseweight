@@ -68,7 +68,7 @@ export const AddItemToPack = ({
                 </Result>
               )}
               {results?.map((item) => (
-                <Result onClick={() => handleOnSelect(item)}>
+                <Result onClick={() => handleOnSelect(item)} key={item.id}>
                   <p>
                     {item.type} – {item.description}
                   </p>

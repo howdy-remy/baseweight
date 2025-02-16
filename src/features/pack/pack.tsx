@@ -1,7 +1,7 @@
 import { useParams } from "react-router";
 import { useGetPackQuery } from "../../api/packs";
 import { Layout } from "../../components/Layout/Layout";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, Fragment, useState } from "react";
 import {
   type Item as ItemType,
   useCreateItemMutation,
@@ -32,18 +32,16 @@ import { Items } from "../../components/Item/Item.styled";
 import { PackWrapper } from "./pack.styled";
 import { AddItemToPack } from "../../components/AddItemToPack";
 import { Modal } from "../../components/Modal";
+import { Button } from "../../components/Button";
+import { CreateCategoryModal } from "./components/CreateCategoryModal";
 
 export const Pack = () => {
   const { session } = useAuth();
   let { packId } = useParams();
 
-  const [categoryName, setCategoryName] = useState("");
-  const [categoryColor, setCategoryColor] = useState("#000000");
-
   // queries and mutations
   const { data: pack, isLoading, refetch } = useGetPackQuery({ packId });
   const [createItem] = useCreateItemMutation();
-  const [createCategory] = useCreateCategoryMutation();
   const [createCategoriesItem] = useCreateCategoriesItemMutation();
   const [deleteCategoriesItem] = useDeleteCategoriesItemMutation();
   const [updateQuantity] = useUpdateQuantityMutation();
@@ -74,7 +72,7 @@ export const Pack = () => {
         quantity,
       });
 
-      setIsCreateModalOpen(false);
+      setIsCreateItemModalOpen(false);
       setSelectedCategory(null);
       refetch();
     };
@@ -92,20 +90,12 @@ export const Pack = () => {
     refetch();
   };
 
-  const addCategory = async () => {
-    if (!pack) return;
-    await createCategory({
-      name: categoryName,
-      color: categoryColor,
-      pack_id: pack.id,
-    });
-    refetch();
-  };
+  const [isCreateCategoryModalOpen, setIsCreateCategoryModalOpen] =
+    useState(false);
 
   const onSearchItems =
     (category: CategoryType) =>
     async (event: ChangeEvent<HTMLInputElement>) => {
-      setTypeQuery(event.target.value);
       await searchItems({
         searchString: event.target.value,
         excludeIds: category.categoryItems?.map(({ item }) => item.id),
@@ -123,13 +113,13 @@ export const Pack = () => {
     refetch();
   };
 
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isCreateItemModalOpen, setIsCreateItemModalOpen] = useState(false);
   const [query, setTypeQuery] = useState("");
   const onCreateItem = (category: CategoryType) => {
     return async (type: string) => {
       setSelectedCategory(category);
       setTypeQuery(type);
-      setIsCreateModalOpen(true);
+      setIsCreateItemModalOpen(true);
     };
   };
 
@@ -144,7 +134,7 @@ export const Pack = () => {
           <HeadingOne as="h1">{pack?.name}</HeadingOne>
           <TextSansRegular>Lorem ipsum</TextSansRegular>
           {pack?.categories.map((category, i) => (
-            <>
+            <Fragment key={category.id || `category_${i}`}>
               <Category
                 key={category.id || `category_${i}`}
                 categoryName={category.name}
@@ -169,47 +159,15 @@ export const Pack = () => {
                   results={items ?? []}
                 />
               </Items>
-            </>
+            </Fragment>
           ))}
-          <p>category</p>
-          <form
-            onSubmit={(event) => {
-              event.preventDefault();
-              addCategory();
-            }}
-            className="form-widget"
-          >
-            <fieldset>
-              <label htmlFor="type">name</label>
-              <input
-                id="name"
-                type="text"
-                value={categoryName}
-                placeholder="name"
-                onChange={(e) => setCategoryName(e.target.value)}
-              />
-            </fieldset>
-            <fieldset>
-              <label htmlFor="color">color</label>
-              <input
-                id="color"
-                type="color"
-                value={categoryColor}
-                placeholder="color"
-                onChange={(e) => setCategoryColor(e.target.value)}
-              />
-            </fieldset>
-
-            <button className="button block primary" type="submit">
-              Add category
-            </button>
-          </form>
+          <CreateCategoryModal packId={packId} refetch={refetch} />
         </div>
       </PackWrapper>
       {selectedCategory && (
         <Modal
-          isOpen={isCreateModalOpen}
-          onClose={() => setIsCreateModalOpen(false)}
+          isOpen={isCreateItemModalOpen}
+          onClose={() => setIsCreateItemModalOpen(false)}
         >
           <CreateItemForm
             initialType={query}
