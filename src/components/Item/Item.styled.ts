@@ -54,8 +54,3 @@ export const Quantity = styled.div`
 export const QuantityText = styled(TextMonoRegularItalic)`
   text-align: right;
 `;
-
-export const Block = styled.div`
-  display: flex;
-  gap: ${({ theme }) => theme.spacing.m}px;
-`;

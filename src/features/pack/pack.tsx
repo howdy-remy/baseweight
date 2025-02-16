@@ -3,6 +3,7 @@ import { useGetPackQuery } from "../../api/packs";
 import { Layout } from "../../components/Layout/Layout";
 import { ChangeEvent, useState } from "react";
 import {
+  type Item as ItemType,
   useCreateItemMutation,
   useLazySearchItemsQuery,
 } from "../../api/items";
@@ -30,6 +31,7 @@ import { Item } from "../../components/Item";
 import { Items } from "../../components/Item/Item.styled";
 import { PackWrapper } from "./pack.styled";
 import { AddItemToPack } from "../../components/AddItemToPack";
+import useOutsideClick from "../../hooks/useOutsideClick/useOutsideClick";
 
 export const Pack = () => {
   const { session } = useAuth();
@@ -38,17 +40,19 @@ export const Pack = () => {
   const [categoryName, setCategoryName] = useState("");
   const [categoryColor, setCategoryColor] = useState("#000000");
 
+  // queries and mutations
   const { data: pack, isLoading, refetch } = useGetPackQuery({ packId });
   const [createItem] = useCreateItemMutation();
   const [createCategory] = useCreateCategoryMutation();
   const [createCategoriesItem] = useCreateCategoriesItemMutation();
   const [deleteCategoriesItem] = useDeleteCategoriesItemMutation();
   const [updateQuantity] = useUpdateQuantityMutation();
-
   const [searchItems, { data: items, isLoading: isLoadingItems }] =
     useLazySearchItemsQuery();
 
-  const addItem =
+  const addItemToPack =
+    (category: CategoryType) => async (item: ItemType) => {};
+  const createNewItemAndAddToPack =
     (category: CategoryType) =>
     async ({
       type,
@@ -104,6 +108,14 @@ export const Pack = () => {
       });
     };
 
+  const onSelectItem = (category: CategoryType) => async (item: ItemType) => {
+    console.log(item.type);
+  };
+
+  const onCreateItem = async (type: string) => {
+    console.log(type);
+  };
+
   if (isLoading) {
     return "loading...";
   }
@@ -114,12 +126,12 @@ export const Pack = () => {
         <div>
           <HeadingOne as="h1">{pack?.name}</HeadingOne>
           <TextSansRegular>Lorem ipsum</TextSansRegular>
-          {pack?.categories.map((category) => (
+          {pack?.categories.map((category, i) => (
             <>
               <Category
-                key={category.id}
+                key={category.id || `category_${i}`}
                 categoryName={category.name}
-                color="#abcabc"
+                color={category.color}
                 quantity={category.totalQuantity}
                 weight={category.totalWeight}
                 weightUnit="g"
@@ -133,15 +145,15 @@ export const Pack = () => {
                     updateItemQuantity={updateItemQuantity}
                   />
                 ))}
-                <AddItemToPack onSearch={onSearchItems(category)} />
-                {items?.map((item) => (
-                  <p>
-                    {item.type} – {item.description}
-                  </p>
-                ))}
+                <AddItemToPack
+                  onSearch={onSearchItems(category)}
+                  onSelect={onSelectItem(category)}
+                  onCreate={onCreateItem}
+                  results={items ?? []}
+                />
               </Items>
 
-              <CreateItemForm onSubmit={addItem(category)} />
+              {/* <CreateItemForm onSubmit={addItem(category)} /> */}
             </>
           ))}
           <p>category</p>

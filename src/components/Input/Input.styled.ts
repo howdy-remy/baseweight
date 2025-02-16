@@ -14,7 +14,7 @@ export const StyledInput = styled(Input)`
   //box model
   height: 32px;
 
-  width: ${({ theme }) => `calc(100% - ${theme.spacing.m * 2}px)`};
+  width: ${({ theme }) => `calc(100% - ${theme.spacing.m * 2 + 2}px)`};
   padding: 0 ${({ theme }) => theme.spacing.m}px;
   border: 1px solid ${({ theme }) => theme.colors.stone};
   border-radius: 4px;

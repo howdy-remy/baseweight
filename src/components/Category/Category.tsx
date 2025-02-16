@@ -10,7 +10,7 @@ import {
 
 type CategoryProps = {
   categoryName?: string | null;
-  color: string;
+  color: string | null;
   quantity: number;
   weight: number;
   weightUnit: string;
@@ -18,7 +18,7 @@ type CategoryProps = {
 
 export const Category = ({
   categoryName,
-  color,
+  color = "#abcabc",
   quantity,
   weight,
   weightUnit,

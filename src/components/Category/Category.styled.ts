@@ -18,7 +18,7 @@ export const CategoryWrapper = styled.div`
   padding: 0 ${({ theme }) => theme.spacing.m}px;
 `;
 
-export const CategoryColor = styled.div<{ $color: string }>`
+export const CategoryColor = styled.div<{ $color: string | null }>`
   height: 24px;
   width: 24px;
   border-radius: 4px;
