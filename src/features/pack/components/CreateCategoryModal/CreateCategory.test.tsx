@@ -1,8 +1,8 @@
 // This test file was generated with Claude Sonnet 3.5 and adjusted
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { vi, describe, it, expect, beforeEach } from "vitest";
-import { CreateCategoryModal } from "./CreateCategoryModal";
 import { useCreateCategoryMutation } from "api/categories";
+import { CreateCategoryModal } from "./CreateCategoryModal";
 
 // Mock the API hook
 vi.mock("api/categories", () => ({

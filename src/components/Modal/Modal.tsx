@@ -1,10 +1,4 @@
-import {
-  Description,
-  Dialog,
-  DialogPanel,
-  DialogTitle,
-} from "@headlessui/react";
-import { useState } from "react";
+import { Dialog } from "@headlessui/react";
 import { Scrim, StyledDialogPanel } from "./Modal.styled";
 
 type ModalProps = {

@@ -39,7 +39,7 @@ export const CreateItemForm = ({
   };
 
   return (
-    <form onSubmit={handleOnSubmit} className="form-widget">
+    <form onSubmit={handleOnSubmit}>
       <Field label="Type">
         <Input
           type="text"

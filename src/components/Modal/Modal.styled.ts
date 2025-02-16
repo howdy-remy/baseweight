@@ -21,8 +21,11 @@ export const StyledDialogPanel = styled(DialogPanel)`
   left: 50%;
   transform: translate(-50%, -50%);
 
+  display: grid;
+  grid-row-gap: ${({ theme }) => theme.spacing.xl}px;
+
   width: 400px;
-  padding: ${({ theme }) => theme.spacing.m}px;
+  padding: ${({ theme }) => theme.spacing.l}px;
   border-radius: ${({ theme }) => theme.spacing.s}px;
   background-color: ${({ theme }) => theme.colors.white};
 

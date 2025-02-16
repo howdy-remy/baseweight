@@ -49,7 +49,7 @@ export const Pack = () => {
     useLazySearchItemsQuery();
 
   const [selectedCategory, setSelectedCategory] = useState<CategoryType | null>(
-    null
+    null,
   );
   const createNewItemAndAddToPack =
     (category: CategoryType) =>
@@ -84,7 +84,7 @@ export const Pack = () => {
 
   const updateItemQuantity = async (
     categoryItemId: number,
-    quantity: number
+    quantity: number,
   ) => {
     await updateQuantity({ categoryItemId, quantity });
     refetch();

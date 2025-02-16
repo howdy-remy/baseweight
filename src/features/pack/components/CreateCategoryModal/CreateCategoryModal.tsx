@@ -1,7 +1,14 @@
 import { useState } from "react";
-import { Modal } from "components/Modal";
-import { Button } from "components/Button";
+
 import { useCreateCategoryMutation } from "api/categories";
+
+import { Button } from "components/Button";
+import { Field } from "components/Field";
+import { Input } from "components/Input";
+import { ActionsWrapper, Modal } from "components/Modal";
+import { HeadingTwo } from "components/Typography";
+
+import { StyledForm } from "./CreateCategory.styled";
 
 type CreateCategoryModalProps = {
   packId?: string;
@@ -20,6 +27,10 @@ export const CreateCategoryModal = ({
   const [categoryName, setCategoryName] = useState("");
   const [categoryColor, setCategoryColor] = useState("#44584B");
 
+  const resetFormState = () => {
+    setCategoryName("");
+    setCategoryColor("#44584B");
+  };
   // create category -----------------------------------------------------------
   const [createCategory] = useCreateCategoryMutation();
   const addCategory = async () => {
@@ -30,6 +41,7 @@ export const CreateCategoryModal = ({
       pack_id: packId,
     });
     setIsCreateCategoryModalOpen(false);
+    resetFormState();
     refetch();
   };
 
@@ -39,7 +51,8 @@ export const CreateCategoryModal = ({
         isOpen={isCreateCategoryModalOpen}
         onClose={() => setIsCreateCategoryModalOpen(false)}
       >
-        <form
+        <HeadingTwo as="h2">Create a new category</HeadingTwo>
+        <StyledForm
           onSubmit={(event) => {
             event.preventDefault();
             addCategory();
@@ -47,31 +60,37 @@ export const CreateCategoryModal = ({
           className="form-widget"
           role="form"
         >
-          <fieldset>
-            <label htmlFor="name">name</label>
-            <input
-              id="name"
+          <Field label="Category Name">
+            <Input
               type="text"
+              name="name"
               value={categoryName}
               placeholder="name"
               onChange={(e) => setCategoryName(e.target.value)}
             />
-          </fieldset>
-          <fieldset>
-            <label htmlFor="color">color</label>
-            <input
-              id="color"
+          </Field>
+          <Field label="Color">
+            <Input
               type="color"
+              name="color"
               value={categoryColor}
               placeholder="color"
               onChange={(e) => setCategoryColor(e.target.value)}
             />
-          </fieldset>
-
-          <button className="button block primary" type="submit">
-            Add category
-          </button>
-        </form>
+          </Field>
+          <ActionsWrapper>
+            <Button
+              variant="secondary"
+              size="medium"
+              onClick={() => setIsCreateCategoryModalOpen(false)}
+            >
+              Cancel
+            </Button>
+            <Button variant="primary" size="medium" type="submit">
+              Create category
+            </Button>
+          </ActionsWrapper>
+        </StyledForm>
       </Modal>
 
       <Button
