@@ -8,6 +8,7 @@ export type CategoryItem = {
   id: number;
   item: Item;
   quantity: number;
+  order: number;
 };
 
 export const categoriesItemApi = createApi({
@@ -59,6 +60,21 @@ export const categoriesItemApi = createApi({
         return { data };
       },
     }),
+    updateCategoryItems: builder.mutation({
+      queryFn: async (categoryItems) => {
+        const { data, error } = await supabase
+          .from("category_item")
+          .upsert(categoryItems)
+          .select();
+
+        if (error) {
+          console.error(error);
+          return { error };
+        }
+
+        return { data };
+      },
+    }),
   }),
 });
 
@@ -66,4 +82,5 @@ export const {
   useCreateCategoriesItemMutation,
   useDeleteCategoriesItemMutation,
   useUpdateQuantityMutation,
+  useUpdateCategoryItemsMutation,
 } = categoriesItemApi;

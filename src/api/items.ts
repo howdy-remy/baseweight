@@ -11,7 +11,7 @@ export type Item = {
 };
 
 export const itemMapper: (
-  item: Database["public"]["Tables"]["items"]["Row"]
+  item: Database["public"]["Tables"]["items"]["Row"],
 ) => Item = (item) => ({
   id: item.id,
   type: item.type,

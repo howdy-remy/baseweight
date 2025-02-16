@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import {
   TextMonoBoldItalic,
   TextMonoRegularItalic,
@@ -14,7 +14,7 @@ export const Items = styled.div`
   margin-bottom: ${({ theme }) => theme.spacing.xl}px;
 `;
 
-export const ItemWrapper = styled.div`
+export const ItemWrapper = styled.div<{ $isDragging?: boolean }>`
   display: grid;
   align-items: center;
   gap: ${({ theme }) => theme.spacing.m}px;
@@ -24,9 +24,17 @@ export const ItemWrapper = styled.div`
   width: 100%;
   height: 32px;
   padding: 0 ${({ theme }) => theme.spacing.m}px;
+  background-color: ${({ theme }) => theme.colors.white};
 
   border: 1px solid ${({ theme }) => theme.colors.sand};
   border-radius: 4px;
+
+  ${({ $isDragging }) =>
+    $isDragging &&
+    css`
+      grid-template-columns: 6px max-content 1fr;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    `}
 `;
 
 export const Type = styled(TextSansBold)`

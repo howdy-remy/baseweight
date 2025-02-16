@@ -1,5 +1,7 @@
-import { CategoryItem } from "../../api/category_item";
-import { Button } from "../Button";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
+
+import type { CategoryItem } from "api/category_item";
 import { DragHandle } from "../DragHandle";
 import { Dropdown } from "../Dropdown";
 import { IconButton } from "../IconButton";
@@ -23,6 +25,22 @@ export const Item = ({
   removeFromPack,
   updateItemQuantity,
 }: ItemProps) => {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: categoryItem.id.toString() });
+
+  const style = {
+    opacity: isDragging ? 0.4 : undefined,
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
+  // actions -------------------------------------------------------------------
   const actions = [
     {
       label: "Remove",
@@ -43,17 +61,21 @@ export const Item = ({
   };
 
   return (
-    <ItemWrapper>
-      <DragHandle />
-      <Type>{categoryItem.item.type}</Type>
-      <Description>{categoryItem.item.description}</Description>
-      <Weight>{categoryItem.item.weightInGrams}g</Weight>
-      <Quantity>
-        <IconButton variant="secondary" icon="-" onClick={reduceQuantity} />
-        <QuantityText>{categoryItem.quantity}</QuantityText>
-        <IconButton variant="secondary" icon="+" onClick={increaseQuantity} />
-      </Quantity>
-      <Dropdown useIconButton={true} items={actions} />
-    </ItemWrapper>
+    <div ref={setNodeRef} style={style}>
+      <ItemWrapper>
+        <div {...attributes} {...listeners}>
+          <DragHandle />
+        </div>
+        <Type>{categoryItem.item.type}</Type>
+        <Description>{categoryItem.item.description}</Description>
+        <Weight>{categoryItem.item.weightInGrams}g</Weight>
+        <Quantity>
+          <IconButton variant="secondary" icon="-" onClick={reduceQuantity} />
+          <QuantityText>{categoryItem.quantity}</QuantityText>
+          <IconButton variant="secondary" icon="+" onClick={increaseQuantity} />
+        </Quantity>
+        <Dropdown useIconButton={true} items={actions} />
+      </ItemWrapper>
+    </div>
   );
 };

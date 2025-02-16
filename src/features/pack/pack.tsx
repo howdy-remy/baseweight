@@ -1,6 +1,22 @@
 import { ChangeEvent, Fragment, useState } from "react";
 import { useParams } from "react-router";
 
+import {
+  closestCenter,
+  DndContext,
+  DragEndEvent,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+
 import { useGetPackQuery } from "api/packs";
 import {
   type Item as ItemType,
@@ -18,7 +34,8 @@ import { type Category as CategoryType } from "api/categories";
 import { useAuth } from "contexts/Authentication";
 
 import { Category } from "components/Category";
-import { Item, Items } from "components/Item";
+// import { Item, Items } from "components/Item";
+import { Items } from "components/Items";
 import { Layout } from "components/Layout/Layout";
 import { HeadingOne, TextSansRegular } from "components/Typography";
 
@@ -146,22 +163,38 @@ export const Pack = () => {
                 weight={category.totalWeight}
                 weightUnit="g"
               />
-              <Items>
-                {category.categoryItems.map((categoryItem) => (
-                  <Item
-                    key={categoryItem.id}
-                    categoryItem={categoryItem as CategoryItem}
-                    removeFromPack={removeItem}
-                    updateItemQuantity={updateItemQuantity}
-                  />
-                ))}
-                <AddItemToPack
-                  onSearch={onSearchItems(category)}
-                  onSelect={onSelectItem(category)}
-                  onInitiateCreate={onInitiateCreateItem(category)}
-                  results={items ?? []}
-                />
-              </Items>
+              <Items
+                items={category.categoryItems}
+                refetch={refetch}
+                categoryId={category.id}
+                profileId={session!.user.id}
+              />
+              {/* <DndContext
+                  sensors={sensors}
+                  collisionDetection={closestCenter}
+                  onDragEnd={handleDragEnd}
+                >
+                  <SortableContext
+                    items={category.categoryItems}
+                    strategy={verticalListSortingStrategy}
+                  >
+                    {sortedItems.map((categoryItem) => (
+                      <Item
+                        key={categoryItem.id}
+                        categoryItem={categoryItem as CategoryItem}
+                        removeFromPack={removeItem}
+                        updateItemQuantity={updateItemQuantity}
+                      />
+                    ))}
+                  </SortableContext>
+                </DndContext> */}
+              {/* </Items> */}
+              <AddItemToPack
+                onSearch={onSearchItems(category)}
+                onSelect={onSelectItem(category)}
+                onInitiateCreate={onInitiateCreateItem(category)}
+                results={items ?? []}
+              />
             </Fragment>
           ))}
 

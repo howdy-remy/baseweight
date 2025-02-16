@@ -36,6 +36,7 @@ const packMapper: (pack: pack) => Pack = (pack) => {
       return {
         id: categoryItem.id || 0,
         quantity: categoryItem.quantity || 0,
+        order: categoryItem.order || 0,
         item: {
           id: item.id || 0,
           type: item.type || "",
@@ -93,6 +94,7 @@ export const packsApi = createApi({
             category_item(
               id,
               quantity,
+              order,
               items(
                 id,
                 type, 
@@ -101,7 +103,7 @@ export const packsApi = createApi({
               )
             )
           )
-            `
+            `,
           )
           .eq("id", packId)
           .single();
