@@ -31,7 +31,7 @@ import { Item } from "../../components/Item";
 import { Items } from "../../components/Item/Item.styled";
 import { PackWrapper } from "./pack.styled";
 import { AddItemToPack } from "../../components/AddItemToPack";
-import useOutsideClick from "../../hooks/useOutsideClick/useOutsideClick";
+import { Modal } from "../../components/Modal";
 
 export const Pack = () => {
   const { session } = useAuth();
@@ -50,8 +50,9 @@ export const Pack = () => {
   const [searchItems, { data: items, isLoading: isLoadingItems }] =
     useLazySearchItemsQuery();
 
-  const addItemToPack =
-    (category: CategoryType) => async (item: ItemType) => {};
+  const [selectedCategory, setSelectedCategory] = useState<CategoryType | null>(
+    null
+  );
   const createNewItemAndAddToPack =
     (category: CategoryType) =>
     async ({
@@ -73,6 +74,8 @@ export const Pack = () => {
         quantity,
       });
 
+      setIsCreateModalOpen(false);
+      setSelectedCategory(null);
       refetch();
     };
 
@@ -102,6 +105,7 @@ export const Pack = () => {
   const onSearchItems =
     (category: CategoryType) =>
     async (event: ChangeEvent<HTMLInputElement>) => {
+      setTypeQuery(event.target.value);
       await searchItems({
         searchString: event.target.value,
         excludeIds: category.categoryItems?.map(({ item }) => item.id),
@@ -109,11 +113,24 @@ export const Pack = () => {
     };
 
   const onSelectItem = (category: CategoryType) => async (item: ItemType) => {
-    console.log(item.type);
+    await createCategoriesItem({
+      profile_id: session!.user.id,
+      item_id: item.id,
+      category_id: category.id,
+      quantity: 1,
+    });
+
+    refetch();
   };
 
-  const onCreateItem = async (type: string) => {
-    console.log(type);
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [query, setTypeQuery] = useState("");
+  const onCreateItem = (category: CategoryType) => {
+    return async (type: string) => {
+      setSelectedCategory(category);
+      setTypeQuery(type);
+      setIsCreateModalOpen(true);
+    };
   };
 
   if (isLoading) {
@@ -148,12 +165,10 @@ export const Pack = () => {
                 <AddItemToPack
                   onSearch={onSearchItems(category)}
                   onSelect={onSelectItem(category)}
-                  onCreate={onCreateItem}
+                  onCreate={onCreateItem(category)}
                   results={items ?? []}
                 />
               </Items>
-
-              {/* <CreateItemForm onSubmit={addItem(category)} /> */}
             </>
           ))}
           <p>category</p>
@@ -191,6 +206,17 @@ export const Pack = () => {
           </form>
         </div>
       </PackWrapper>
+      {selectedCategory && (
+        <Modal
+          isOpen={isCreateModalOpen}
+          onClose={() => setIsCreateModalOpen(false)}
+        >
+          <CreateItemForm
+            initialType={query}
+            onSubmit={createNewItemAndAddToPack(selectedCategory)}
+          />
+        </Modal>
+      )}
     </Layout>
   );
 };

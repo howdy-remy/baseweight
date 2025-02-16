@@ -11,11 +11,15 @@ export type OnSubmitItemProps = {
 };
 
 type CreateItemFormProps = {
+  initialType?: string;
   onSubmit: (item: OnSubmitItemProps) => void;
 };
 
-export const CreateItemForm = ({ onSubmit }: CreateItemFormProps) => {
-  const [type, setType] = useState("");
+export const CreateItemForm = ({
+  initialType = "",
+  onSubmit,
+}: CreateItemFormProps) => {
+  const [type, setType] = useState(initialType);
   const [description, setDescription] = useState("");
   const [weightInGrams, setWeightInGrams] = useState(0);
   const [quantity, setQuantity] = useState(0);

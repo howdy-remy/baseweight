@@ -53,29 +53,31 @@ export const AddItemToPack = ({
   // open state
   if (isAddMode) {
     return (
-      <div ref={ref}>
-        <Input
-          onChange={handleOnChange}
-          value={query}
-          placeholder="Search for an item..."
-        />
-        {(results.length || query) && (
-          <ResultList>
-            {query && (
-              <Result onClick={handleOnCreate}>
-                <p>Create "{query}"</p>
-              </Result>
-            )}
-            {results?.map((item) => (
-              <Result onClick={() => handleOnSelect(item)}>
-                <p>
-                  {item.type} – {item.description}
-                </p>
-              </Result>
-            ))}
-          </ResultList>
-        )}
-      </div>
+      <>
+        <div ref={ref}>
+          <Input
+            onChange={handleOnChange}
+            value={query}
+            placeholder="Search for an item..."
+          />
+          {(results.length || query) && (
+            <ResultList>
+              {query && (
+                <Result onClick={handleOnCreate}>
+                  <p>Create "{query}"</p>
+                </Result>
+              )}
+              {results?.map((item) => (
+                <Result onClick={() => handleOnSelect(item)}>
+                  <p>
+                    {item.type} – {item.description}
+                  </p>
+                </Result>
+              ))}
+            </ResultList>
+          )}
+        </div>
+      </>
     );
   }
 
