@@ -28,7 +28,7 @@ export const CategoryColor = styled.div<{ $color: string | null }>`
 
 export const CategoryName = styled(HeadingTwo)`
   min-width: 100%;
-  overflow-x: hidden;
+  overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 `;

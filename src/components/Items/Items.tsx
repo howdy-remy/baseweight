@@ -33,6 +33,7 @@ type ItemsProps = {
   profileId: string;
   refetch: () => void;
 };
+
 export const Items = ({
   categoryId,
   items,
@@ -113,7 +114,7 @@ export const Items = ({
         onDragEnd={handleDragEnd}
       >
         <SortableContext
-          items={sortedItems}
+          items={sortedItems.map((item) => item.id.toString())}
           strategy={verticalListSortingStrategy}
         >
           {sortedItems.map((categoryItem) => (

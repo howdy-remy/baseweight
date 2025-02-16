@@ -27,11 +27,11 @@ export const Item = ({
 }: ItemProps) => {
   const {
     attributes,
+    isDragging,
     listeners,
-    setNodeRef,
     transform,
     transition,
-    isDragging,
+    setNodeRef,
   } = useSortable({ id: categoryItem.id.toString() });
 
   const style = {

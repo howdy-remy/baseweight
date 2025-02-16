@@ -1,40 +1,18 @@
 import { ChangeEvent, Fragment, useState } from "react";
 import { useParams } from "react-router";
 
-import {
-  closestCenter,
-  DndContext,
-  DragEndEvent,
-  KeyboardSensor,
-  PointerSensor,
-  useSensor,
-  useSensors,
-} from "@dnd-kit/core";
-import {
-  arrayMove,
-  SortableContext,
-  sortableKeyboardCoordinates,
-  verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
-
 import { useGetPackQuery } from "api/packs";
 import {
   type Item as ItemType,
   useCreateItemMutation,
   useLazySearchItemsQuery,
 } from "api/items";
-import {
-  CategoryItem,
-  useCreateCategoriesItemMutation,
-  useDeleteCategoriesItemMutation,
-  useUpdateQuantityMutation,
-} from "api/category_item";
+import { useCreateCategoriesItemMutation } from "api/category_item";
 import { type Category as CategoryType } from "api/categories";
 
 import { useAuth } from "contexts/Authentication";
 
 import { Category } from "components/Category";
-// import { Item, Items } from "components/Item";
 import { Items } from "components/Items";
 import { Layout } from "components/Layout/Layout";
 import { HeadingOne, TextSansRegular } from "components/Typography";
@@ -123,25 +101,6 @@ export const Pack = () => {
     refetch();
   };
 
-  // remove item from pack -----------------------------------------------------
-  const [deleteCategoriesItem] = useDeleteCategoriesItemMutation();
-
-  const removeItem = async (id: number) => {
-    await deleteCategoriesItem(id);
-    refetch();
-  };
-
-  // update item quantity ------------------------------------------------------
-  const [updateQuantity] = useUpdateQuantityMutation();
-
-  const updateItemQuantity = async (
-    categoryItemId: number,
-    quantity: number,
-  ) => {
-    await updateQuantity({ categoryItemId, quantity });
-    refetch();
-  };
-
   if (isLoading) {
     return "loading...";
   }
@@ -169,26 +128,6 @@ export const Pack = () => {
                 categoryId={category.id}
                 profileId={session!.user.id}
               />
-              {/* <DndContext
-                  sensors={sensors}
-                  collisionDetection={closestCenter}
-                  onDragEnd={handleDragEnd}
-                >
-                  <SortableContext
-                    items={category.categoryItems}
-                    strategy={verticalListSortingStrategy}
-                  >
-                    {sortedItems.map((categoryItem) => (
-                      <Item
-                        key={categoryItem.id}
-                        categoryItem={categoryItem as CategoryItem}
-                        removeFromPack={removeItem}
-                        updateItemQuantity={updateItemQuantity}
-                      />
-                    ))}
-                  </SortableContext>
-                </DndContext> */}
-              {/* </Items> */}
               <AddItemToPack
                 onSearch={onSearchItems(category)}
                 onSelect={onSelectItem(category)}
