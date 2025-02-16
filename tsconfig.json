@@ -3,7 +3,11 @@
     "baseUrl": "./src",
     "paths": {
       "components/*": ["./components/*"],
-      "api/*": ["./api/*"]
+      "api/*": ["./api/*"],
+      "hooks/*": ["./hooks/*"],
+      "contexts/*": ["./contexts/*"],
+      "styles/*": ["./styles/*"],
+      "lib/*": ["./lib/*"]
     },
     "types": ["vitest", "@testing-library/jest-dom"],
     "target": "ESNext",

@@ -1,25 +1,29 @@
 import { ChangeEvent, useEffect, useState } from "react";
-import { Button } from "../Button";
-import { Input } from "../Input";
-import type { Item } from "../../api/items";
-import useOutsideClick from "../../hooks/useOutsideClick/useOutsideClick";
+
+import type { Item } from "api/items";
+import useOutsideClick from "hooks/useOutsideClick/useOutsideClick";
+
+import { Button } from "components/Button";
+import { Input } from "components/Input";
+
 import { Result, ResultList } from "./AddItemToPack.styled";
 
 type AddItemToPackProps = {
   results: Item[];
-  onCreate: (query: string) => void;
+  onInitiateCreate: (query: string) => void;
   onSearch: (e: ChangeEvent<HTMLInputElement>) => void;
   onSelect: (item: Item) => void;
 };
+
 export const AddItemToPack = ({
   results,
-  onCreate,
+  onInitiateCreate,
   onSearch,
   onSelect,
 }: AddItemToPackProps) => {
   const [isAddMode, setIsAddMode] = useState(false);
 
-  // query handler & initial search
+  // query handler & initial search --------------------------------------------
   const [query, setQuery] = useState("");
   const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value);
@@ -30,16 +34,16 @@ export const AddItemToPack = ({
     handleOnChange({ target: { value: "" } } as ChangeEvent<HTMLInputElement>);
   }, []);
 
-  // reset on outside click
+  // reset on outside click ----------------------------------------------------
   const ref = useOutsideClick<HTMLDivElement>(() => {
     setQuery("");
     handleOnChange({ target: { value: "" } } as ChangeEvent<HTMLInputElement>);
     setIsAddMode(false);
   });
 
-  // click handlers
-  const handleOnCreate = () => {
-    onCreate(query);
+  // click handlers ------------------------------------------------------------
+  const handleOnInitiateCreate = () => {
+    onInitiateCreate(query);
     setQuery("");
     setIsAddMode(false);
   };
@@ -63,7 +67,7 @@ export const AddItemToPack = ({
           {(results.length || query) && (
             <ResultList>
               {query && (
-                <Result onClick={handleOnCreate}>
+                <Result onClick={handleOnInitiateCreate}>
                   <p>Create "{query}"</p>
                 </Result>
               )}

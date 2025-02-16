@@ -14,6 +14,10 @@ export default defineConfig({
       src: "/src",
       components: "/src/components",
       api: "/src/api",
+      hooks: "/src/hooks",
+      contexts: "/src/contexts",
+      styles: "/src/styles",
+      lib: "/src/lib",
     },
   },
 });

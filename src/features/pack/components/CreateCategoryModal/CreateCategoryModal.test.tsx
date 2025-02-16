@@ -1,5 +1,11 @@
 // This test file was generated with Claude Sonnet 3.5 and adjusted
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import {
+  render,
+  screen,
+  fireEvent,
+  waitFor,
+  act,
+} from "lib/react-testing-library";
 import { vi, describe, it, expect, beforeEach } from "vitest";
 import { useCreateCategoryMutation } from "api/categories";
 import { CreateCategoryModal } from "./CreateCategoryModal";
@@ -18,6 +24,9 @@ vi.mock("components/Modal", () => ({
     children: React.ReactNode;
     isOpen: boolean;
   }) => (isOpen ? <div data-testid="modal">{children}</div> : null),
+  ActionsWrapper: ({ children }: { children: React.ReactNode }) => (
+    <div>{children}</div>
+  ),
 }));
 
 vi.mock("components/Button", () => ({
@@ -66,8 +75,10 @@ describe("CreateCategoryModal", () => {
     render(<CreateCategoryModal {...defaultProps} />);
     fireEvent.click(screen.getByText("Add category"));
 
-    const nameInput = screen.getByLabelText("name") as HTMLInputElement;
-    const colorInput = screen.getByLabelText("color") as HTMLInputElement;
+    const nameInput = screen.getByLabelText(
+      "Category Name",
+    ) as HTMLInputElement;
+    const colorInput = screen.getByLabelText("Color") as HTMLInputElement;
 
     expect(nameInput.value).toBe("");
     expect(colorInput.value).toBe("#44584b");
@@ -77,8 +88,8 @@ describe("CreateCategoryModal", () => {
     render(<CreateCategoryModal {...defaultProps} />);
     fireEvent.click(screen.getByText("Add category"));
 
-    const nameInput = screen.getByLabelText("name");
-    const colorInput = screen.getByLabelText("color");
+    const nameInput = screen.getByLabelText("Category Name");
+    const colorInput = screen.getByLabelText("Color");
 
     fireEvent.change(nameInput, { target: { value: "Test Category" } });
     fireEvent.change(colorInput, { target: { value: "#ff0000" } });
@@ -92,21 +103,22 @@ describe("CreateCategoryModal", () => {
     fireEvent.click(screen.getByText("Add category"));
 
     // Fill in the form
-    fireEvent.change(screen.getByLabelText("name"), {
+    fireEvent.change(screen.getByLabelText("Category Name"), {
       target: { value: "Test Category" },
-    });
-    fireEvent.change(screen.getByLabelText("color"), {
-      target: { value: "#ff0000" },
-    });
-
-    // Submit the form
-    fireEvent.submit(screen.getByRole("form"));
+    }),
+      fireEvent.change(screen.getByLabelText("Color"), {
+        target: { value: "#ff0000" },
+      }),
+      // Submit the form
+      fireEvent.submit(screen.getByRole("form"));
 
     // Verify createCategory was called with correct arguments
-    expect(mockCreateCategory).toHaveBeenCalledWith({
-      name: "Test Category",
-      color: "#ff0000",
-      pack_id: "123",
+    await waitFor(() => {
+      expect(mockCreateCategory).toHaveBeenCalledWith({
+        name: "Test Category",
+        color: "#ff0000",
+        pack_id: "123",
+      });
     });
   });
 
@@ -115,7 +127,7 @@ describe("CreateCategoryModal", () => {
     fireEvent.click(screen.getByText("Add category"));
 
     // Fill and submit form
-    fireEvent.change(screen.getByLabelText("name"), {
+    fireEvent.change(screen.getByLabelText("Category Name"), {
       target: { value: "Test Category" },
     });
     fireEvent.submit(screen.getByRole("form"));
@@ -132,7 +144,7 @@ describe("CreateCategoryModal", () => {
     fireEvent.click(screen.getByText("Add category"));
 
     // Fill and submit form
-    fireEvent.change(screen.getByLabelText("name"), {
+    fireEvent.change(screen.getByLabelText("Category Name"), {
       target: { value: "Test Category" },
     });
     fireEvent.submit(screen.getByRole("form"));

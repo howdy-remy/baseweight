@@ -8,7 +8,7 @@ import { Input } from "components/Input";
 import { ActionsWrapper, Modal } from "components/Modal";
 import { HeadingTwo } from "components/Typography";
 
-import { StyledForm } from "./CreateCategory.styled";
+import { StyledForm } from "./CreateCategoryModal.styled";
 
 type CreateCategoryModalProps = {
   packId?: string;
@@ -31,6 +31,7 @@ export const CreateCategoryModal = ({
     setCategoryName("");
     setCategoryColor("#44584B");
   };
+
   // create category -----------------------------------------------------------
   const [createCategory] = useCreateCategoryMutation();
   const addCategory = async () => {
@@ -63,7 +64,7 @@ export const CreateCategoryModal = ({
           <Field label="Category Name">
             <Input
               type="text"
-              name="name"
+              name="Category Name"
               value={categoryName}
               placeholder="name"
               onChange={(e) => setCategoryName(e.target.value)}
