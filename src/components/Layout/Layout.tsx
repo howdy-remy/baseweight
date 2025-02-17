@@ -1,10 +1,11 @@
-import { Fragment, type ReactNode } from "react";
+import { type ReactNode } from "react";
 import { Link } from "react-router";
 
 import { useAuth } from "contexts/Authentication";
 import { useGetProfileQuery } from "api/profile";
+import { useGetPacksQuery } from "api/packs";
 
-import Avatar from "../Avatar/Avatar";
+import { Avatar } from "components/Avatar";
 import {
   LogoType,
   Wrapper,
@@ -14,15 +15,15 @@ import {
   SidebarLink,
   SidebarLinks,
 } from "./Layout.styled";
-import { useGetPacksQuery } from "api/packs";
 import { TextSansBold } from "components/Typography";
 
 export const Layout = ({ children }: { children: ReactNode }) => {
   const { session } = useAuth();
   const { data: profile } = useGetProfileQuery({ userId: session?.user.id });
-  const { data: packs, isLoading } = useGetPacksQuery({
+  const { data: packs } = useGetPacksQuery({
     userId: session?.user.id,
   });
+
   return (
     <Wrapper>
       <Sidebar>
@@ -40,16 +41,20 @@ export const Layout = ({ children }: { children: ReactNode }) => {
             <TextSansBold>Packs</TextSansBold>
           </SidebarLink>
           {packs?.map((pack) => (
-            <Fragment key={pack.id}>
-              <SidebarLink to={`/packs/${pack.id}`}>{pack.name}</SidebarLink>
-            </Fragment>
+            <SidebarLink to={`/packs/${pack.id}`} key={pack.id}>
+              {pack.name}
+            </SidebarLink>
           ))}
         </SidebarLinks>
 
         <Link to="/account" style={{ textDecoration: "none" }}>
           <AccountInfo>
             <Username>{profile?.username}</Username>
-            <Avatar url={profile?.avatar_url || null} size={40} />
+            <Avatar
+              url={profile?.avatar_url || null}
+              size={40}
+              initial={profile?.username[0]}
+            />
           </AccountInfo>
         </Link>
       </Sidebar>

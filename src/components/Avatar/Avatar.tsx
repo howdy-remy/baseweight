@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react";
-import { supabase } from "../../lib/supabaseClient";
-import "./Avatar.css";
+import { supabase } from "lib/supabaseClient";
 
-export default function Avatar({
-  url,
-  size,
-}: {
-  url: null | string;
+import { AvatarImage, AvatarNoImage } from "./Avatar.styled";
+import { TextSansBold } from "components/Typography";
+
+type AvatarProps = {
+  initial?: string;
   size: number;
-}) {
+  url: null | string;
+};
+
+export const Avatar = ({ initial = "?", size, url }: AvatarProps) => {
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
 
   useEffect(() => {
@@ -33,18 +35,12 @@ export default function Avatar({
   return (
     <div>
       {avatarUrl ? (
-        <img
-          src={avatarUrl}
-          alt="Avatar"
-          className="avatar image"
-          style={{ height: size, width: size }}
-        />
+        <AvatarImage src={avatarUrl} alt="Avatar" size={size} />
       ) : (
-        <div
-          className="avatar no-image"
-          style={{ height: size, width: size }}
-        />
+        <AvatarNoImage size={size}>
+          <TextSansBold>{initial}</TextSansBold>
+        </AvatarNoImage>
       )}
     </div>
   );
-}
+};
