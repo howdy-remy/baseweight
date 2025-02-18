@@ -23,7 +23,7 @@ import {
   useUpdateCategoryItemsMutation,
   useUpdateQuantityMutation,
 } from "api/category_item";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Item } from "components/Item";
 import { DragOverlayItem } from "components/Item/DragOverlayItem";
 
@@ -40,9 +40,12 @@ export const Items = ({
   profileId,
   refetch,
 }: ItemsProps) => {
-  const [sortedItems, setSortedItems] = useState(
-    items.slice().sort((a, b) => a.order - b.order) || [],
-  );
+  const [sortedItems, setSortedItems] = useState<CategoryItem[]>([]);
+
+  useEffect(() => {
+    const sorted = items.slice().sort((a, b) => a.order - b.order) || [];
+    setSortedItems(sorted);
+  }, [items]);
 
   // drag and drop -------------------------------------------------------------
   const [updateItems] = useUpdateCategoryItemsMutation();

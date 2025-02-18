@@ -60,7 +60,7 @@ export const AddItemToPack = ({
             value={query}
             placeholder="Search for an item..."
           />
-          {results.length && !!query.length && (
+          {!!results.length && !!query.length && (
             <ResultList>
               {query && (
                 <Result onClick={handleOnInitiateCreate}>
