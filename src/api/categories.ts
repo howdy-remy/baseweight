@@ -14,7 +14,7 @@ export type Category = {
 };
 
 export const categoryMapper: (
-  category: Database["public"]["Tables"]["categories"]["Row"]
+  category: Database["public"]["Tables"]["categories"]["Row"],
 ) => Category = (category) => ({
   id: category.id,
   name: category.name,
@@ -43,7 +43,38 @@ export const categoriesApi = createApi({
         return { data: mappedData };
       },
     }),
+    deleteCategory: builder.mutation({
+      queryFn: async (category: Category) => {
+        const categoryItemIds = category.categoryItems.map(({ id }) => id);
+
+        // remove category items
+        if (categoryItemIds.length) {
+          const { error: categoryItemsError } = await supabase
+            .from("category_item")
+            .delete()
+            .in("id", categoryItemIds);
+
+          if (categoryItemsError) {
+            console.error(categoryItemsError);
+            return { categoryItemsError };
+          }
+        }
+
+        // remove category
+        const { error } = await supabase
+          .from("categories")
+          .delete()
+          .eq("id", category.id);
+
+        if (error) {
+          console.error(error);
+          return { error };
+        }
+        return { data: null };
+      },
+    }),
   }),
 });
 
-export const { useCreateCategoryMutation } = categoriesApi;
+export const { useCreateCategoryMutation, useDeleteCategoryMutation } =
+  categoriesApi;

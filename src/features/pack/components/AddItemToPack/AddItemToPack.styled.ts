@@ -1,6 +1,13 @@
 import styled from "styled-components";
 
+export const InputWrapper = styled.div`
+  position: relative;
+  width: 100%;
+`;
+
 export const ResultList = styled.div`
+  position: absolute;
+
   display: grid;
   gap: ${({ theme }) => theme.spacing.m}px;
   grid-auto-flow: row;
@@ -9,10 +16,12 @@ export const ResultList = styled.div`
   max-height: 160px;
   overflow-y: auto;
 
+  margin-top: ${({ theme }) => theme.spacing.s}px;
   padding: ${({ theme }) => theme.spacing.s}px;
+  background-color: ${({ theme }) => theme.colors.white};
   border-radius: ${({ theme }) => theme.spacing.s}px;
 
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4);
 `;
 
 export const Result = styled.div`
@@ -27,7 +36,8 @@ export const Result = styled.div`
     margin: 0;
   }
 
-  &:hover {
+  &:hover,
+  &:focus {
     background-color: ${({ theme }) => theme.colors.flour};
   }
 `;

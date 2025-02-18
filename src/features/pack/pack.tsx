@@ -8,7 +8,10 @@ import {
   useLazySearchItemsQuery,
 } from "api/items";
 import { useCreateCategoriesItemMutation } from "api/category_item";
-import { type Category as CategoryType } from "api/categories";
+import {
+  useDeleteCategoryMutation,
+  type Category as CategoryType,
+} from "api/categories";
 
 import { useAuth } from "contexts/Authentication";
 
@@ -101,6 +104,14 @@ export const Pack = () => {
     refetch();
   };
 
+  // delete category -----------------------------------------------------------
+  const [deleteCategory] = useDeleteCategoryMutation();
+
+  const onDeleteCategory = (category: CategoryType) => async () => {
+    await deleteCategory(category);
+    refetch();
+  };
+
   if (isLoading) {
     return "loading...";
   }
@@ -121,6 +132,7 @@ export const Pack = () => {
                 quantity={category.totalQuantity}
                 weight={category.totalWeight}
                 weightUnit="g"
+                onDelete={onDeleteCategory(category)}
               />
               <Items
                 items={category.categoryItems}

@@ -6,7 +6,7 @@ import useOutsideClick from "hooks/useOutsideClick/useOutsideClick";
 import { Button } from "components/Button";
 import { Input } from "components/Input";
 
-import { Result, ResultList } from "./AddItemToPack.styled";
+import { InputWrapper, Result, ResultList } from "./AddItemToPack.styled";
 
 type AddItemToPackProps = {
   results: Item[];
@@ -29,10 +29,6 @@ export const AddItemToPack = ({
     setQuery(e.target.value);
     onSearch(e);
   };
-
-  useEffect(() => {
-    handleOnChange({ target: { value: "" } } as ChangeEvent<HTMLInputElement>);
-  }, []);
 
   // reset on outside click ----------------------------------------------------
   const ref = useOutsideClick<HTMLDivElement>(() => {
@@ -58,13 +54,13 @@ export const AddItemToPack = ({
   if (isAddMode) {
     return (
       <>
-        <div ref={ref}>
+        <InputWrapper ref={ref}>
           <Input
             onChange={handleOnChange}
             value={query}
             placeholder="Search for an item..."
           />
-          {(results.length || query) && (
+          {results.length && !!query.length && (
             <ResultList>
               {query && (
                 <Result onClick={handleOnInitiateCreate}>
@@ -80,7 +76,7 @@ export const AddItemToPack = ({
               ))}
             </ResultList>
           )}
-        </div>
+        </InputWrapper>
       </>
     );
   }

@@ -14,6 +14,7 @@ type CategoryProps = {
   quantity: number;
   weight: number;
   weightUnit: string;
+  onDelete: () => void;
 };
 
 export const Category = ({
@@ -22,6 +23,7 @@ export const Category = ({
   quantity,
   weight,
   weightUnit,
+  onDelete,
 }: CategoryProps) => {
   const actions = [
     {
@@ -30,7 +32,7 @@ export const Category = ({
     },
     {
       label: "Delete",
-      onClick: () => console.log("delete!"),
+      onClick: onDelete,
     },
   ];
   return (
