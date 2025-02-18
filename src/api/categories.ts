@@ -11,6 +11,7 @@ export type Category = {
   totalWeight: number;
   totalQuantity: number;
   categoryItems: CategoryItem[];
+  order: number;
 };
 
 export const categoryMapper: (
@@ -22,6 +23,7 @@ export const categoryMapper: (
   totalQuantity: 0,
   totalWeight: 0,
   categoryItems: [],
+  order: 0,
 });
 
 export const categoriesApi = createApi({
@@ -73,8 +75,26 @@ export const categoriesApi = createApi({
         return { data: null };
       },
     }),
+    updateCategories: builder.mutation({
+      queryFn: async (categories: Partial<Category>[]) => {
+        const { data, error } = await supabase
+          .from("categories")
+          .upsert(categories)
+          .select();
+
+        if (error) {
+          console.error(error);
+          return { error };
+        }
+
+        return { data };
+      },
+    }),
   }),
 });
 
-export const { useCreateCategoryMutation, useDeleteCategoryMutation } =
-  categoriesApi;
+export const {
+  useCreateCategoryMutation,
+  useDeleteCategoryMutation,
+  useUpdateCategoriesMutation,
+} = categoriesApi;

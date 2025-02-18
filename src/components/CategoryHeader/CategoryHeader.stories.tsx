@@ -1,13 +1,13 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Category } from "./Category";
+import { CategoryHeader } from "./CategoryHeader";
 
-const meta: Meta<typeof Category> = {
-  title: "Category",
-  component: Category,
+const meta: Meta<typeof CategoryHeader> = {
+  title: "CategoryHeader",
+  component: CategoryHeader,
 };
 
 export default meta;
-type Story = StoryObj<typeof Category>;
+type Story = StoryObj<typeof CategoryHeader>;
 
 export const Base: Story = {
   args: {

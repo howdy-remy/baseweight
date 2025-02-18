@@ -1,4 +1,4 @@
-import { ChangeEvent, Fragment, useState } from "react";
+import { ChangeEvent, Fragment, useEffect, useState } from "react";
 import { useParams } from "react-router";
 
 import { useGetPackQuery } from "api/packs";
@@ -10,12 +10,12 @@ import {
 import { useCreateCategoriesItemMutation } from "api/category_item";
 import {
   useDeleteCategoryMutation,
+  useUpdateCategoriesMutation,
   type Category as CategoryType,
 } from "api/categories";
 
 import { useAuth } from "contexts/Authentication";
 
-import { Category } from "components/Category";
 import { Items } from "components/Items";
 import { Layout } from "components/Layout/Layout";
 import { HeadingOne, TextSansRegular } from "components/Typography";
@@ -27,6 +27,24 @@ import {
   CreateItemModal,
   OnSubmitItemProps,
 } from "./components";
+import {
+  closestCenter,
+  DndContext,
+  DragEndEvent,
+  DragStartEvent,
+  KeyboardSensor,
+  PointerSensor,
+  UniqueIdentifier,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
+import { Category } from "./components/Category";
 
 export const Pack = () => {
   const { session } = useAuth();
@@ -34,6 +52,13 @@ export const Pack = () => {
 
   // get initial pack data -----------------------------------------------------
   const { data: pack, isLoading, refetch } = useGetPackQuery({ packId });
+  const [sortedCategories, setSortedCategories] = useState<CategoryType[]>([]);
+
+  useEffect(() => {
+    const sorted =
+      pack?.categories.slice().sort((a, b) => a.order - b.order) || [];
+    setSortedCategories(sorted);
+  }, [pack]);
 
   // search for items not included in category ---------------------------------
   const [searchItems, { data: items, isLoading: isLoadingItems }] =
@@ -112,6 +137,45 @@ export const Pack = () => {
     refetch();
   };
 
+  // drag and drop -------------------------------------------------------------
+  const [updateCategories] = useUpdateCategoriesMutation();
+  const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    }),
+  );
+  // handlers
+  function handleDragStart(event: DragStartEvent) {
+    const { active } = event;
+
+    setActiveId(active.id);
+  }
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+    if (active.id !== over?.id) {
+      const oldIndex = sortedCategories.findIndex(
+        (item) => item.id.toString() === active.id,
+      );
+      const newIndex = sortedCategories.findIndex(
+        (item) => item.id.toString() === over?.id,
+      );
+      const updatedSort = arrayMove(sortedCategories, oldIndex, newIndex);
+
+      setSortedCategories(updatedSort);
+      const updates = updatedSort.map((category, index) => ({
+        id: category.id,
+        order: index,
+      }));
+
+      updateCategories(updates);
+    }
+    setActiveId(null);
+  };
+
   if (isLoading) {
     return "loading...";
   }
@@ -122,32 +186,30 @@ export const Pack = () => {
         <div>
           <HeadingOne as="h1">{pack?.name}</HeadingOne>
           <TextSansRegular>Lorem ipsum</TextSansRegular>
-
-          {pack?.categories.map((category, i) => (
-            <Fragment key={category.id || `category_${i}`}>
-              <Category
-                key={category.id || `category_${i}`}
-                categoryName={category.name}
-                color={category.color}
-                quantity={category.totalQuantity}
-                weight={category.totalWeight}
-                weightUnit="g"
-                onDelete={onDeleteCategory(category)}
-              />
-              <Items
-                items={category.categoryItems}
-                refetch={refetch}
-                categoryId={category.id}
-                profileId={session!.user.id}
-              />
-              <AddItemToPack
-                onSearch={onSearchItems(category)}
-                onSelect={onSelectItem(category)}
-                onInitiateCreate={onInitiateCreateItem(category)}
-                results={items ?? []}
-              />
-            </Fragment>
-          ))}
+          <DndContext
+            sensors={sensors}
+            collisionDetection={closestCenter}
+            onDragStart={handleDragStart}
+            onDragEnd={handleDragEnd}
+          >
+            <SortableContext
+              items={sortedCategories.map((item) => item.id.toString())}
+              strategy={verticalListSortingStrategy}
+            >
+              {sortedCategories.map((category, i) => (
+                <Category
+                  category={category}
+                  items={items ?? []}
+                  profileId={session!.user.id}
+                  refetch={refetch}
+                  onDeleteCategory={onDeleteCategory}
+                  onInitiateCreateItem={onInitiateCreateItem}
+                  onSearchItems={onSearchItems}
+                  onSelectItem={onSelectItem}
+                />
+              ))}
+            </SortableContext>
+          </DndContext>
 
           {/* modals ------------------------------------------------------- */}
           {selectedCategory && (

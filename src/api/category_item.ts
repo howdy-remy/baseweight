@@ -2,7 +2,7 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 import { supabase } from "../lib/supabaseClient";
 import { supabaseBaseQuery } from "./baseQuery";
 import { Item } from "./items";
-import { Quantity } from "../components/Category/Category.styled";
+import { Quantity } from "../components/CategoryHeader/CategoryHeader.styled";
 
 export type CategoryItem = {
   id: number;
