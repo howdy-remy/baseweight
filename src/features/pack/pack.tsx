@@ -124,6 +124,7 @@ export const Pack = () => {
       item_id: item.id,
       category_id: category.id,
       quantity: 1,
+      order: category.categoryItems.length,
     });
 
     refetch();
@@ -198,6 +199,7 @@ export const Pack = () => {
             >
               {sortedCategories.map((category, i) => (
                 <Category
+                  key={category.id}
                   category={category}
                   items={items ?? []}
                   profileId={session!.user.id}
@@ -220,7 +222,11 @@ export const Pack = () => {
               onSubmit={createNewItemAndAddToPack}
             />
           )}
-          <CreateCategoryModal packId={packId} refetch={refetch} />
+          <CreateCategoryModal
+            packId={packId}
+            refetch={refetch}
+            nextOrder={sortedCategories.length}
+          />
         </div>
       </PackWrapper>
     </Layout>

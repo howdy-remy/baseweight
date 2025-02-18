@@ -48,7 +48,7 @@ export const Category = ({
   };
 
   return (
-    <div ref={setNodeRef} style={style} key={category.id}>
+    <div ref={setNodeRef} style={style}>
       <CategoryHeader
         key={category.id}
         categoryName={category.name}

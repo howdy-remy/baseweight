@@ -11,11 +11,13 @@ import { HeadingTwo } from "components/Typography";
 import { StyledForm } from "./CreateCategoryModal.styled";
 
 type CreateCategoryModalProps = {
+  nextOrder: number;
   packId?: string;
   refetch: () => void;
 };
 
 export const CreateCategoryModal = ({
+  nextOrder,
   packId,
   refetch,
 }: CreateCategoryModalProps) => {
@@ -40,6 +42,7 @@ export const CreateCategoryModal = ({
       name: categoryName,
       color: categoryColor,
       pack_id: packId,
+      order: nextOrder,
     });
     setIsCreateCategoryModalOpen(false);
     resetFormState();
