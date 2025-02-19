@@ -1,5 +1,9 @@
-import { DragHandleImg } from "./DragHandle.styled";
+import { DragHandleImg, DragHandleWrapper } from "./DragHandle.styled";
 
 export const DragHandle = () => {
-  return <DragHandleImg src="/DragHandle.png" alt="drag handle icon" />;
+  return (
+    <DragHandleWrapper>
+      <DragHandleImg src="/DragHandle.png" alt="drag handle icon" />
+    </DragHandleWrapper>
+  );
 };

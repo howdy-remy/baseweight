@@ -39,7 +39,8 @@ export const StyledInput = styled(Input)`
   }}
 
   &:focus {
-    outline: 2px solid rgb(2, 156, 253);
+    border: 1px solid ${({ theme }) => theme.colors.black};
+    /* outline: 2px solid ${({ theme }) => theme.colors.stone}; */
   }
 
   &::placeholder {

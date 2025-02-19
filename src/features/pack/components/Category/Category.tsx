@@ -8,6 +8,7 @@ import { Item } from "api/items";
 import { CategoryHeader } from "components/CategoryHeader";
 import { Items } from "components/Items";
 import { AddItemToPack } from "../AddItemToPack";
+import { CategoryWrapper } from "./Category.styled";
 
 type CategoryProps = {
   category: CategoryType;
@@ -48,7 +49,7 @@ export const Category = ({
   };
 
   return (
-    <div ref={setNodeRef} style={style}>
+    <CategoryWrapper ref={setNodeRef} style={style}>
       <CategoryHeader
         key={category.id}
         categoryName={category.name}
@@ -71,6 +72,6 @@ export const Category = ({
         onInitiateCreate={onInitiateCreateItem(category)}
         results={items ?? []}
       />
-    </div>
+    </CategoryWrapper>
   );
 };

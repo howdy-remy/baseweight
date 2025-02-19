@@ -10,12 +10,10 @@ export const CategoryWrapper = styled.div`
   align-items: center;
   gap: ${({ theme }) => theme.spacing.m}px;
 
-  grid-template-columns: 6px 24px 1fr 80px 48px 24px;
+  grid-template-columns: 24px 24px 1fr 80px 48px 24px;
 
   width: 100%;
   height: 40px;
-
-  padding: 0 ${({ theme }) => theme.spacing.m}px;
 `;
 
 export const CategoryColor = styled.div<{ $color: string | null }>`

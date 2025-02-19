@@ -6,34 +6,25 @@ import {
   TextSansRegular,
 } from "../Typography";
 
-export const Items = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: ${({ theme }) => theme.spacing.m}px;
-  margin-left: 22px;
-  margin-bottom: ${({ theme }) => theme.spacing.xl}px;
-`;
-
 export const ItemWrapper = styled.div<{ $isDragging?: boolean }>`
   display: grid;
   align-items: center;
   gap: ${({ theme }) => theme.spacing.m}px;
 
-  grid-template-columns: 6px max-content 1fr 80px 93px 24px;
+  grid-template-columns: 24px max-content 1fr 80px 93px 24px;
 
   width: 100%;
   height: 32px;
-  padding: 0 ${({ theme }) => theme.spacing.m}px;
   background-color: ${({ theme }) => theme.colors.white};
-
-  border: 1px solid ${({ theme }) => theme.colors.sand};
-  border-radius: 4px;
+  border-top: 1px solid ${({ theme }) => theme.colors.stone};
 
   ${({ $isDragging }) =>
     $isDragging &&
     css`
-      grid-template-columns: 6px max-content 1fr;
+      grid-template-columns: 24px max-content 1fr;
+      padding: 0 ${({ theme }) => theme.spacing.m}px 0 0;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border: 0;
     `}
 `;
 

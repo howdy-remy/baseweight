@@ -80,7 +80,7 @@ export const TextSansRegularItalic = styled(TextSans)`
 `;
 
 export const TextSansBold = styled(TextSans)`
-  font-weight: 700;
+  font-weight: 600;
 `;
 
 export const TextSansBoldItalic = styled(TextSans)`

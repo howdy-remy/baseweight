@@ -31,6 +31,7 @@ import {
   closestCenter,
   DndContext,
   DragEndEvent,
+  DragOverlay,
   DragStartEvent,
   KeyboardSensor,
   PointerSensor,
@@ -210,6 +211,7 @@ export const Pack = () => {
                   onSelectItem={onSelectItem}
                 />
               ))}
+              <DragOverlay adjustScale={false} />
             </SortableContext>
           </DndContext>
 

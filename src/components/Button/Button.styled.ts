@@ -52,7 +52,7 @@ export const StyledButton = styled(HeadlessButton)<{
   background-color: ${({ theme, $variant }) => {
     switch ($variant) {
       case "secondary":
-        return theme.colors.flour;
+        return theme.colors.white;
       case "primary":
       default:
         return theme.colors.moss;
@@ -62,6 +62,15 @@ export const StyledButton = styled(HeadlessButton)<{
     switch ($variant) {
       case "secondary":
         return theme.colors.moss;
+      case "primary":
+      default:
+        return theme.colors.white;
+    }
+  }};
+  border: ${({ theme, $variant }) => {
+    switch ($variant) {
+      case "secondary":
+        return `1px solid ${theme.colors.stone}`;
       case "primary":
       default:
         return theme.colors.white;
@@ -80,7 +89,7 @@ export const StyledButton = styled(HeadlessButton)<{
         return theme.fontsizes.m;
     }
   }};
-  font-weight: 700;
+  font-weight: 500;
 
   // other
   cursor: pointer;
@@ -89,7 +98,7 @@ export const StyledButton = styled(HeadlessButton)<{
     background-color: ${({ theme, $variant }) => {
       switch ($variant) {
         case "secondary":
-          return theme.colors.sand;
+          return theme.colors.mist;
         case "primary":
         default:
           return theme.colors.lichen;

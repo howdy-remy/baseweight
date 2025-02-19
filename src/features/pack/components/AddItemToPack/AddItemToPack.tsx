@@ -1,4 +1,11 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import {
+  ChangeEvent,
+  Ref,
+  RefObject,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 import type { Item } from "api/items";
 import useOutsideClick from "hooks/useOutsideClick/useOutsideClick";
@@ -6,7 +13,12 @@ import useOutsideClick from "hooks/useOutsideClick/useOutsideClick";
 import { Button } from "components/Button";
 import { Input } from "components/Input";
 
-import { InputWrapper, Result, ResultList } from "./AddItemToPack.styled";
+import {
+  ButtonWrapper,
+  InputWrapper,
+  Result,
+  ResultList,
+} from "./AddItemToPack.styled";
 
 type AddItemToPackProps = {
   results: Item[];
@@ -22,6 +34,12 @@ export const AddItemToPack = ({
   onSelect,
 }: AddItemToPackProps) => {
   const [isAddMode, setIsAddMode] = useState(false);
+
+  useEffect(() => {
+    if (isAddMode) {
+      ref.current?.querySelector("input")?.focus();
+    }
+  }, [isAddMode]);
 
   // query handler & initial search --------------------------------------------
   const [query, setQuery] = useState("");
@@ -83,13 +101,15 @@ export const AddItemToPack = ({
 
   // default state
   return (
-    <Button
-      variant="secondary"
-      size="large"
-      expandWidth
-      onClick={(e) => setIsAddMode(true)}
-    >
-      Add item
-    </Button>
+    <ButtonWrapper>
+      <Button
+        variant="secondary"
+        size="large"
+        expandWidth
+        onClick={(e) => setIsAddMode(true)}
+      >
+        Add item
+      </Button>
+    </ButtonWrapper>
   );
 };
