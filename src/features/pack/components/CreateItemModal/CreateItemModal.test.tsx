@@ -12,6 +12,7 @@ describe("CreateItemModal", () => {
     render(
       <ThemeProvider theme={theme}>
         <CreateItemModal
+          category="category"
           isOpen={isOpen}
           onClose={onClose}
           onSubmit={onSubmit}

@@ -218,6 +218,7 @@ export const Pack = () => {
           {/* modals ------------------------------------------------------- */}
           {selectedCategory && (
             <CreateItemModal
+              category={selectedCategory.name || "category"}
               isOpen={isCreateItemModalOpen}
               initialType={query}
               onClose={() => setIsCreateItemModalOpen(false)}

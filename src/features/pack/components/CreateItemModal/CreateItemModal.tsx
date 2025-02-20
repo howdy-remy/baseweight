@@ -1,8 +1,9 @@
-import { FormEventHandler, useState } from "react";
+import { FormEventHandler, useEffect, useState } from "react";
 import { ActionsWrapper, Modal } from "components/Modal";
 import { Field } from "components/Field";
 import { Input } from "components/Input";
 import { Button } from "components/Button";
+import { HeadingTwo } from "components/Typography";
 
 export type OnSubmitItemProps = {
   type: string;
@@ -12,6 +13,7 @@ export type OnSubmitItemProps = {
 };
 
 type CreateItemModalProps = {
+  category: string;
   initialType?: string;
   isOpen: boolean;
   onClose: () => void;
@@ -19,7 +21,8 @@ type CreateItemModalProps = {
 };
 
 export const CreateItemModal: React.FC<CreateItemModalProps> = ({
-  initialType,
+  category,
+  initialType = "",
   isOpen,
   onClose,
   onSubmit,
@@ -29,6 +32,10 @@ export const CreateItemModal: React.FC<CreateItemModalProps> = ({
   const [description, setDescription] = useState("");
   const [weightInGrams, setWeightInGrams] = useState(0);
   const [quantity, setQuantity] = useState(0);
+
+  useEffect(() => {
+    setType(initialType);
+  }, [initialType]);
 
   const resetFormState = () => {
     setType("");
@@ -51,8 +58,9 @@ export const CreateItemModal: React.FC<CreateItemModalProps> = ({
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
+      <HeadingTwo>Create item and add to {category}</HeadingTwo>
       <form onSubmit={handleOnSubmit}>
-        <Field label="Type">
+        <Field label="Type" description="e.g. Tent">
           <Input
             type="text"
             name="type"
@@ -61,7 +69,7 @@ export const CreateItemModal: React.FC<CreateItemModalProps> = ({
             onChange={(e) => setType(e.target.value)}
           />
         </Field>
-        <Field label="Description">
+        <Field label="Description" description="e.g. Big Agnes:Tiger Wall UL3">
           <Input
             type="text"
             name="description"
@@ -86,6 +94,7 @@ export const CreateItemModal: React.FC<CreateItemModalProps> = ({
             value={quantity}
             placeholder="quantity"
             onChange={(e) => setQuantity(+e.target.value)}
+            min="0"
           />
         </Field>
         <ActionsWrapper>

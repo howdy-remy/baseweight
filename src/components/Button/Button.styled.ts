@@ -73,7 +73,7 @@ export const StyledButton = styled(HeadlessButton)<{
         return `1px solid ${theme.colors.stone}`;
       case "primary":
       default:
-        return theme.colors.white;
+        return `1px solid ${theme.colors.moss}`;
     }
   }};
 

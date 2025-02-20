@@ -1,6 +1,11 @@
 import { Field as HeadlessField } from "@headlessui/react";
 import { ReactNode } from "react";
-import { StyledDescription, StyledLabel } from "./Field.styled";
+import {
+  LabelWrapper,
+  StyledDescription,
+  StyledField,
+  StyledLabel,
+} from "./Field.styled";
 
 type FieldProps = {
   label: string;
@@ -10,10 +15,12 @@ type FieldProps = {
 
 export const Field = ({ label, description, children }: FieldProps) => {
   return (
-    <HeadlessField>
-      <StyledLabel>{label}</StyledLabel>
-      {description && <StyledDescription>{description}</StyledDescription>}
+    <StyledField>
+      <LabelWrapper>
+        <StyledLabel>{label}</StyledLabel>
+        {description && <StyledDescription>{description}</StyledDescription>}
+      </LabelWrapper>
       {children}
-    </HeadlessField>
+    </StyledField>
   );
 };

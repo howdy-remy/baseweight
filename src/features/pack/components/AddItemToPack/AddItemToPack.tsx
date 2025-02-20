@@ -1,11 +1,4 @@
-import {
-  ChangeEvent,
-  Ref,
-  RefObject,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 
 import type { Item } from "api/items";
 import useOutsideClick from "hooks/useOutsideClick/useOutsideClick";
@@ -48,24 +41,24 @@ export const AddItemToPack = ({
     onSearch(e);
   };
 
-  // reset on outside click ----------------------------------------------------
-  const ref = useOutsideClick<HTMLDivElement>(() => {
+  // reset ---------------------------------------------------------------------
+  const reset = () => {
     setQuery("");
     handleOnChange({ target: { value: "" } } as ChangeEvent<HTMLInputElement>);
     setIsAddMode(false);
-  });
+  };
 
   // click handlers ------------------------------------------------------------
+  const ref = useOutsideClick<HTMLDivElement>(reset);
+
   const handleOnInitiateCreate = () => {
     onInitiateCreate(query);
-    setQuery("");
-    setIsAddMode(false);
+    reset();
   };
 
   const handleOnSelect = (item: Item) => {
     onSelect(item);
-    setQuery("");
-    setIsAddMode(false);
+    reset();
   };
 
   // open state
@@ -78,7 +71,7 @@ export const AddItemToPack = ({
             value={query}
             placeholder="Search for an item..."
           />
-          {!!results.length && !!query.length && (
+          {(!!results.length || !!query.length) && (
             <ResultList>
               {query && (
                 <Result onClick={handleOnInitiateCreate}>
