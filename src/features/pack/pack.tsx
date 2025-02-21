@@ -95,6 +95,7 @@ export const Pack = () => {
     type,
     description,
     weightInGrams,
+    unit,
     quantity,
   }: OnSubmitItemProps) => {
     if (!selectedCategory) return;
@@ -103,12 +104,14 @@ export const Pack = () => {
       type,
       description,
       weight_in_grams: weightInGrams,
+      unit,
     });
     await createCategoriesItem({
       profile_id: session!.user.id,
       item_id: data?.[0].id,
       category_id: selectedCategory?.id,
       quantity,
+      order: selectedCategory.categoryItems.length,
     });
 
     setIsCreateItemModalOpen(false);

@@ -46,6 +46,6 @@ export const StyledDialogTitle = styled(DialogTitle)`
 export const ActionsWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
-  gap: ${({ theme }) => theme.spacing.s}px;
+  gap: ${({ theme }) => theme.spacing.m}px;
   margin-top: ${({ theme }) => theme.spacing.xl}px;
 `;

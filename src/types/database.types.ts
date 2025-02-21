@@ -60,7 +60,7 @@ export type Database = {
           created_at: string
           id: number
           item_id: number
-          order: number | null
+          order: number
           profile_id: string
           quantity: number
         }
@@ -69,7 +69,7 @@ export type Database = {
           created_at?: string
           id?: number
           item_id: number
-          order?: number | null
+          order: number
           profile_id: string
           quantity?: number
         }
@@ -78,7 +78,7 @@ export type Database = {
           created_at?: string
           id?: number
           item_id?: number
-          order?: number | null
+          order?: number
           profile_id?: string
           quantity?: number
         }
@@ -114,6 +114,7 @@ export type Database = {
           profile_id: string | null
           quantity: number | null
           type: string | null
+          unit: Database["public"]["Enums"]["Unit"]
           weight_in_grams: number
           type_description: string | null
         }
@@ -124,6 +125,7 @@ export type Database = {
           profile_id?: string | null
           quantity?: number | null
           type?: string | null
+          unit?: Database["public"]["Enums"]["Unit"]
           weight_in_grams?: number
         }
         Update: {
@@ -133,6 +135,7 @@ export type Database = {
           profile_id?: string | null
           quantity?: number | null
           type?: string | null
+          unit?: Database["public"]["Enums"]["Unit"]
           weight_in_grams?: number
         }
         Relationships: [
@@ -217,7 +220,7 @@ export type Database = {
       }
     }
     Enums: {
-      [_ in never]: never
+      Unit: "OZ" | "LB" | "G" | "KG"
     }
     CompositeTypes: {
       [_ in never]: never

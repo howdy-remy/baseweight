@@ -1,14 +1,21 @@
 import { FormEventHandler, useEffect, useState } from "react";
+import { Unit } from "types/Unit";
+
 import { ActionsWrapper, Modal } from "components/Modal";
-import { Field } from "components/Field";
+import { Field, StackedFields } from "components/Field";
 import { Input } from "components/Input";
 import { Button } from "components/Button";
 import { HeadingTwo } from "components/Typography";
+import { Select } from "components/Select";
+
+import { FieldsWrapper } from "./CreateItemModal.styled";
+import { convertUnitToGrams } from "utils/unit-conversion/unit-conversion";
 
 export type OnSubmitItemProps = {
   type: string;
   description: string;
   weightInGrams: number;
+  unit: Unit;
   quantity: number;
 };
 
@@ -30,7 +37,8 @@ export const CreateItemModal: React.FC<CreateItemModalProps> = ({
   // form state
   const [type, setType] = useState(initialType ?? "");
   const [description, setDescription] = useState("");
-  const [weightInGrams, setWeightInGrams] = useState(0);
+  const [weight, setWeight] = useState(0);
+  const [unit, setUnit] = useState<Unit>(Unit.G);
   const [quantity, setQuantity] = useState(0);
 
   useEffect(() => {
@@ -40,17 +48,20 @@ export const CreateItemModal: React.FC<CreateItemModalProps> = ({
   const resetFormState = () => {
     setType("");
     setDescription("");
-    setWeightInGrams(0);
+    setWeight(0);
+    setUnit(Unit.G);
     setQuantity(0);
   };
 
   // submit handler ------------------------------------------------------------
   const handleOnSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
     event.preventDefault();
+    const weightInGrams = convertUnitToGrams(unit, weight);
     await onSubmit({
       type,
       description,
       weightInGrams,
+      unit,
       quantity,
     });
     resetFormState();
@@ -60,43 +71,63 @@ export const CreateItemModal: React.FC<CreateItemModalProps> = ({
     <Modal isOpen={isOpen} onClose={onClose}>
       <HeadingTwo>Create item and add to {category}</HeadingTwo>
       <form onSubmit={handleOnSubmit}>
-        <Field label="Type" description="e.g. Tent">
-          <Input
-            type="text"
-            name="type"
-            value={type}
-            placeholder="type"
-            onChange={(e) => setType(e.target.value)}
-          />
-        </Field>
-        <Field label="Description" description="e.g. Big Agnes:Tiger Wall UL3">
-          <Input
-            type="text"
-            name="description"
-            value={description}
-            placeholder="description"
-            onChange={(e) => setDescription(e.target.value)}
-          />
-        </Field>
-        <Field label="Weight">
-          <Input
-            type="number"
-            name="weight"
-            value={weightInGrams}
-            placeholder="weight"
-            onChange={(e) => setWeightInGrams(+e.target.value)}
-          />
-        </Field>
-        <Field label="Quantity">
-          <Input
-            type="number"
-            name="quantity"
-            value={quantity}
-            placeholder="quantity"
-            onChange={(e) => setQuantity(+e.target.value)}
-            min="0"
-          />
-        </Field>
+        <StackedFields>
+          <Field label="Type" description="e.g. Tent">
+            <Input
+              type="text"
+              name="type"
+              value={type}
+              placeholder="type"
+              onChange={(e) => setType(e.target.value)}
+            />
+          </Field>
+          <Field
+            label="Description"
+            description="e.g. Big Agnes: Tiger Wall UL3"
+          >
+            <Input
+              type="text"
+              name="description"
+              value={description}
+              placeholder="description"
+              onChange={(e) => setDescription(e.target.value)}
+            />
+          </Field>
+          <FieldsWrapper>
+            <Field label="Weight">
+              <Input
+                type="number"
+                name="weight"
+                value={weight}
+                placeholder="weight"
+                onChange={(e) => setWeight(+e.target.value)}
+              />
+            </Field>
+            <Field label="Unit">
+              <Select
+                variant="primary"
+                buttonSize="large"
+                onChange={(e) => setUnit(e.target.value as Unit)}
+                value={unit}
+              >
+                <option value={Unit.OZ}>oz</option>
+                <option value={Unit.LB}>lb</option>
+                <option value={Unit.G}>g</option>
+                <option value={Unit.KG}>kg</option>
+              </Select>
+            </Field>
+            <Field label="Quantity">
+              <Input
+                type="number"
+                name="quantity"
+                value={quantity}
+                placeholder="quantity"
+                onChange={(e) => setQuantity(+e.target.value)}
+                min="0"
+              />
+            </Field>
+          </FieldsWrapper>
+        </StackedFields>
         <ActionsWrapper>
           <Button variant="secondary" size="large" onClick={onClose}>
             Cancel

@@ -18,6 +18,8 @@ export default defineConfig({
       contexts: "/src/contexts",
       styles: "/src/styles",
       lib: "/src/lib",
+      types: "/src/types",
+      utils: "/src/utils",
     },
   },
 });

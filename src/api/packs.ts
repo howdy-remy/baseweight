@@ -3,6 +3,7 @@ import { supabase } from "../lib/supabaseClient";
 import { supabaseBaseQuery } from "./baseQuery";
 import { Category } from "./categories";
 import { Database } from "../types/database.types";
+import { Unit } from "types/Unit";
 
 export type Pack = {
   id: number;
@@ -42,6 +43,7 @@ const packMapper: (pack: pack) => Pack = (pack) => {
           type: item.type || "",
           description: item.description || "",
           weightInGrams: item.weight_in_grams || 0,
+          unit: (item.unit as Unit) || Unit.G,
         },
       };
     });
@@ -53,6 +55,7 @@ const packMapper: (pack: pack) => Pack = (pack) => {
       categoryItems,
       totalWeight,
       totalQuantity,
+      order: category.order || 0,
     };
   });
   return {
@@ -99,7 +102,8 @@ export const packsApi = createApi({
                 id,
                 type, 
                 description,
-                weight_in_grams
+                weight_in_grams,
+                unit
               )
             )
           )

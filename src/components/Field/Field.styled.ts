@@ -5,11 +5,18 @@ import {
 } from "@headlessui/react";
 import styled from "styled-components";
 
-export const StyledField = styled(HeadlessField)`
-  & + & {
-    margin-top: ${({ theme }) => theme.spacing.l}px;
-  }
+export const FlexedFields = styled.div`
+  display: flex;
+  gap: ${({ theme }) => theme.spacing.l}px;
+  width: 100%;
 `;
+
+export const StackedFields = styled.div`
+  display: grid;
+  gap: ${({ theme }) => theme.spacing.l}px;
+`;
+
+export const StyledField = styled(HeadlessField)``;
 
 export const StyledDescription = styled(HeadlessDescription)`
   margin: ${({ theme }) => theme.spacing.s}px 0;

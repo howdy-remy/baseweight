@@ -64,6 +64,7 @@ describe("CreateItemModal", () => {
           type: "New Type",
           description: "New Description",
           weightInGrams: 100,
+          unit: "g",
           quantity: 2,
         });
       });

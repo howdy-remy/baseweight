@@ -7,7 +7,9 @@
       "hooks/*": ["./hooks/*"],
       "contexts/*": ["./contexts/*"],
       "styles/*": ["./styles/*"],
-      "lib/*": ["./lib/*"]
+      "lib/*": ["./lib/*"],
+      "types/*": ["./types/*"],
+      "utils/*": ["./utils/*"]
     },
     "types": ["vitest", "@testing-library/jest-dom"],
     "target": "ESNext",

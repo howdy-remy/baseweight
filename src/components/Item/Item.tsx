@@ -13,6 +13,7 @@ import {
   Type,
   Weight,
 } from "./Item.styled";
+import { convertGramsToUnit } from "utils/unit-conversion/unit-conversion";
 
 type ItemProps = {
   categoryItem: CategoryItem;
@@ -68,7 +69,13 @@ export const Item = ({
         </div>
         <Type>{categoryItem.item.type}</Type>
         <Description>{categoryItem.item.description}</Description>
-        <Weight>{categoryItem.item.weightInGrams}g</Weight>
+        <Weight>
+          {convertGramsToUnit(
+            categoryItem.item.unit,
+            categoryItem.item.weightInGrams || 0,
+          )}
+          {categoryItem.item.unit.toLowerCase()}
+        </Weight>
         <Quantity>
           <IconButton variant="secondary" icon="-" onClick={reduceQuantity} />
           <QuantityText>{categoryItem.quantity}</QuantityText>

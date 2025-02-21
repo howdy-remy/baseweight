@@ -1,18 +1,11 @@
 import styled from "styled-components";
-import { Button as HeadlessButton } from "@headlessui/react";
+import { Select as HeadlessSelect } from "@headlessui/react";
+import { SelectProps } from "./Select";
 
-import type { ButtonProps } from "./Button";
-
-export const Buttons = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-`;
-
-export const StyledButton = styled(HeadlessButton)<{
-  $variant: ButtonProps["variant"];
-  $size?: ButtonProps["size"];
-  $expandWidth: ButtonProps["expandWidth"];
+export const StyledSelect = styled(HeadlessSelect)<{
+  $variant: SelectProps["variant"];
+  $buttonSize?: SelectProps["buttonSize"];
+  $expandWidth: SelectProps["expandWidth"];
 }>`
   // reset
   all: unset;
@@ -23,8 +16,8 @@ export const StyledButton = styled(HeadlessButton)<{
   justify-content: center;
 
   //box model
-  height: ${({ $size }) => {
-    switch ($size) {
+  height: ${({ $buttonSize }) => {
+    switch ($buttonSize) {
       case "small":
         return "16px";
       case "large":
@@ -36,14 +29,14 @@ export const StyledButton = styled(HeadlessButton)<{
   }};
   width: ${({ theme, $expandWidth }) =>
     $expandWidth ? `calc(100% - ${theme.spacing.l * 2}px)` : "fit-content"};
-  padding: ${({ theme, $size }) => {
-    switch ($size) {
+  padding: ${({ theme, $buttonSize }) => {
+    switch ($buttonSize) {
       case "small":
       case "medium":
-        return `0 ${theme.spacing.m}px`;
+        return `0 ${theme.spacing.xxxl}px 0 ${theme.spacing.m}px`;
       case "large":
       default:
-        return `0 ${theme.spacing.l}px`;
+        return `0 ${theme.spacing.xxxl}px 0 ${theme.spacing.l}px`;
     }
   }};
   border-radius: 4px;
@@ -79,8 +72,8 @@ export const StyledButton = styled(HeadlessButton)<{
 
   // font
   font-family: "Rubik", sans-serif;
-  font-size: ${({ theme, $size }) => {
-    switch ($size) {
+  font-size: ${({ theme, $buttonSize }) => {
+    switch ($buttonSize) {
       case "small":
         return theme.fontsizes.s;
       case "medium":
@@ -93,6 +86,12 @@ export const StyledButton = styled(HeadlessButton)<{
 
   // other
   cursor: pointer;
+  /* Arrow */
+  appearance: none;
+  background-image: url("/icons/CaretDown.svg");
+  background-repeat: no-repeat;
+  background-position: right 8px top 50%;
+  background-size: 20px 20px;
 
   &:hover {
     background-color: ${({ theme, $variant }) => {
@@ -104,6 +103,7 @@ export const StyledButton = styled(HeadlessButton)<{
           return theme.colors.lichen;
       }
     }};
+
     border: ${({ theme, $variant }) => {
       switch ($variant) {
         case "secondary":
@@ -116,6 +116,6 @@ export const StyledButton = styled(HeadlessButton)<{
   }
 
   &:focus {
-    outline: 1px solid rgb(2, 156, 253);
+    border: 1px solid ${({ theme }) => theme.colors.black};
   }
 `;
