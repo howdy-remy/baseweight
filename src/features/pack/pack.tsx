@@ -1,32 +1,6 @@
-import { ChangeEvent, Fragment, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useParams } from "react-router";
 
-import { useGetPackQuery } from "api/packs";
-import {
-  type Item as ItemType,
-  useCreateItemMutation,
-  useLazySearchItemsQuery,
-} from "api/items";
-import { useCreateCategoriesItemMutation } from "api/category_item";
-import {
-  useDeleteCategoryMutation,
-  useUpdateCategoriesMutation,
-  type Category as CategoryType,
-} from "api/categories";
-
-import { useAuth } from "contexts/Authentication";
-
-import { Items } from "components/Items";
-import { Layout } from "components/Layout/Layout";
-import { HeadingOne, TextSansRegular } from "components/Typography";
-
-import { PackWrapper } from "./pack.styled";
-import {
-  AddItemToPack,
-  CreateCategoryModal,
-  CreateItemModal,
-  OnSubmitItemProps,
-} from "./components";
 import {
   closestCenter,
   DndContext,
@@ -45,7 +19,34 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { Category } from "./components/Category";
+
+import { useGetPackQuery } from "api/packs";
+import {
+  type Item as ItemType,
+  useCreateItemMutation,
+  useLazySearchItemsQuery,
+} from "api/items";
+import { useCreateCategoriesItemMutation } from "api/category_item";
+import {
+  useCreateCategoryMutation,
+  useDeleteCategoryMutation,
+  useUpdateCategoriesMutation,
+  type Category as CategoryType,
+} from "api/categories";
+
+import { useAuth } from "contexts/Authentication";
+
+import { Layout } from "components/Layout/Layout";
+import { HeadingOne, TextSansRegular } from "components/Typography";
+
+import {
+  Category,
+  CreateCategoryModal,
+  CreateItemModal,
+  OnSubmitItemProps,
+} from "./components";
+
+import { PackWrapper } from "./pack.styled";
 
 export const Pack = () => {
   const { session } = useAuth();
@@ -131,6 +132,18 @@ export const Pack = () => {
       order: category.categoryItems.length,
     });
 
+    refetch();
+  };
+
+  // create category -----------------------------------------------------------
+  const [createCategory] = useCreateCategoryMutation();
+
+  const onCreateCategory = async (category: Partial<CategoryType>) => {
+    await createCategory({
+      ...category,
+      pack_id: packId,
+      order: sortedCategories.length,
+    });
     refetch();
   };
 
@@ -228,11 +241,7 @@ export const Pack = () => {
               onSubmit={createNewItemAndAddToPack}
             />
           )}
-          <CreateCategoryModal
-            packId={packId}
-            refetch={refetch}
-            nextOrder={sortedCategories.length}
-          />
+          <CreateCategoryModal onSubmit={onCreateCategory} />
         </div>
       </PackWrapper>
     </Layout>

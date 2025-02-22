@@ -1,11 +1,5 @@
 // This test file was generated with Claude Sonnet 3.5 and adjusted
-import {
-  render,
-  screen,
-  fireEvent,
-  waitFor,
-  act,
-} from "lib/react-testing-library";
+import { render, screen, fireEvent, waitFor } from "lib/react-testing-library";
 import { vi, describe, it, expect, beforeEach } from "vitest";
 import { useCreateCategoryMutation } from "api/categories";
 import { CreateCategoryModal } from "./CreateCategoryModal";
@@ -44,6 +38,7 @@ describe("CreateCategoryModal", () => {
   const mockCreateCategory = vi.fn();
   const defaultProps = {
     packId: "123",
+    nextOrder: 1,
     refetch: mockRefetch,
   };
 
@@ -140,7 +135,7 @@ describe("CreateCategoryModal", () => {
   });
 
   it("does not submit if packId is not provided", async () => {
-    render(<CreateCategoryModal refetch={mockRefetch} />);
+    render(<CreateCategoryModal nextOrder={1} refetch={mockRefetch} />);
     fireEvent.click(screen.getByText("Add category"));
 
     // Fill and submit form

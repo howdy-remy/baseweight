@@ -73,7 +73,7 @@ export const Item = ({
           {convertGramsToUnit(
             categoryItem.item.unit,
             categoryItem.item.weightInGrams || 0,
-          )}
+          )}{" "}
           {categoryItem.item.unit.toLowerCase()}
         </Weight>
         <Quantity>

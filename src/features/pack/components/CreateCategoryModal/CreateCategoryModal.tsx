@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { useCreateCategoryMutation } from "api/categories";
+import { Category } from "api/categories";
 
 import { Button } from "components/Button";
 import { Field } from "components/Field";
@@ -8,19 +8,13 @@ import { Input } from "components/Input";
 import { ActionsWrapper, Modal } from "components/Modal";
 import { HeadingTwo } from "components/Typography";
 
-import { StyledForm } from "./CreateCategoryModal.styled";
+import { FieldsWrapper, StyledForm } from "./CreateCategoryModal.styled";
 
 type CreateCategoryModalProps = {
-  nextOrder: number;
-  packId?: string;
-  refetch: () => void;
+  onSubmit: (category: Partial<Category>) => void;
 };
 
-export const CreateCategoryModal = ({
-  nextOrder,
-  packId,
-  refetch,
-}: CreateCategoryModalProps) => {
+export const CreateCategoryModal = ({ onSubmit }: CreateCategoryModalProps) => {
   // modal state
   const [isCreateCategoryModalOpen, setIsCreateCategoryModalOpen] =
     useState(false);
@@ -35,18 +29,13 @@ export const CreateCategoryModal = ({
   };
 
   // create category -----------------------------------------------------------
-  const [createCategory] = useCreateCategoryMutation();
   const addCategory = async () => {
-    if (!packId) return;
-    await createCategory({
+    await onSubmit({
       name: categoryName,
       color: categoryColor,
-      pack_id: packId,
-      order: nextOrder,
     });
     setIsCreateCategoryModalOpen(false);
     resetFormState();
-    refetch();
   };
 
   return (
@@ -64,24 +53,26 @@ export const CreateCategoryModal = ({
           className="form-widget"
           role="form"
         >
-          <Field label="Category Name">
-            <Input
-              type="text"
-              name="Category Name"
-              value={categoryName}
-              placeholder="name"
-              onChange={(e) => setCategoryName(e.target.value)}
-            />
-          </Field>
-          <Field label="Color">
-            <Input
-              type="color"
-              name="color"
-              value={categoryColor}
-              placeholder="color"
-              onChange={(e) => setCategoryColor(e.target.value)}
-            />
-          </Field>
+          <FieldsWrapper>
+            <Field label="Category Name">
+              <Input
+                type="text"
+                name="Category Name"
+                value={categoryName}
+                placeholder="name"
+                onChange={(e) => setCategoryName(e.target.value)}
+              />
+            </Field>
+            <Field label="Color">
+              <Input
+                type="color"
+                name="color"
+                value={categoryColor}
+                placeholder="color"
+                onChange={(e) => setCategoryColor(e.target.value)}
+              />
+            </Field>
+          </FieldsWrapper>
           <ActionsWrapper>
             <Button
               variant="secondary"
@@ -101,7 +92,7 @@ export const CreateCategoryModal = ({
         variant="secondary"
         size="large"
         expandWidth
-        onClick={(e) => setIsCreateCategoryModalOpen(true)}
+        onClick={() => setIsCreateCategoryModalOpen(true)}
       >
         Add category
       </Button>
