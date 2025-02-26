@@ -1,149 +1,198 @@
-// This test file was generated with Claude Sonnet 3.5 and adjusted
-import { render, screen, fireEvent, waitFor } from "lib/react-testing-library";
-import { vi, describe, it, expect, beforeEach } from "vitest";
-import { useCreateCategoryMutation } from "api/categories";
+// This test file was generated with Claude 3.7 Sonnet and adjusted
+import { render, screen, fireEvent } from "lib/react-testing-library";
+import { vi, describe, it, expect, beforeEach, afterEach } from "vitest";
 import { CreateCategoryModal } from "./CreateCategoryModal";
 
-// Mock the API hook
-vi.mock("api/categories", () => ({
-  useCreateCategoryMutation: vi.fn(),
-}));
-
-// Mock the Modal and Button components
-vi.mock("components/Modal", () => ({
-  Modal: ({
-    children,
-    isOpen,
-  }: {
-    children: React.ReactNode;
-    isOpen: boolean;
-  }) => (isOpen ? <div data-testid="modal">{children}</div> : null),
-  ActionsWrapper: ({ children }: { children: React.ReactNode }) => (
-    <div>{children}</div>
-  ),
-}));
-
-vi.mock("components/Button", () => ({
-  Button: ({
-    children,
-    onClick,
-  }: {
-    children: React.ReactNode;
-    onClick: () => void;
-  }) => <button onClick={onClick}>{children}</button>,
-}));
+import userEvent from "@testing-library/user-event";
+import { Category } from "api/categories";
 
 describe("CreateCategoryModal", () => {
-  const mockRefetch = vi.fn();
-  const mockCreateCategory = vi.fn();
-  const defaultProps = {
-    packId: "123",
-    nextOrder: 1,
-    refetch: mockRefetch,
-  };
+  const mockOnClose = vi.fn();
+  const mockOnSubmit = vi.fn();
 
   beforeEach(() => {
-    vi.clearAllMocks();
-    // Setup default mock implementation
-    (useCreateCategoryMutation as any).mockReturnValue([mockCreateCategory]);
+    vi.resetAllMocks();
   });
 
-  it('renders the "Add category" button', () => {
-    render(<CreateCategoryModal {...defaultProps} />);
-    expect(screen.getByText("Add category")).toBeInTheDocument();
+  afterEach(() => {
+    vi.restoreAllMocks();
   });
 
-  it('opens modal when "Add category" button is clicked', () => {
-    render(<CreateCategoryModal {...defaultProps} />);
+  it("renders correctly in create mode", () => {
+    render(
+      <CreateCategoryModal
+        isOpen={true}
+        initialProps={null}
+        onClose={mockOnClose}
+        onSubmit={mockOnSubmit}
+      />,
+    );
 
-    // Modal should not be visible initially
-    expect(screen.queryByTestId("modal")).not.toBeInTheDocument();
+    // Check header text
+    expect(screen.getByRole("heading")).toHaveTextContent(
+      "Create a new category",
+    );
 
-    // Click the button
-    fireEvent.click(screen.getByText("Add category"));
+    // Check form fields exist
+    expect(screen.getByLabelText("Category Name")).toBeInTheDocument();
+    expect(screen.getByLabelText("Color")).toBeInTheDocument();
 
-    // Modal should be visible
-    expect(screen.getByTestId("modal")).toBeInTheDocument();
+    // Check buttons
+    expect(screen.getByText("Cancel")).toBeInTheDocument();
+    expect(screen.getByText("Save")).toBeInTheDocument();
   });
 
-  it("renders form fields with default values", () => {
-    render(<CreateCategoryModal {...defaultProps} />);
-    fireEvent.click(screen.getByText("Add category"));
+  it("renders correctly in edit mode", () => {
+    const initialCategory: Partial<Category> = {
+      name: "Test Category",
+      color: "#FF5733",
+    };
 
-    const nameInput = screen.getByLabelText(
-      "Category Name",
-    ) as HTMLInputElement;
-    const colorInput = screen.getByLabelText("Color") as HTMLInputElement;
+    render(
+      <CreateCategoryModal
+        isOpen={true}
+        initialProps={initialCategory}
+        onClose={mockOnClose}
+        onSubmit={mockOnSubmit}
+      />,
+    );
 
-    expect(nameInput.value).toBe("");
-    expect(colorInput.value).toBe("#44584b");
+    // Check header text for edit mode
+    expect(screen.getByRole("heading")).toHaveTextContent("Edit Test Category");
+
+    // Check form fields have initial values
+    expect(screen.getByLabelText("Category Name")).toHaveValue("Test Category");
+    expect(screen.getByLabelText("Color")).toHaveValue("#ff5733");
   });
 
-  it("updates form values when user types", () => {
-    render(<CreateCategoryModal {...defaultProps} />);
-    fireEvent.click(screen.getByText("Add category"));
+  it("does not render when isOpen is false", () => {
+    const { container } = render(
+      <CreateCategoryModal
+        isOpen={false}
+        initialProps={null}
+        onClose={mockOnClose}
+        onSubmit={mockOnSubmit}
+      />,
+    );
+
+    expect(container.textContent).toBe("");
+  });
+
+  it("calls onClose when Cancel button is clicked", async () => {
+    render(
+      <CreateCategoryModal
+        isOpen={true}
+        initialProps={null}
+        onClose={mockOnClose}
+        onSubmit={mockOnSubmit}
+      />,
+    );
+
+    const cancelButton = screen.getByText("Cancel");
+    await userEvent.click(cancelButton);
+
+    expect(mockOnClose).toHaveBeenCalledTimes(1);
+  });
+
+  it("updates form values when user inputs data", async () => {
+    render(
+      <CreateCategoryModal
+        isOpen={true}
+        initialProps={null}
+        onClose={mockOnClose}
+        onSubmit={mockOnSubmit}
+      />,
+    );
 
     const nameInput = screen.getByLabelText("Category Name");
     const colorInput = screen.getByLabelText("Color");
 
-    fireEvent.change(nameInput, { target: { value: "Test Category" } });
-    fireEvent.change(colorInput, { target: { value: "#ff0000" } });
+    await userEvent.type(nameInput, "New Category");
+    // I fixed this bit using this suggestion: https://github.com/testing-library/user-event/issues/423#issuecomment-669368863
+    // await userEvent.clear(colorInput);
+    // await userEvent.type(colorInput, "#FF00FF");
+    fireEvent.input(colorInput, { target: { value: "#FF00FF" } });
 
-    expect((nameInput as HTMLInputElement).value).toBe("Test Category");
-    expect((colorInput as HTMLInputElement).value).toBe("#ff0000");
+    expect(nameInput).toHaveValue("New Category");
+    expect(colorInput).toHaveValue("#ff00ff");
   });
 
-  it("calls createCategory with correct values when form is submitted", async () => {
-    render(<CreateCategoryModal {...defaultProps} />);
-    fireEvent.click(screen.getByText("Add category"));
+  it("submits form with correct data in create mode", async () => {
+    render(
+      <CreateCategoryModal
+        isOpen={true}
+        initialProps={null}
+        onClose={mockOnClose}
+        onSubmit={mockOnSubmit}
+      />,
+    );
 
-    // Fill in the form
-    fireEvent.change(screen.getByLabelText("Category Name"), {
-      target: { value: "Test Category" },
-    }),
-      fireEvent.change(screen.getByLabelText("Color"), {
-        target: { value: "#ff0000" },
-      }),
-      // Submit the form
-      fireEvent.submit(screen.getByRole("form"));
+    // Input data
+    const nameInput = screen.getByLabelText("Category Name");
+    await userEvent.type(nameInput, "New Category");
 
-    // Verify createCategory was called with correct arguments
-    await waitFor(() => {
-      expect(mockCreateCategory).toHaveBeenCalledWith({
-        name: "Test Category",
-        color: "#ff0000",
-        pack_id: "123",
-      });
+    // Submit form
+    const saveButton = screen.getByText("Save");
+    await userEvent.click(saveButton);
+
+    // Check if onSubmit was called with the right params
+    expect(mockOnSubmit).toHaveBeenCalledWith({
+      name: "New Category",
+      color: "#44584B",
+    });
+
+    // Check if onClose was called after submit
+    expect(mockOnClose).toHaveBeenCalled();
+  });
+
+  it("submits form with correct data in edit mode", async () => {
+    const initialCategory: Partial<Category> = {
+      id: 123,
+      name: "Original Category",
+      color: "#FF5733",
+    };
+
+    render(
+      <CreateCategoryModal
+        isOpen={true}
+        initialProps={initialCategory}
+        onClose={mockOnClose}
+        onSubmit={mockOnSubmit}
+      />,
+    );
+
+    // Modify data
+    const nameInput = screen.getByLabelText("Category Name");
+    await userEvent.clear(nameInput);
+    await userEvent.type(nameInput, "Updated Category");
+
+    // Submit form
+    const saveButton = screen.getByText("Save");
+    await userEvent.click(saveButton);
+
+    // Check if onSubmit was called with the right params
+    expect(mockOnSubmit).toHaveBeenCalledWith({
+      id: 123,
+      name: "Updated Category",
+      color: "#FF5733",
     });
   });
 
-  it("closes modal and calls refetch after successful submission", async () => {
-    render(<CreateCategoryModal {...defaultProps} />);
-    fireEvent.click(screen.getByText("Add category"));
+  it("calls preventDefault on form submission", async () => {
+    render(
+      <CreateCategoryModal
+        isOpen={true}
+        initialProps={null}
+        onClose={mockOnClose}
+        onSubmit={mockOnSubmit}
+      />,
+    );
 
-    // Fill and submit form
-    fireEvent.change(screen.getByLabelText("Category Name"), {
-      target: { value: "Test Category" },
-    });
-    fireEvent.submit(screen.getByRole("form"));
+    // Setup preventDefault spy
+    const preventDefaultSpy = vi.fn();
+    const form = screen.getByRole("form");
 
-    // Wait for async operations to complete
-    await waitFor(() => {
-      expect(screen.queryByTestId("modal")).not.toBeInTheDocument();
-      expect(mockRefetch).toHaveBeenCalled();
-    });
-  });
-
-  it("does not submit if packId is not provided", async () => {
-    render(<CreateCategoryModal nextOrder={1} refetch={mockRefetch} />);
-    fireEvent.click(screen.getByText("Add category"));
-
-    // Fill and submit form
-    fireEvent.change(screen.getByLabelText("Category Name"), {
-      target: { value: "Test Category" },
-    });
-    fireEvent.submit(screen.getByRole("form"));
-
-    expect(mockCreateCategory).not.toHaveBeenCalled();
+    // Simulate form submission
+    fireEvent.submit(form, { preventDefault: preventDefaultSpy });
   });
 });

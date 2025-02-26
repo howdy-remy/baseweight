@@ -12,7 +12,7 @@ describe("CreateItemModal", () => {
     render(
       <ThemeProvider theme={theme}>
         <CreateItemModal
-          category="category"
+          categoryName="category"
           isOpen={isOpen}
           onClose={onClose}
           onSubmit={onSubmit}
@@ -64,7 +64,7 @@ describe("CreateItemModal", () => {
           type: "New Type",
           description: "New Description",
           weightInGrams: 100,
-          unit: "g",
+          unit: "G",
           quantity: 2,
         });
       });
