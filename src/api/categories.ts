@@ -45,6 +45,21 @@ export const categoriesApi = createApi({
         return { data: mappedData };
       },
     }),
+    upsertCategory: builder.mutation({
+      queryFn: async (category) => {
+        const { data, error } = await supabase
+          .from("categories")
+          .upsert(category)
+          .select();
+
+        if (error) {
+          console.error(error);
+          return { error };
+        }
+        const mappedData = data.map(categoryMapper);
+        return { data: mappedData };
+      },
+    }),
     deleteCategory: builder.mutation({
       queryFn: async (category: Category) => {
         const categoryItemIds = category.categoryItems.map(({ id }) => id);
@@ -97,4 +112,5 @@ export const {
   useCreateCategoryMutation,
   useDeleteCategoryMutation,
   useUpdateCategoriesMutation,
+  useUpsertCategoryMutation,
 } = categoriesApi;

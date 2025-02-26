@@ -28,9 +28,9 @@ import {
 } from "api/items";
 import { useCreateCategoriesItemMutation } from "api/category_item";
 import {
-  useCreateCategoryMutation,
   useDeleteCategoryMutation,
   useUpdateCategoriesMutation,
+  useUpsertCategoryMutation,
   type Category as CategoryType,
 } from "api/categories";
 
@@ -47,6 +47,7 @@ import {
 } from "./components";
 
 import { PackWrapper } from "./pack.styled";
+import { Button } from "components/Button";
 
 export const Pack = () => {
   const { session } = useAuth();
@@ -78,7 +79,7 @@ export const Pack = () => {
   // create new item and add to pack -------------------------------------------
   const [createItem] = useCreateItemMutation();
 
-  const [selectedCategory, setSelectedCategory] = useState<CategoryType | null>(
+  const [categoryToAddTo, setCategoryToAddTo] = useState<CategoryType | null>(
     null,
   );
   const [isCreateItemModalOpen, setIsCreateItemModalOpen] = useState(false);
@@ -86,7 +87,7 @@ export const Pack = () => {
 
   const onInitiateCreateItem = (category: CategoryType) => {
     return async (type: string) => {
-      setSelectedCategory(category);
+      setCategoryToAddTo(category);
       setIsCreateItemModalOpen(true);
       setTypeQuery(type);
     };
@@ -99,7 +100,7 @@ export const Pack = () => {
     unit,
     quantity,
   }: OnSubmitItemProps) => {
-    if (!selectedCategory) return;
+    if (!categoryToAddTo) return;
     const { data } = await createItem({
       profile_id: session!.user.id,
       type,
@@ -110,13 +111,13 @@ export const Pack = () => {
     await createCategoriesItem({
       profile_id: session!.user.id,
       item_id: data?.[0].id,
-      category_id: selectedCategory?.id,
+      category_id: categoryToAddTo?.id,
       quantity,
-      order: selectedCategory.categoryItems.length,
+      order: categoryToAddTo.categoryItems.length,
     });
 
     setIsCreateItemModalOpen(false);
-    setSelectedCategory(null);
+    setCategoryToAddTo(null);
     refetch();
   };
 
@@ -135,16 +136,36 @@ export const Pack = () => {
     refetch();
   };
 
-  // create category -----------------------------------------------------------
-  const [createCategory] = useCreateCategoryMutation();
+  // create/edit category ------------------------------------------------------
+  const [upsertCategory] = useUpsertCategoryMutation();
 
-  const onCreateCategory = async (category: Partial<CategoryType>) => {
-    await createCategory({
-      ...category,
+  const [categoryToEdit, setCategoryToEdit] = useState<CategoryType | null>(
+    null,
+  );
+  // modal state
+  const [isCreateCategoryModalOpen, setIsCreateCategoryModalOpen] =
+    useState<boolean>(false);
+
+  const onInitiateEditCategory = (category: CategoryType) => () => {
+    setIsCreateCategoryModalOpen(true);
+    setCategoryToEdit(category);
+  };
+
+  const onUpsertCategory = async ({
+    name,
+    color,
+    order,
+    id,
+  }: Partial<CategoryType>) => {
+    await upsertCategory({
+      id,
+      name,
+      color,
+      order: order || sortedCategories.length,
       pack_id: packId,
-      order: sortedCategories.length,
     });
     refetch();
+    setCategoryToEdit(null);
   };
 
   // delete category -----------------------------------------------------------
@@ -157,7 +178,7 @@ export const Pack = () => {
 
   // drag and drop -------------------------------------------------------------
   const [updateCategories] = useUpdateCategoriesMutation();
-  const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null);
+  const [_, setActiveId] = useState<UniqueIdentifier | null>(null);
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -221,6 +242,7 @@ export const Pack = () => {
                   items={items ?? []}
                   profileId={session!.user.id}
                   refetch={refetch}
+                  onEditCategory={onInitiateEditCategory}
                   onDeleteCategory={onDeleteCategory}
                   onInitiateCreateItem={onInitiateCreateItem}
                   onSearchItems={onSearchItems}
@@ -231,17 +253,33 @@ export const Pack = () => {
             </SortableContext>
           </DndContext>
 
+          {/* add category button ------------------------------------------ */}
+          <Button
+            variant="secondary"
+            size="large"
+            expandWidth
+            onClick={() => setIsCreateCategoryModalOpen(true)}
+          >
+            Add category
+          </Button>
+
           {/* modals ------------------------------------------------------- */}
-          {selectedCategory && (
+          {categoryToAddTo && (
             <CreateItemModal
-              category={selectedCategory.name || "category"}
+              categoryName={categoryToAddTo.name || "category"}
               isOpen={isCreateItemModalOpen}
               initialType={query}
               onClose={() => setIsCreateItemModalOpen(false)}
               onSubmit={createNewItemAndAddToPack}
             />
           )}
-          <CreateCategoryModal onSubmit={onCreateCategory} />
+
+          <CreateCategoryModal
+            initialProps={categoryToEdit}
+            isOpen={isCreateCategoryModalOpen}
+            onClose={() => setIsCreateCategoryModalOpen(false)}
+            onSubmit={onUpsertCategory}
+          />
         </div>
       </PackWrapper>
     </Layout>

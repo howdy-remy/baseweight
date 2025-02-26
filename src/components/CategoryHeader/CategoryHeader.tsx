@@ -1,4 +1,6 @@
-import { DraggableAttributes } from "@dnd-kit/core";
+import type { DraggableAttributes } from "@dnd-kit/core";
+import type { SyntheticListenerMap } from "@dnd-kit/core/dist/hooks/utilities";
+
 import { DragHandle } from "../DragHandle";
 import { Dropdown } from "../Dropdown";
 import {
@@ -8,7 +10,6 @@ import {
   Quantity,
   Weight,
 } from "./CategoryHeader.styled";
-import { SyntheticListenerMap } from "@dnd-kit/core/dist/hooks/utilities";
 
 type CategoryHeaderProps = {
   categoryName?: string | null;
@@ -21,6 +22,7 @@ type CategoryHeaderProps = {
   weight: number;
   weightUnit: string;
   onDelete: () => void;
+  onEdit: () => void;
 };
 
 export const CategoryHeader = ({
@@ -31,11 +33,12 @@ export const CategoryHeader = ({
   weight,
   weightUnit,
   onDelete,
+  onEdit,
 }: CategoryHeaderProps) => {
   const actions = [
     {
       label: "Edit",
-      onClick: () => console.log("edit!"),
+      onClick: onEdit,
     },
     {
       label: "Delete",

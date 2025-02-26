@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Category } from "api/categories";
 
@@ -11,17 +11,34 @@ import { HeadingTwo } from "components/Typography";
 import { FieldsWrapper, StyledForm } from "./CreateCategoryModal.styled";
 
 type CreateCategoryModalProps = {
+  isOpen: boolean;
+  initialProps: Partial<Category> | null;
+  onClose: () => void;
   onSubmit: (category: Partial<Category>) => void;
 };
 
-export const CreateCategoryModal = ({ onSubmit }: CreateCategoryModalProps) => {
-  // modal state
-  const [isCreateCategoryModalOpen, setIsCreateCategoryModalOpen] =
-    useState(false);
-
+export const CreateCategoryModal = ({
+  isOpen,
+  initialProps,
+  onClose,
+  onSubmit,
+}: CreateCategoryModalProps) => {
   // form state
-  const [categoryName, setCategoryName] = useState("");
-  const [categoryColor, setCategoryColor] = useState("#44584B");
+  const [isEdit, setIsEdit] = useState(false);
+  const [categoryName, setCategoryName] = useState<string | null | undefined>(
+    "",
+  );
+  const [categoryColor, setCategoryColor] = useState<string | null | undefined>(
+    "#44584B",
+  );
+
+  useEffect(() => {
+    if (!!initialProps) {
+      setIsEdit(true);
+      setCategoryName(initialProps.name);
+      setCategoryColor(initialProps.color);
+    }
+  }, [initialProps]);
 
   const resetFormState = () => {
     setCategoryName("");
@@ -31,71 +48,56 @@ export const CreateCategoryModal = ({ onSubmit }: CreateCategoryModalProps) => {
   // create category -----------------------------------------------------------
   const addCategory = async () => {
     await onSubmit({
+      ...initialProps,
       name: categoryName,
       color: categoryColor,
     });
-    setIsCreateCategoryModalOpen(false);
     resetFormState();
+    onClose();
   };
 
   return (
-    <div>
-      <Modal
-        isOpen={isCreateCategoryModalOpen}
-        onClose={() => setIsCreateCategoryModalOpen(false)}
+    <Modal isOpen={isOpen} onClose={onClose}>
+      <HeadingTwo as="h2">
+        {isEdit ? `Edit ${initialProps?.name}` : "Create a new category"}
+      </HeadingTwo>
+      <StyledForm
+        onSubmit={(event) => {
+          event.preventDefault();
+          addCategory();
+        }}
+        className="form-widget"
+        role="form"
       >
-        <HeadingTwo as="h2">Create a new category</HeadingTwo>
-        <StyledForm
-          onSubmit={(event) => {
-            event.preventDefault();
-            addCategory();
-          }}
-          className="form-widget"
-          role="form"
-        >
-          <FieldsWrapper>
-            <Field label="Category Name">
-              <Input
-                type="text"
-                name="Category Name"
-                value={categoryName}
-                placeholder="name"
-                onChange={(e) => setCategoryName(e.target.value)}
-              />
-            </Field>
-            <Field label="Color">
-              <Input
-                type="color"
-                name="color"
-                value={categoryColor}
-                placeholder="color"
-                onChange={(e) => setCategoryColor(e.target.value)}
-              />
-            </Field>
-          </FieldsWrapper>
-          <ActionsWrapper>
-            <Button
-              variant="secondary"
-              size="medium"
-              onClick={() => setIsCreateCategoryModalOpen(false)}
-            >
-              Cancel
-            </Button>
-            <Button variant="primary" size="medium" type="submit">
-              Create category
-            </Button>
-          </ActionsWrapper>
-        </StyledForm>
-      </Modal>
-
-      <Button
-        variant="secondary"
-        size="large"
-        expandWidth
-        onClick={() => setIsCreateCategoryModalOpen(true)}
-      >
-        Add category
-      </Button>
-    </div>
+        <FieldsWrapper>
+          <Field label="Category Name">
+            <Input
+              type="text"
+              name="Category Name"
+              value={categoryName || ""}
+              placeholder="name"
+              onChange={(e) => setCategoryName(e.target.value)}
+            />
+          </Field>
+          <Field label="Color">
+            <Input
+              type="color"
+              name="color"
+              value={categoryColor || ""}
+              placeholder="color"
+              onChange={(e) => setCategoryColor(e.target.value)}
+            />
+          </Field>
+        </FieldsWrapper>
+        <ActionsWrapper>
+          <Button variant="secondary" size="medium" onClick={onClose}>
+            Cancel
+          </Button>
+          <Button variant="primary" size="medium" type="submit">
+            Save
+          </Button>
+        </ActionsWrapper>
+      </StyledForm>
+    </Modal>
   );
 };

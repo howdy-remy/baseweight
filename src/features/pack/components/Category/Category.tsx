@@ -16,6 +16,7 @@ type CategoryProps = {
   profileId: string;
   refetch: () => void;
   onDeleteCategory: (category: CategoryType) => () => void;
+  onEditCategory: (category: CategoryType) => () => void;
   onInitiateCreateItem: (category: CategoryType) => (type: string) => void;
   onSearchItems: (
     category: CategoryType,
@@ -28,6 +29,7 @@ export const Category = ({
   items,
   profileId,
   onDeleteCategory,
+  onEditCategory,
   onInitiateCreateItem,
   onSearchItems,
   onSelectItem,
@@ -58,6 +60,7 @@ export const Category = ({
         weight={category.totalWeight}
         weightUnit="g"
         onDelete={onDeleteCategory(category)}
+        onEdit={onEditCategory(category)}
         dragHandleProps={{ attributes, listeners }}
       />
       <Items

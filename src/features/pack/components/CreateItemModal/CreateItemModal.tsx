@@ -1,6 +1,8 @@
 import { FormEventHandler, useEffect, useState } from "react";
 import { Unit } from "types/Unit";
 
+import { convertUnitToGrams } from "utils/unit-conversion/unit-conversion";
+
 import { ActionsWrapper, Modal } from "components/Modal";
 import { Field, StackedFields } from "components/Field";
 import { Input } from "components/Input";
@@ -9,7 +11,6 @@ import { HeadingTwo } from "components/Typography";
 import { Select } from "components/Select";
 
 import { FieldsWrapper } from "./CreateItemModal.styled";
-import { convertUnitToGrams } from "utils/unit-conversion/unit-conversion";
 
 export type OnSubmitItemProps = {
   type: string;
@@ -20,7 +21,7 @@ export type OnSubmitItemProps = {
 };
 
 type CreateItemModalProps = {
-  category: string;
+  categoryName: string;
   initialType?: string;
   isOpen: boolean;
   onClose: () => void;
@@ -28,7 +29,7 @@ type CreateItemModalProps = {
 };
 
 export const CreateItemModal: React.FC<CreateItemModalProps> = ({
-  category,
+  categoryName,
   initialType = "",
   isOpen,
   onClose,
@@ -69,7 +70,7 @@ export const CreateItemModal: React.FC<CreateItemModalProps> = ({
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
-      <HeadingTwo>Create item and add to {category}</HeadingTwo>
+      <HeadingTwo>Create item and add to {categoryName}</HeadingTwo>
       <form onSubmit={handleOnSubmit}>
         <StackedFields>
           <Field label="Type" description="e.g. Tent">

@@ -94,6 +94,7 @@ export const packsApi = createApi({
             id, 
             name,
             color,
+            order,
             category_item(
               id,
               quantity,
