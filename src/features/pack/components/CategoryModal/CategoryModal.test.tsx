@@ -1,12 +1,12 @@
 // This test file was generated with Claude 3.7 Sonnet and adjusted
 import { render, screen, fireEvent } from "lib/react-testing-library";
 import { vi, describe, it, expect, beforeEach, afterEach } from "vitest";
-import { CreateCategoryModal } from "./CreateCategoryModal";
+import { CategoryModal } from "./CategoryModal";
 
 import userEvent from "@testing-library/user-event";
 import { Category } from "api/categories";
 
-describe("CreateCategoryModal", () => {
+describe("CategoryModal", () => {
   const mockOnClose = vi.fn();
   const mockOnSubmit = vi.fn();
 
@@ -20,7 +20,7 @@ describe("CreateCategoryModal", () => {
 
   it("renders correctly in create mode", () => {
     render(
-      <CreateCategoryModal
+      <CategoryModal
         isOpen={true}
         initialProps={null}
         onClose={mockOnClose}
@@ -49,7 +49,7 @@ describe("CreateCategoryModal", () => {
     };
 
     render(
-      <CreateCategoryModal
+      <CategoryModal
         isOpen={true}
         initialProps={initialCategory}
         onClose={mockOnClose}
@@ -67,7 +67,7 @@ describe("CreateCategoryModal", () => {
 
   it("does not render when isOpen is false", () => {
     const { container } = render(
-      <CreateCategoryModal
+      <CategoryModal
         isOpen={false}
         initialProps={null}
         onClose={mockOnClose}
@@ -80,7 +80,7 @@ describe("CreateCategoryModal", () => {
 
   it("calls onClose when Cancel button is clicked", async () => {
     render(
-      <CreateCategoryModal
+      <CategoryModal
         isOpen={true}
         initialProps={null}
         onClose={mockOnClose}
@@ -96,7 +96,7 @@ describe("CreateCategoryModal", () => {
 
   it("updates form values when user inputs data", async () => {
     render(
-      <CreateCategoryModal
+      <CategoryModal
         isOpen={true}
         initialProps={null}
         onClose={mockOnClose}
@@ -119,7 +119,7 @@ describe("CreateCategoryModal", () => {
 
   it("submits form with correct data in create mode", async () => {
     render(
-      <CreateCategoryModal
+      <CategoryModal
         isOpen={true}
         initialProps={null}
         onClose={mockOnClose}
@@ -153,7 +153,7 @@ describe("CreateCategoryModal", () => {
     };
 
     render(
-      <CreateCategoryModal
+      <CategoryModal
         isOpen={true}
         initialProps={initialCategory}
         onClose={mockOnClose}
@@ -180,7 +180,7 @@ describe("CreateCategoryModal", () => {
 
   it("calls preventDefault on form submission", async () => {
     render(
-      <CreateCategoryModal
+      <CategoryModal
         isOpen={true}
         initialProps={null}
         onClose={mockOnClose}

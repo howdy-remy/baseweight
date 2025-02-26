@@ -1,4 +1,4 @@
 export * from "./AddItemToPack";
-export * from "./CreateCategoryModal";
+export * from "./CategoryModal";
 export * from "./CreateItemModal";
 export * from "./Category";

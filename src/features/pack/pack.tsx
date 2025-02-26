@@ -6,10 +6,8 @@ import {
   DndContext,
   DragEndEvent,
   DragOverlay,
-  DragStartEvent,
   KeyboardSensor,
   PointerSensor,
-  UniqueIdentifier,
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
@@ -41,7 +39,7 @@ import { HeadingOne, TextSansRegular } from "components/Typography";
 
 import {
   Category,
-  CreateCategoryModal,
+  CategoryModal,
   CreateItemModal,
   OnSubmitItemProps,
 } from "./components";
@@ -178,7 +176,6 @@ export const Pack = () => {
 
   // drag and drop -------------------------------------------------------------
   const [updateCategories] = useUpdateCategoriesMutation();
-  const [_, setActiveId] = useState<UniqueIdentifier | null>(null);
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -187,12 +184,6 @@ export const Pack = () => {
     }),
   );
   // handlers
-  function handleDragStart(event: DragStartEvent) {
-    const { active } = event;
-
-    setActiveId(active.id);
-  }
-
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
     if (active.id !== over?.id) {
@@ -212,9 +203,9 @@ export const Pack = () => {
 
       updateCategories(updates);
     }
-    setActiveId(null);
   };
 
+  // render --------------------------------------------------------------------
   if (isLoading) {
     return "loading...";
   }
@@ -228,7 +219,6 @@ export const Pack = () => {
           <DndContext
             sensors={sensors}
             collisionDetection={closestCenter}
-            onDragStart={handleDragStart}
             onDragEnd={handleDragEnd}
           >
             <SortableContext
@@ -264,17 +254,15 @@ export const Pack = () => {
           </Button>
 
           {/* modals ------------------------------------------------------- */}
-          {categoryToAddTo && (
-            <CreateItemModal
-              categoryName={categoryToAddTo.name || "category"}
-              isOpen={isCreateItemModalOpen}
-              initialType={query}
-              onClose={() => setIsCreateItemModalOpen(false)}
-              onSubmit={createNewItemAndAddToPack}
-            />
-          )}
+          <CreateItemModal
+            categoryName={categoryToAddTo?.name || "category"}
+            isOpen={isCreateItemModalOpen}
+            initialType={query}
+            onClose={() => setIsCreateItemModalOpen(false)}
+            onSubmit={createNewItemAndAddToPack}
+          />
 
-          <CreateCategoryModal
+          <CategoryModal
             initialProps={categoryToEdit}
             isOpen={isCreateCategoryModalOpen}
             onClose={() => setIsCreateCategoryModalOpen(false)}

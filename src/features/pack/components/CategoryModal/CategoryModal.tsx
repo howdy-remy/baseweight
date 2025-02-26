@@ -8,21 +8,21 @@ import { Input } from "components/Input";
 import { ActionsWrapper, Modal } from "components/Modal";
 import { HeadingTwo } from "components/Typography";
 
-import { FieldsWrapper, StyledForm } from "./CreateCategoryModal.styled";
+import { FieldsWrapper, StyledForm } from "./CategoryModal.styled";
 
-type CreateCategoryModalProps = {
+type CategoryModalProps = {
   isOpen: boolean;
   initialProps: Partial<Category> | null;
   onClose: () => void;
   onSubmit: (category: Partial<Category>) => void;
 };
 
-export const CreateCategoryModal = ({
+export const CategoryModal = ({
   isOpen,
   initialProps,
   onClose,
   onSubmit,
-}: CreateCategoryModalProps) => {
+}: CategoryModalProps) => {
   // form state
   const [isEdit, setIsEdit] = useState(false);
   const [categoryName, setCategoryName] = useState<string | null | undefined>(
