@@ -166,6 +166,11 @@ export const Pack = () => {
     setCategoryToEdit(null);
   };
 
+  const onCloseCategoryModal = () => {
+    setIsCreateCategoryModalOpen(false);
+    setCategoryToEdit(null);
+  };
+
   // delete category -----------------------------------------------------------
   const [deleteCategory] = useDeleteCategoryMutation();
 
@@ -263,9 +268,17 @@ export const Pack = () => {
           />
 
           <CategoryModal
-            initialProps={categoryToEdit}
+            initialProps={
+              categoryToEdit
+                ? {
+                    id: categoryToEdit?.id,
+                    name: categoryToEdit?.name,
+                    color: categoryToEdit?.color,
+                  }
+                : null
+            }
             isOpen={isCreateCategoryModalOpen}
-            onClose={() => setIsCreateCategoryModalOpen(false)}
+            onClose={onCloseCategoryModal}
             onSubmit={onUpsertCategory}
           />
         </div>

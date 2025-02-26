@@ -37,8 +37,12 @@ export const CategoryModal = ({
       setIsEdit(true);
       setCategoryName(initialProps.name);
       setCategoryColor(initialProps.color);
+    } else {
+      setIsEdit(false);
+      setCategoryName("");
+      setCategoryColor("#44584B");
     }
-  }, [initialProps]);
+  }, [initialProps?.name]);
 
   const resetFormState = () => {
     setCategoryName("");
