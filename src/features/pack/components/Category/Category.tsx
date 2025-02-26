@@ -9,6 +9,7 @@ import { CategoryHeader } from "components/CategoryHeader";
 import { Items } from "components/Items";
 import { AddItemToPack } from "../AddItemToPack";
 import { CategoryWrapper } from "./Category.styled";
+import { Unit } from "types/Unit";
 
 type CategoryProps = {
   category: CategoryType;
@@ -54,11 +55,11 @@ export const Category = ({
     <CategoryWrapper ref={setNodeRef} style={style}>
       <CategoryHeader
         key={category.id}
-        categoryName={category.name}
+        name={category.name}
         color={category.color}
         quantity={category.totalQuantity}
         weight={category.totalWeight}
-        weightUnit="g"
+        weightUnit={Unit.G.toLowerCase()}
         onDelete={onDeleteCategory(category)}
         onEdit={onEditCategory(category)}
         dragHandleProps={{ attributes, listeners }}

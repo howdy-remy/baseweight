@@ -12,10 +12,10 @@ import {
 } from "./CategoryHeader.styled";
 
 type CategoryHeaderProps = {
-  categoryName?: string | null;
+  name?: string | null;
   color: string | null;
   dragHandleProps: {
-    attributes: DraggableAttributes;
+    attributes?: DraggableAttributes;
     listeners?: SyntheticListenerMap;
   };
   quantity: number;
@@ -26,7 +26,7 @@ type CategoryHeaderProps = {
 };
 
 export const CategoryHeader = ({
-  categoryName,
+  name,
   color = "#abcabc",
   dragHandleProps,
   quantity,
@@ -51,10 +51,9 @@ export const CategoryHeader = ({
         <DragHandle />
       </div>
       <CategoryColor $color={color} />
-      <CategoryName as="h2">{categoryName}</CategoryName>
+      <CategoryName as="h2">{name}</CategoryName>
       <Weight>
-        {weight}
-        {weightUnit}
+        {weight} {weightUnit}
       </Weight>
       <Quantity>x {quantity}</Quantity>
       <Dropdown useIconButton={true} items={actions} />
