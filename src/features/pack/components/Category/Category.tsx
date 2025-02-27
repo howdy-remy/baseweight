@@ -1,41 +1,21 @@
-import { ChangeEvent } from "react";
+import { ReactNode } from "react";
+import { DraggableAttributes } from "@dnd-kit/core";
+import { SyntheticListenerMap } from "@dnd-kit/core/dist/hooks/utilities";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
-import type { Category as CategoryType } from "api/categories";
-import { Item } from "api/items";
-
-import { Unit } from "types/Unit";
-import { CategoryHeader } from "components/CategoryHeader";
-import { Items } from "components/Items";
-import { AddItemToPack } from "../AddItemToPack";
 import { CategoryWrapper } from "./Category.styled";
 
-type CategoryProps = {
-  category: CategoryType;
-  resultItems: Item[];
-  profileId: string;
-  refetch: () => void;
-  onDeleteCategory: (category: CategoryType) => () => void;
-  onEditCategory: (category: CategoryType) => () => void;
-  onInitiateCreateItem: (category: CategoryType) => (type: string) => void;
-  onSearchItems: (
-    category: CategoryType,
-  ) => (event: ChangeEvent<HTMLInputElement>) => void;
-  onSelectItem: (category: CategoryType) => (item: Item) => void;
-};
-
 export const Category = ({
-  category,
-  resultItems,
-  profileId,
-  onDeleteCategory,
-  onEditCategory,
-  onInitiateCreateItem,
-  onSearchItems,
-  onSelectItem,
-  refetch,
-}: CategoryProps) => {
+  id,
+  children,
+}: {
+  id: string;
+  children: (
+    attributes: DraggableAttributes,
+    listeners?: SyntheticListenerMap,
+  ) => ReactNode;
+}) => {
   const {
     attributes,
     isDragging,
@@ -43,7 +23,7 @@ export const Category = ({
     transform,
     transition,
     setNodeRef,
-  } = useSortable({ id: category.id.toString() });
+  } = useSortable({ id });
 
   const style = {
     opacity: isDragging ? 0.4 : undefined,
@@ -53,29 +33,7 @@ export const Category = ({
 
   return (
     <CategoryWrapper ref={setNodeRef} style={style}>
-      <CategoryHeader
-        key={category.id}
-        name={category.name}
-        color={category.color}
-        quantity={category.totalQuantity}
-        weight={category.totalWeight}
-        weightUnit={Unit.G.toLowerCase()}
-        onDelete={onDeleteCategory(category)}
-        onEdit={onEditCategory(category)}
-        dragHandleProps={{ attributes, listeners }}
-      />
-      <Items
-        items={category.categoryItems}
-        refetch={refetch}
-        categoryId={category.id}
-        profileId={profileId}
-      />
-      <AddItemToPack
-        onSearch={onSearchItems(category)}
-        onSelect={onSelectItem(category)}
-        onInitiateCreate={onInitiateCreateItem(category)}
-        results={resultItems ?? []}
-      />
+      {children(attributes, listeners)}
     </CategoryWrapper>
   );
 };

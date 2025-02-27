@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+
 import {
   closestCenter,
   DndContext,
@@ -10,35 +12,36 @@ import {
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
-import { ItemsWrapper } from "./Items.styled";
 import {
   arrayMove,
   SortableContext,
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
+
 import {
   CategoryItem,
-  useDeleteCategoriesItemMutation,
   useUpdateCategoryItemsMutation,
-  useUpdateQuantityMutation,
 } from "api/category_item";
-import { useEffect, useState } from "react";
+
 import { Item } from "components/Item";
 import { DragOverlayItem } from "components/Item/DragOverlayItem";
+import { ItemsWrapper } from "./Items.styled";
 
 type ItemsProps = {
   categoryId: number;
   items: CategoryItem[];
   profileId: string;
-  refetch: () => void;
+  removeItem: (id: number) => void;
+  updateQuantity: (categoryItemId: number, quantity: number) => void;
 };
 
 export const Items = ({
   categoryId,
   items,
   profileId,
-  refetch,
+  removeItem,
+  updateQuantity,
 }: ItemsProps) => {
   const [sortedItems, setSortedItems] = useState<CategoryItem[]>([]);
 
@@ -89,25 +92,6 @@ export const Items = ({
     setActiveId(null);
   };
 
-  // remove item from pack -----------------------------------------------------
-  const [deleteCategoriesItem] = useDeleteCategoriesItemMutation();
-
-  const removeItem = async (id: number) => {
-    await deleteCategoriesItem(id);
-    refetch();
-  };
-
-  // update item quantity ------------------------------------------------------
-  const [updateQuantity] = useUpdateQuantityMutation();
-
-  const updateItemQuantity = async (
-    categoryItemId: number,
-    quantity: number,
-  ) => {
-    await updateQuantity({ categoryItemId, quantity });
-    refetch();
-  };
-
   return (
     <ItemsWrapper>
       <DndContext
@@ -125,7 +109,7 @@ export const Items = ({
               key={categoryItem.id}
               categoryItem={categoryItem as CategoryItem}
               removeFromPack={removeItem}
-              updateItemQuantity={updateItemQuantity}
+              updateItemQuantity={updateQuantity}
             />
           ))}
         </SortableContext>

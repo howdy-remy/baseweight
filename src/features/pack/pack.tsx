@@ -18,13 +18,21 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 
+import { encode } from "lib/sqids";
+
+import { Unit } from "types/Unit";
+
 import { useGetPackQuery } from "api/packs";
 import {
   type Item as ItemType,
   useCreateItemMutation,
   useLazySearchItemsQuery,
 } from "api/items";
-import { useCreateCategoriesItemMutation } from "api/category_item";
+import {
+  useCreateCategoriesItemMutation,
+  useDeleteCategoriesItemMutation,
+  useUpdateQuantityMutation,
+} from "api/category_item";
 import {
   useDeleteCategoryMutation,
   useUpdateCategoriesMutation,
@@ -36,8 +44,14 @@ import { useAuth } from "contexts/Authentication";
 
 import { Layout } from "components/Layout/Layout";
 import { HeadingOne, TextSansRegular } from "components/Typography";
+import { Button } from "components/Button";
+import { IconButton } from "components/IconButton";
+import { Dropdown } from "components/Dropdown";
+import { CategoryHeader } from "components/CategoryHeader";
+import { Items } from "components/Items";
 
 import {
+  AddItemToPack,
   Category,
   CategoryModal,
   CreateItemModal,
@@ -45,11 +59,6 @@ import {
 } from "./components";
 
 import { PackActions, PackHeader, PackWrapper } from "./pack.styled";
-import { Button } from "components/Button";
-import { IconButton } from "components/IconButton";
-import { Dropdown } from "components/Dropdown";
-
-import { encode } from "lib/sqids";
 
 export const Pack = () => {
   const { session } = useAuth();
@@ -86,6 +95,7 @@ export const Pack = () => {
     },
   ];
 
+  // ITEMS =====================================================================
   // search for items not included in category ---------------------------------
   const [searchItems, { data: resultItems, isLoading: isLoadingItems }] =
     useLazySearchItemsQuery();
@@ -159,6 +169,26 @@ export const Pack = () => {
     refetch();
   };
 
+  // remove item from pack -----------------------------------------------------
+  const [deleteCategoriesItem] = useDeleteCategoriesItemMutation();
+
+  const removeItem = async (id: number) => {
+    await deleteCategoriesItem(id);
+    refetch();
+  };
+
+  // update item quantity ------------------------------------------------------
+  const [updateQuantity] = useUpdateQuantityMutation();
+
+  const updateItemQuantity = async (
+    categoryItemId: number,
+    quantity: number,
+  ) => {
+    await updateQuantity({ categoryItemId, quantity });
+    refetch();
+  };
+
+  // CATEGORIES ================================================================
   // create/edit category ------------------------------------------------------
   const [upsertCategory] = useUpsertCategoryMutation();
 
@@ -266,17 +296,38 @@ export const Pack = () => {
               >
                 {sortedCategories.map((category, i) => (
                   <Category
-                    key={category.id}
-                    category={category}
-                    resultItems={resultItems ?? []}
-                    profileId={session!.user.id}
-                    refetch={refetch}
-                    onEditCategory={onInitiateEditCategory}
-                    onDeleteCategory={onDeleteCategory}
-                    onInitiateCreateItem={onInitiateCreateItem}
-                    onSearchItems={onSearchItems}
-                    onSelectItem={onSelectItem}
-                  />
+                    key={category.id.toString()}
+                    id={category.id.toString()}
+                  >
+                    {(attributes, listeners) => (
+                      <>
+                        <CategoryHeader
+                          key={category.id}
+                          name={category.name}
+                          color={category.color}
+                          quantity={category.totalQuantity}
+                          weight={category.totalWeight}
+                          weightUnit={Unit.G.toLowerCase()}
+                          onDelete={onDeleteCategory(category)}
+                          onEdit={onInitiateEditCategory(category)}
+                          dragHandleProps={{ attributes, listeners }}
+                        />
+                        <Items
+                          items={category.categoryItems}
+                          categoryId={category.id}
+                          profileId={session!.user.id}
+                          removeItem={removeItem}
+                          updateQuantity={updateItemQuantity}
+                        />
+                        <AddItemToPack
+                          onSearch={onSearchItems(category)}
+                          onSelect={onSelectItem(category)}
+                          onInitiateCreate={onInitiateCreateItem(category)}
+                          results={resultItems ?? []}
+                        />
+                      </>
+                    )}
+                  </Category>
                 ))}
                 <DragOverlay adjustScale={false} />
               </SortableContext>
