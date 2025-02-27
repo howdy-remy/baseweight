@@ -19,10 +19,18 @@ import { TextSansBold } from "components/Typography";
 
 export const Layout = ({ children }: { children: ReactNode }) => {
   const { session } = useAuth();
-  const { data: profile } = useGetProfileQuery({ userId: session?.user.id });
-  const { data: packs } = useGetPacksQuery({
-    userId: session?.user.id,
-  });
+  const { data: profile } = useGetProfileQuery(
+    { userId: session?.user.id },
+    {
+      skip: !session,
+    },
+  );
+  const { data: packs } = useGetPacksQuery(
+    {
+      userId: session?.user.id,
+    },
+    { skip: !session },
+  );
 
   return (
     <Wrapper>
@@ -33,19 +41,23 @@ export const Layout = ({ children }: { children: ReactNode }) => {
           </LogoType>
         </Link>
 
-        <SidebarLinks>
-          <SidebarLink to="/">
-            <TextSansBold>All Gear</TextSansBold>
-          </SidebarLink>
-          <SidebarLink to="/">
-            <TextSansBold>Packs</TextSansBold>
-          </SidebarLink>
-          {packs?.map((pack) => (
-            <SidebarLink to={`/packs/${pack.id}`} key={pack.id}>
-              {pack.name}
+        {session ? (
+          <SidebarLinks>
+            <SidebarLink to="/">
+              <TextSansBold>All Gear</TextSansBold>
             </SidebarLink>
-          ))}
-        </SidebarLinks>
+            <SidebarLink to="/">
+              <TextSansBold>Packs</TextSansBold>
+            </SidebarLink>
+            {packs?.map((pack) => (
+              <SidebarLink to={`/packs/${pack.id}`} key={pack.id}>
+                {pack.name}
+              </SidebarLink>
+            ))}
+          </SidebarLinks>
+        ) : (
+          <p>sign up</p>
+        )}
 
         <Link to="/account" style={{ textDecoration: "none" }}>
           <AccountInfo>

@@ -12,23 +12,25 @@ import {
 } from "./CategoryHeader.styled";
 
 type CategoryHeaderProps = {
-  name?: string | null;
+  name: string | null;
   color: string | null;
-  dragHandleProps: {
-    attributes?: DraggableAttributes;
+  dragHandleProps?: {
+    attributes: DraggableAttributes;
     listeners?: SyntheticListenerMap;
   };
+  isPublic?: boolean;
   quantity: number;
   weight: number;
   weightUnit: string;
-  onDelete: () => void;
-  onEdit: () => void;
+  onDelete?: () => void;
+  onEdit?: () => void;
 };
 
 export const CategoryHeader = ({
   name,
   color = "#abcabc",
   dragHandleProps,
+  isPublic = false,
   quantity,
   weight,
   weightUnit,
@@ -46,17 +48,19 @@ export const CategoryHeader = ({
     },
   ];
   return (
-    <CategoryWrapper>
-      <div {...dragHandleProps.attributes} {...dragHandleProps.listeners}>
-        <DragHandle />
-      </div>
+    <CategoryWrapper $isPublic={isPublic}>
+      {!isPublic && (
+        <div {...dragHandleProps?.attributes} {...dragHandleProps?.listeners}>
+          <DragHandle />
+        </div>
+      )}
       <CategoryColor $color={color} />
       <CategoryName as="h2">{name}</CategoryName>
       <Weight>
         {weight} {weightUnit}
       </Weight>
       <Quantity>x {quantity}</Quantity>
-      <Dropdown useIconButton={true} items={actions} />
+      {!isPublic && <Dropdown useIconButton={true} items={actions} />}
     </CategoryWrapper>
   );
 };

@@ -6,7 +6,7 @@ import { Link } from "react-router";
 export const Wrapper = styled.div`
   display: grid;
   grid-template-columns: 296px 1fr;
-  column-gap: 24px;
+  /* column-gap: 24px; */
   width: 100%;
 `;
 

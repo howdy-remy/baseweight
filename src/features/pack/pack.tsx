@@ -44,8 +44,12 @@ import {
   OnSubmitItemProps,
 } from "./components";
 
-import { PackWrapper } from "./pack.styled";
+import { PackActions, PackHeader, PackWrapper } from "./pack.styled";
 import { Button } from "components/Button";
+import { IconButton } from "components/IconButton";
+import { Dropdown } from "components/Dropdown";
+
+import { encode } from "lib/sqids";
 
 export const Pack = () => {
   const { session } = useAuth();
@@ -61,8 +65,29 @@ export const Pack = () => {
     setSortedCategories(sorted);
   }, [pack]);
 
+  // pack actions
+  const copyShareLink = () => {
+    if (!pack?.id) {
+      return;
+    }
+    const id = encode(pack.id);
+    const url = `${window.location.origin}/p/${id}`;
+    navigator.clipboard.writeText(url);
+  };
+
+  const packActions = [
+    {
+      label: "Edit",
+      onClick: () => console.log("Edit"),
+    },
+    {
+      label: "Copy share link",
+      onClick: copyShareLink,
+    },
+  ];
+
   // search for items not included in category ---------------------------------
-  const [searchItems, { data: items, isLoading: isLoadingItems }] =
+  const [searchItems, { data: resultItems, isLoading: isLoadingItems }] =
     useLazySearchItemsQuery();
 
   const onSearchItems =
@@ -217,72 +242,82 @@ export const Pack = () => {
 
   return (
     <Layout>
-      <PackWrapper>
-        <div>
-          <HeadingOne as="h1">{pack?.name}</HeadingOne>
-          <TextSansRegular>Lorem ipsum</TextSansRegular>
-          <DndContext
-            sensors={sensors}
-            collisionDetection={closestCenter}
-            onDragEnd={handleDragEnd}
-          >
-            <SortableContext
-              items={sortedCategories.map((item) => item.id.toString())}
-              strategy={verticalListSortingStrategy}
+      <main>
+        <PackHeader>
+          <TextSansRegular>{pack?.name} | weight</TextSansRegular>
+          <PackActions>
+            <IconButton icon="chat" variant="secondary" />
+            <IconButton icon="star" variant="secondary" />
+            <Dropdown useIconButton={true} items={packActions} />
+          </PackActions>
+        </PackHeader>
+        <PackWrapper>
+          <div>
+            <HeadingOne as="h1">{pack?.name}</HeadingOne>
+            <TextSansRegular>Lorem ipsum</TextSansRegular>
+            <DndContext
+              sensors={sensors}
+              collisionDetection={closestCenter}
+              onDragEnd={handleDragEnd}
             >
-              {sortedCategories.map((category, i) => (
-                <Category
-                  key={category.id}
-                  category={category}
-                  items={items ?? []}
-                  profileId={session!.user.id}
-                  refetch={refetch}
-                  onEditCategory={onInitiateEditCategory}
-                  onDeleteCategory={onDeleteCategory}
-                  onInitiateCreateItem={onInitiateCreateItem}
-                  onSearchItems={onSearchItems}
-                  onSelectItem={onSelectItem}
-                />
-              ))}
-              <DragOverlay adjustScale={false} />
-            </SortableContext>
-          </DndContext>
+              <SortableContext
+                items={sortedCategories.map((item) => item.id.toString())}
+                strategy={verticalListSortingStrategy}
+              >
+                {sortedCategories.map((category, i) => (
+                  <Category
+                    key={category.id}
+                    category={category}
+                    resultItems={resultItems ?? []}
+                    profileId={session!.user.id}
+                    refetch={refetch}
+                    onEditCategory={onInitiateEditCategory}
+                    onDeleteCategory={onDeleteCategory}
+                    onInitiateCreateItem={onInitiateCreateItem}
+                    onSearchItems={onSearchItems}
+                    onSelectItem={onSelectItem}
+                  />
+                ))}
+                <DragOverlay adjustScale={false} />
+              </SortableContext>
+            </DndContext>
 
-          {/* add category button ------------------------------------------ */}
-          <Button
-            variant="secondary"
-            size="large"
-            expandWidth
-            onClick={() => setIsCreateCategoryModalOpen(true)}
-          >
-            Add category
-          </Button>
+            {/* add category button ------------------------------------------ */}
+            <Button
+              variant="secondary"
+              size="large"
+              expandWidth
+              onClick={() => setIsCreateCategoryModalOpen(true)}
+            >
+              Add category
+            </Button>
 
-          {/* modals ------------------------------------------------------- */}
-          <CreateItemModal
-            categoryName={categoryToAddTo?.name || "category"}
-            isOpen={isCreateItemModalOpen}
-            initialType={query}
-            onClose={() => setIsCreateItemModalOpen(false)}
-            onSubmit={createNewItemAndAddToPack}
-          />
+            {/* modals ------------------------------------------------------- */}
+            <CreateItemModal
+              categoryName={categoryToAddTo?.name || "category"}
+              isOpen={isCreateItemModalOpen}
+              initialType={query}
+              onClose={() => setIsCreateItemModalOpen(false)}
+              onSubmit={createNewItemAndAddToPack}
+            />
 
-          <CategoryModal
-            initialProps={
-              categoryToEdit
-                ? {
-                    id: categoryToEdit?.id,
-                    name: categoryToEdit?.name,
-                    color: categoryToEdit?.color,
-                  }
-                : null
-            }
-            isOpen={isCreateCategoryModalOpen}
-            onClose={onCloseCategoryModal}
-            onSubmit={onUpsertCategory}
-          />
-        </div>
-      </PackWrapper>
+            <CategoryModal
+              initialProps={
+                categoryToEdit
+                  ? {
+                      id: categoryToEdit?.id,
+                      name: categoryToEdit?.name,
+                      color: categoryToEdit?.color,
+                    }
+                  : null
+              }
+              isOpen={isCreateCategoryModalOpen}
+              onClose={onCloseCategoryModal}
+              onSubmit={onUpsertCategory}
+            />
+          </div>
+        </PackWrapper>
+      </main>
     </Layout>
   );
 };

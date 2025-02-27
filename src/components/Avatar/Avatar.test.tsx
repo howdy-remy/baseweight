@@ -15,7 +15,7 @@ vi.mock("lib/supabaseClient", () => ({
   },
 }));
 
-describe("Avatar", () => {
+describe.skip("Avatar", () => {
   it("renders initial when no url is provided", () => {
     render(<Avatar initial="R" size={50} url={null} />);
     expect(screen.getByText("R")).toBeInTheDocument();

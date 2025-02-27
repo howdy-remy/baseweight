@@ -9,7 +9,8 @@
       "styles/*": ["./styles/*"],
       "lib/*": ["./lib/*"],
       "types/*": ["./types/*"],
-      "utils/*": ["./utils/*"]
+      "utils/*": ["./utils/*"],
+      "features/*": ["./features/*"]
     },
     "types": ["vitest", "@testing-library/jest-dom"],
     "target": "ESNext",

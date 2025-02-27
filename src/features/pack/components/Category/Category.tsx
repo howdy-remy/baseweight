@@ -5,15 +5,15 @@ import { CSS } from "@dnd-kit/utilities";
 import type { Category as CategoryType } from "api/categories";
 import { Item } from "api/items";
 
+import { Unit } from "types/Unit";
 import { CategoryHeader } from "components/CategoryHeader";
 import { Items } from "components/Items";
 import { AddItemToPack } from "../AddItemToPack";
 import { CategoryWrapper } from "./Category.styled";
-import { Unit } from "types/Unit";
 
 type CategoryProps = {
   category: CategoryType;
-  items: Item[];
+  resultItems: Item[];
   profileId: string;
   refetch: () => void;
   onDeleteCategory: (category: CategoryType) => () => void;
@@ -27,7 +27,7 @@ type CategoryProps = {
 
 export const Category = ({
   category,
-  items,
+  resultItems,
   profileId,
   onDeleteCategory,
   onEditCategory,
@@ -74,7 +74,7 @@ export const Category = ({
         onSearch={onSearchItems(category)}
         onSelect={onSelectItem(category)}
         onInitiateCreate={onInitiateCreateItem(category)}
-        results={items ?? []}
+        results={resultItems ?? []}
       />
     </CategoryWrapper>
   );

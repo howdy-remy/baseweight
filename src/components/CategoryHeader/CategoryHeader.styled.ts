@@ -1,16 +1,23 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import {
   HeadingTwo,
   TextMonoBoldItalic,
   TextMonoRegularItalic,
 } from "../Typography";
 
-export const CategoryWrapper = styled.div`
+export const CategoryWrapper = styled.div<{ $isPublic: boolean }>`
   display: grid;
   align-items: center;
   gap: ${({ theme }) => theme.spacing.m}px;
 
-  grid-template-columns: 24px 24px 1fr 80px 48px 24px;
+  ${({ $isPublic }) =>
+    $isPublic
+      ? css`
+          grid-template-columns: 24px 1fr 80px 48px;
+        `
+      : css`
+          grid-template-columns: 24px 24px 1fr 80px 48px 24px;
+        `}
 
   width: 100%;
   height: 40px;

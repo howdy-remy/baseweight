@@ -11,7 +11,7 @@ type Story = StoryObj<typeof CategoryHeader>;
 
 export const Base: Story = {
   args: {
-    categoryName: "Category",
+    name: "Category",
     color: "#abcabc",
     quantity: 100,
     weight: 88.88,

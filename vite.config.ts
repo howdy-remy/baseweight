@@ -20,6 +20,7 @@ export default defineConfig({
       lib: "/src/lib",
       types: "/src/types",
       utils: "/src/utils",
+      features: "/src/features",
     },
   },
 });
