@@ -17,19 +17,17 @@ import {
 
 type CategoryHeaderProps = {
   category: Category;
-  dragHandleProps?: {
+  dragHandleProps: {
     attributes: DraggableAttributes;
     listeners?: SyntheticListenerMap;
   };
-  isPublic?: boolean;
-  onDelete?: () => void;
-  onEdit?: () => void;
+  onDelete: () => void;
+  onEdit: () => void;
 };
 
 export const CategoryHeader = ({
   category,
   dragHandleProps,
-  isPublic = false,
   onDelete,
   onEdit,
 }: CategoryHeaderProps) => {
@@ -44,19 +42,17 @@ export const CategoryHeader = ({
     },
   ];
   return (
-    <CategoryWrapper $isPublic={isPublic}>
-      {!isPublic && (
-        <div {...dragHandleProps?.attributes} {...dragHandleProps?.listeners}>
-          <DragHandle />
-        </div>
-      )}
+    <CategoryWrapper>
+      <div {...dragHandleProps?.attributes} {...dragHandleProps?.listeners}>
+        <DragHandle />
+      </div>
       <CategoryColor $color={category.color} />
       <CategoryName as="h2">{category.name}</CategoryName>
       <Weight>
         {category.totalWeight} {Unit.G}
       </Weight>
       <Quantity>x {category.totalWeight}</Quantity>
-      {!isPublic && <Dropdown useIconButton={true} items={actions} />}
+      <Dropdown useIconButton={true} items={actions} />
     </CategoryWrapper>
   );
 };

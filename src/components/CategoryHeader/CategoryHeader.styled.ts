@@ -5,7 +5,7 @@ import {
   TextMonoRegularItalic,
 } from "../Typography";
 
-export const CategoryWrapper = styled.div<{ $isPublic: boolean }>`
+export const CategoryWrapper = styled.div<{ $isPublic?: boolean }>`
   display: grid;
   align-items: center;
   gap: ${({ theme }) => theme.spacing.m}px;

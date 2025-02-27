@@ -20,8 +20,6 @@ import {
 
 import { encode } from "lib/sqids";
 
-import { Unit } from "types/Unit";
-
 import { useGetPackQuery } from "api/packs";
 import {
   type Item as ItemType,
@@ -135,14 +133,12 @@ export const Pack = () => {
   }: OnSubmitItemProps) => {
     if (!categoryToAddTo) return;
     const { data } = await createItem({
-      profile_id: session!.user.id,
       type,
       description,
       weight_in_grams: weightInGrams,
       unit,
     });
     await createCategoriesItem({
-      profile_id: session!.user.id,
       item_id: data?.[0].id,
       category_id: categoryToAddTo?.id,
       quantity,
@@ -159,7 +155,6 @@ export const Pack = () => {
 
   const onSelectItem = (category: CategoryType) => async (item: ItemType) => {
     await createCategoriesItem({
-      profile_id: session!.user.id,
       item_id: item.id,
       category_id: category.id,
       quantity: 1,

@@ -25,12 +25,7 @@ export const Layout = ({ children }: { children: ReactNode }) => {
       skip: !session,
     },
   );
-  const { data: packs } = useGetPacksQuery(
-    {
-      userId: session?.user.id,
-    },
-    { skip: !session },
-  );
+  const { data: packs } = useGetPacksQuery({}, { skip: !session });
 
   return (
     <Wrapper>

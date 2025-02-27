@@ -1,8 +1,9 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
-import { supabase } from "../lib/supabaseClient";
+
+import { supabase } from "lib/supabaseClient";
+
 import { supabaseBaseQuery } from "./baseQuery";
 import { Item } from "./items";
-import { Quantity } from "../components/CategoryHeader/CategoryHeader.styled";
 
 export type CategoryItem = {
   id: number;
@@ -17,9 +18,14 @@ export const categoriesItemApi = createApi({
   endpoints: (builder) => ({
     createCategoriesItem: builder.mutation({
       queryFn: async (categoriesItem) => {
+        const { data: userData } = await supabase.auth.getUser();
+
         const { data, error } = await supabase
           .from("category_item")
-          .insert(categoriesItem)
+          .insert({
+            ...categoriesItem,
+            profile_id: userData.user?.id,
+          })
           .select();
 
         if (error) {

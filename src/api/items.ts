@@ -45,9 +45,14 @@ export const itemsApi = createApi({
     }),
     createItem: builder.mutation({
       queryFn: async (item) => {
+        const { data: userData } = await supabase.auth.getUser();
+
         const { data, error } = await supabase
           .from("items")
-          .insert(item)
+          .insert({
+            ...item,
+            profile_id: userData.user?.id,
+          })
           .select();
 
         if (error) {

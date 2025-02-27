@@ -70,11 +70,12 @@ export const packsApi = createApi({
   baseQuery: supabaseBaseQuery,
   endpoints: (builder) => ({
     getPacks: builder.query({
-      queryFn: async ({ userId }) => {
+      queryFn: async () => {
+        const { data: userData } = await supabase.auth.getUser();
         const { data, error } = await supabase
           .from("packs")
           .select("name, id")
-          .eq("profile_id", userId);
+          .eq("profile_id", userData.user?.id);
         if (error) {
           return { error };
         }
