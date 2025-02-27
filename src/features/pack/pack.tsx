@@ -303,11 +303,7 @@ export const Pack = () => {
                       <>
                         <CategoryHeader
                           key={category.id}
-                          name={category.name}
-                          color={category.color}
-                          quantity={category.totalQuantity}
-                          weight={category.totalWeight}
-                          weightUnit={Unit.G.toLowerCase()}
+                          category={category}
                           onDelete={onDeleteCategory(category)}
                           onEdit={onInitiateEditCategory(category)}
                           dragHandleProps={{ attributes, listeners }}

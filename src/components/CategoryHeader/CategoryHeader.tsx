@@ -1,6 +1,10 @@
 import type { DraggableAttributes } from "@dnd-kit/core";
 import type { SyntheticListenerMap } from "@dnd-kit/core/dist/hooks/utilities";
 
+import { Unit } from "types/Unit";
+
+import { Category } from "api/categories";
+
 import { DragHandle } from "../DragHandle";
 import { Dropdown } from "../Dropdown";
 import {
@@ -12,28 +16,20 @@ import {
 } from "./CategoryHeader.styled";
 
 type CategoryHeaderProps = {
-  name: string | null;
-  color: string | null;
+  category: Category;
   dragHandleProps?: {
     attributes: DraggableAttributes;
     listeners?: SyntheticListenerMap;
   };
   isPublic?: boolean;
-  quantity: number;
-  weight: number;
-  weightUnit: string;
   onDelete?: () => void;
   onEdit?: () => void;
 };
 
 export const CategoryHeader = ({
-  name,
-  color = "#abcabc",
+  category,
   dragHandleProps,
   isPublic = false,
-  quantity,
-  weight,
-  weightUnit,
   onDelete,
   onEdit,
 }: CategoryHeaderProps) => {
@@ -54,12 +50,12 @@ export const CategoryHeader = ({
           <DragHandle />
         </div>
       )}
-      <CategoryColor $color={color} />
-      <CategoryName as="h2">{name}</CategoryName>
+      <CategoryColor $color={category.color} />
+      <CategoryName as="h2">{category.name}</CategoryName>
       <Weight>
-        {weight} {weightUnit}
+        {category.totalWeight} {Unit.G}
       </Weight>
-      <Quantity>x {quantity}</Quantity>
+      <Quantity>x {category.totalWeight}</Quantity>
       {!isPublic && <Dropdown useIconButton={true} items={actions} />}
     </CategoryWrapper>
   );
