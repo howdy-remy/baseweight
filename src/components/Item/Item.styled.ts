@@ -6,12 +6,22 @@ import {
   TextSansRegular,
 } from "../Typography";
 
-export const ItemWrapper = styled.div<{ $isDragging?: boolean }>`
+export const ItemWrapper = styled.div<{
+  $isDragging?: boolean;
+  $isPublic?: boolean;
+}>`
   display: grid;
   align-items: center;
   gap: ${({ theme }) => theme.spacing.m}px;
 
-  grid-template-columns: 24px max-content 1fr 80px 93px 24px;
+  ${({ $isPublic }) =>
+    $isPublic
+      ? css`
+          grid-template-columns: max-content 1fr 80px 93px;
+        `
+      : css`
+          grid-template-columns: 24px max-content 1fr 80px 93px 24px;
+        `}
 
   width: 100%;
   height: 32px;
