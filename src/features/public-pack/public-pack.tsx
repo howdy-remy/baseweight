@@ -21,11 +21,7 @@ import {
 export const PublicPack = () => {
   let { packId } = useParams();
 
-  const {
-    data: pack,
-    isLoading,
-    refetch,
-  } = useGetPackQuery({ packId: decode(packId!) });
+  const { data: pack } = useGetPackQuery({ packId: decode(packId!) });
 
   const [sortedCategories, setSortedCategories] = useState<CategoryType[]>([]);
 

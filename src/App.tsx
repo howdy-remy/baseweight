@@ -1,12 +1,15 @@
-import "./App.css";
+import { BrowserRouter, Route, Routes } from "react-router";
+
+import { useAuth } from "contexts/Authentication";
+
 import Auth from "./Auth";
 import Account from "./Account";
-import { BrowserRouter, Route, Routes } from "react-router";
 import { Profile } from "./Profile";
-import { useAuth } from "./contexts/Authentication";
-import { Pack } from "./features/pack/pack";
-import { Packs } from "./features/packs/packs";
-import { PublicPack } from "./features/publicPack/publicPack";
+
+import { Pack } from "features/pack";
+import { Packs } from "features/packs";
+import { PublicPack } from "features/public-pack";
+
 import { ProtectedRoute } from "components/ProtectedRoute";
 
 function App() {
