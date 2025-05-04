@@ -8,6 +8,7 @@ import { Unit } from "types/Unit";
 export type Pack = {
   id: number;
   name: string | null;
+  unit: Unit;
   categories: Category[];
 };
 
@@ -61,6 +62,7 @@ const packMapper: (pack: pack) => Pack = (pack) => {
   return {
     id: pack.id || 0,
     name: pack.name || "",
+    unit: pack.unit as Unit,
     categories: mappedCategories,
   };
 };
@@ -91,6 +93,7 @@ export const packsApi = createApi({
             `
           id,
           name,
+          unit,
           categories(
             id, 
             name,

@@ -70,11 +70,10 @@ export const CategoryModal = ({
           event.preventDefault();
           addCategory();
         }}
-        className="form-widget"
         role="form"
       >
         <FieldsWrapper>
-          <Field label="Category Name">
+          <Field label="Category name">
             <Input
               type="text"
               name="Category Name"

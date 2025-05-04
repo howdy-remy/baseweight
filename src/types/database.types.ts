@@ -4,231 +4,234 @@ export type Json =
   | boolean
   | null
   | { [key: string]: Json | undefined }
-  | Json[]
+  | Json[];
 
 export type Database = {
   public: {
     Tables: {
       categories: {
         Row: {
-          color: string | null
-          created_at: string
-          id: number
-          name: string | null
-          order: number
-          pack_id: number | null
-          profile_id: string | null
-        }
+          color: string | null;
+          created_at: string;
+          id: number;
+          name: string | null;
+          order: number;
+          pack_id: number | null;
+          profile_id: string | null;
+        };
         Insert: {
-          color?: string | null
-          created_at?: string
-          id?: number
-          name?: string | null
-          order: number
-          pack_id?: number | null
-          profile_id?: string | null
-        }
+          color?: string | null;
+          created_at?: string;
+          id?: number;
+          name?: string | null;
+          order: number;
+          pack_id?: number | null;
+          profile_id?: string | null;
+        };
         Update: {
-          color?: string | null
-          created_at?: string
-          id?: number
-          name?: string | null
-          order?: number
-          pack_id?: number | null
-          profile_id?: string | null
-        }
+          color?: string | null;
+          created_at?: string;
+          id?: number;
+          name?: string | null;
+          order?: number;
+          pack_id?: number | null;
+          profile_id?: string | null;
+        };
         Relationships: [
           {
-            foreignKeyName: "pack_category_pack_id_fkey"
-            columns: ["pack_id"]
-            isOneToOne: false
-            referencedRelation: "packs"
-            referencedColumns: ["id"]
+            foreignKeyName: "pack_category_pack_id_fkey";
+            columns: ["pack_id"];
+            isOneToOne: false;
+            referencedRelation: "packs";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "pack_category_profile_id_fkey"
-            columns: ["profile_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
+            foreignKeyName: "pack_category_profile_id_fkey";
+            columns: ["profile_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
           },
-        ]
-      }
+        ];
+      };
       category_item: {
         Row: {
-          category_id: number
-          created_at: string
-          id: number
-          item_id: number
-          order: number
-          profile_id: string
-          quantity: number
-        }
+          category_id: number;
+          created_at: string;
+          id: number;
+          item_id: number;
+          order: number;
+          profile_id: string;
+          quantity: number;
+        };
         Insert: {
-          category_id: number
-          created_at?: string
-          id?: number
-          item_id: number
-          order: number
-          profile_id: string
-          quantity?: number
-        }
+          category_id: number;
+          created_at?: string;
+          id?: number;
+          item_id: number;
+          order: number;
+          profile_id: string;
+          quantity?: number;
+        };
         Update: {
-          category_id?: number
-          created_at?: string
-          id?: number
-          item_id?: number
-          order?: number
-          profile_id?: string
-          quantity?: number
-        }
+          category_id?: number;
+          created_at?: string;
+          id?: number;
+          item_id?: number;
+          order?: number;
+          profile_id?: string;
+          quantity?: number;
+        };
         Relationships: [
           {
-            foreignKeyName: "pack_category_item_category_id_fkey"
-            columns: ["category_id"]
-            isOneToOne: false
-            referencedRelation: "categories"
-            referencedColumns: ["id"]
+            foreignKeyName: "pack_category_item_category_id_fkey";
+            columns: ["category_id"];
+            isOneToOne: false;
+            referencedRelation: "categories";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "pack_category_item_item_id_fkey"
-            columns: ["item_id"]
-            isOneToOne: false
-            referencedRelation: "items"
-            referencedColumns: ["id"]
+            foreignKeyName: "pack_category_item_item_id_fkey";
+            columns: ["item_id"];
+            isOneToOne: false;
+            referencedRelation: "items";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "pack_category_item_profile_id_fkey"
-            columns: ["profile_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
+            foreignKeyName: "pack_category_item_profile_id_fkey";
+            columns: ["profile_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
           },
-        ]
-      }
+        ];
+      };
       items: {
         Row: {
-          created_at: string
-          description: string | null
-          id: number
-          profile_id: string | null
-          quantity: number | null
-          type: string | null
-          unit: Database["public"]["Enums"]["Unit"]
-          weight_in_grams: number
-          type_description: string | null
-        }
+          created_at: string;
+          description: string | null;
+          id: number;
+          profile_id: string | null;
+          quantity: number | null;
+          type: string | null;
+          unit: Database["public"]["Enums"]["Unit"];
+          weight_in_grams: number;
+          type_description: string | null;
+        };
         Insert: {
-          created_at?: string
-          description?: string | null
-          id?: number
-          profile_id?: string | null
-          quantity?: number | null
-          type?: string | null
-          unit?: Database["public"]["Enums"]["Unit"]
-          weight_in_grams?: number
-        }
+          created_at?: string;
+          description?: string | null;
+          id?: number;
+          profile_id?: string | null;
+          quantity?: number | null;
+          type?: string | null;
+          unit?: Database["public"]["Enums"]["Unit"];
+          weight_in_grams?: number;
+        };
         Update: {
-          created_at?: string
-          description?: string | null
-          id?: number
-          profile_id?: string | null
-          quantity?: number | null
-          type?: string | null
-          unit?: Database["public"]["Enums"]["Unit"]
-          weight_in_grams?: number
-        }
+          created_at?: string;
+          description?: string | null;
+          id?: number;
+          profile_id?: string | null;
+          quantity?: number | null;
+          type?: string | null;
+          unit?: Database["public"]["Enums"]["Unit"];
+          weight_in_grams?: number;
+        };
         Relationships: [
           {
-            foreignKeyName: "Item_profile_id_fkey"
-            columns: ["profile_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
+            foreignKeyName: "Item_profile_id_fkey";
+            columns: ["profile_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
           },
-        ]
-      }
+        ];
+      };
       packs: {
         Row: {
-          created_at: string
-          id: number
-          image_url: string | null
-          name: string | null
-          profile_id: string | null
-        }
+          created_at: string;
+          id: number;
+          image_url: string | null;
+          name: string | null;
+          profile_id: string | null;
+          unit: Database["public"]["Enums"]["Unit"] | null;
+        };
         Insert: {
-          created_at?: string
-          id?: number
-          image_url?: string | null
-          name?: string | null
-          profile_id?: string | null
-        }
+          created_at?: string;
+          id?: number;
+          image_url?: string | null;
+          name?: string | null;
+          profile_id?: string | null;
+          unit?: Database["public"]["Enums"]["Unit"] | null;
+        };
         Update: {
-          created_at?: string
-          id?: number
-          image_url?: string | null
-          name?: string | null
-          profile_id?: string | null
-        }
+          created_at?: string;
+          id?: number;
+          image_url?: string | null;
+          name?: string | null;
+          profile_id?: string | null;
+          unit?: Database["public"]["Enums"]["Unit"] | null;
+        };
         Relationships: [
           {
-            foreignKeyName: "pack_profile_id_fkey"
-            columns: ["profile_id"]
-            isOneToOne: false
-            referencedRelation: "profiles"
-            referencedColumns: ["id"]
+            foreignKeyName: "pack_profile_id_fkey";
+            columns: ["profile_id"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
           },
-        ]
-      }
+        ];
+      };
       profiles: {
         Row: {
-          avatar_url: string | null
-          full_name: string | null
-          id: string
-          updated_at: string | null
-          username: string | null
-          website: string | null
-        }
+          avatar_url: string | null;
+          full_name: string | null;
+          id: string;
+          updated_at: string | null;
+          username: string | null;
+          website: string | null;
+        };
         Insert: {
-          avatar_url?: string | null
-          full_name?: string | null
-          id: string
-          updated_at?: string | null
-          username?: string | null
-          website?: string | null
-        }
+          avatar_url?: string | null;
+          full_name?: string | null;
+          id: string;
+          updated_at?: string | null;
+          username?: string | null;
+          website?: string | null;
+        };
         Update: {
-          avatar_url?: string | null
-          full_name?: string | null
-          id?: string
-          updated_at?: string | null
-          username?: string | null
-          website?: string | null
-        }
-        Relationships: []
-      }
-    }
+          avatar_url?: string | null;
+          full_name?: string | null;
+          id?: string;
+          updated_at?: string | null;
+          username?: string | null;
+          website?: string | null;
+        };
+        Relationships: [];
+      };
+    };
     Views: {
-      [_ in never]: never
-    }
+      [_ in never]: never;
+    };
     Functions: {
       type_description: {
         Args: {
-          "": unknown
-        }
-        Returns: string
-      }
-    }
+          "": unknown;
+        };
+        Returns: string;
+      };
+    };
     Enums: {
-      Unit: "OZ" | "LB" | "G" | "KG"
-    }
+      Unit: "OZ" | "LB" | "G" | "KG";
+    };
     CompositeTypes: {
-      [_ in never]: never
-    }
-  }
-}
+      [_ in never]: never;
+    };
+  };
+};
 
-type PublicSchema = Database[Extract<keyof Database, "public">]
+type PublicSchema = Database[Extract<keyof Database, "public">];
 
 export type Tables<
   PublicTableNameOrOptions extends
@@ -241,7 +244,7 @@ export type Tables<
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
       Database[PublicTableNameOrOptions["schema"]]["Views"])[TableName] extends {
-      Row: infer R
+      Row: infer R;
     }
     ? R
     : never
@@ -249,11 +252,11 @@ export type Tables<
         PublicSchema["Views"])
     ? (PublicSchema["Tables"] &
         PublicSchema["Views"])[PublicTableNameOrOptions] extends {
-        Row: infer R
+        Row: infer R;
       }
       ? R
       : never
-    : never
+    : never;
 
 export type TablesInsert<
   PublicTableNameOrOptions extends
@@ -264,17 +267,17 @@ export type TablesInsert<
     : never = never,
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-      Insert: infer I
+      Insert: infer I;
     }
     ? I
     : never
   : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
     ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
-        Insert: infer I
+        Insert: infer I;
       }
       ? I
       : never
-    : never
+    : never;
 
 export type TablesUpdate<
   PublicTableNameOrOptions extends
@@ -285,17 +288,17 @@ export type TablesUpdate<
     : never = never,
 > = PublicTableNameOrOptions extends { schema: keyof Database }
   ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
-      Update: infer U
+      Update: infer U;
     }
     ? U
     : never
   : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
     ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
-        Update: infer U
+        Update: infer U;
       }
       ? U
       : never
-    : never
+    : never;
 
 export type Enums<
   PublicEnumNameOrOptions extends
@@ -308,14 +311,14 @@ export type Enums<
   ? Database[PublicEnumNameOrOptions["schema"]]["Enums"][EnumName]
   : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
     ? PublicSchema["Enums"][PublicEnumNameOrOptions]
-    : never
+    : never;
 
 export type CompositeTypes<
   PublicCompositeTypeNameOrOptions extends
     | keyof PublicSchema["CompositeTypes"]
     | { schema: keyof Database },
   CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
-    schema: keyof Database
+    schema: keyof Database;
   }
     ? keyof Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
     : never = never,
@@ -323,4 +326,4 @@ export type CompositeTypes<
   ? Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
   : PublicCompositeTypeNameOrOptions extends keyof PublicSchema["CompositeTypes"]
     ? PublicSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
-    : never
+    : never;
