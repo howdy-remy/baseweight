@@ -8,6 +8,7 @@ import { Unit } from "types/Unit";
 export type Pack = {
   id: number;
   name: string | null;
+  description?: string | null;
   unit: Unit;
   categories: Category[];
 };
@@ -62,6 +63,7 @@ const packMapper: (pack: pack) => Pack = (pack) => {
   return {
     id: pack.id || 0,
     name: pack.name || "",
+    description: pack.description || "",
     unit: pack.unit as Unit,
     categories: mappedCategories,
   };
@@ -93,6 +95,7 @@ export const packsApi = createApi({
             `
           id,
           name,
+          description,
           unit,
           categories(
             id, 
@@ -123,7 +126,23 @@ export const packsApi = createApi({
         return { data: packMapper(data) };
       },
     }),
+    updatePack: builder.mutation({
+      queryFn: async (pack: Partial<Pack>) => {
+        const { data, error } = await supabase
+          .from("packs")
+          .upsert(pack)
+          .select();
+
+        if (error) {
+          console.error(error);
+          return { error };
+        }
+
+        return { data };
+      },
+    }),
   }),
 });
 
-export const { useGetPacksQuery, useGetPackQuery } = packsApi;
+export const { useGetPacksQuery, useGetPackQuery, useUpdatePackMutation } =
+  packsApi;

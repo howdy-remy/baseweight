@@ -1,5 +1,5 @@
 import { ChangeEvent, useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 
 import {
   closestCenter,
@@ -43,7 +43,6 @@ import { useAuth } from "contexts/Authentication";
 import { Layout } from "components/Layout/Layout";
 import { HeadingOne, TextSansRegular } from "components/Typography";
 import { Button } from "components/Button";
-import { IconButton } from "components/IconButton";
 import { Dropdown } from "components/Dropdown";
 import { CategoryHeader } from "components/CategoryHeader";
 import { Items } from "components/Items";
@@ -57,6 +56,8 @@ import {
 } from "./components";
 
 import { PackActions, PackHeader, PackWrapper } from "./pack.styled";
+import { convertGramsToUnit } from "utils/unit-conversion/unit-conversion";
+import { Space } from "components/Space";
 
 export const Pack = () => {
   const { session } = useAuth();
@@ -72,6 +73,10 @@ export const Pack = () => {
     setSortedCategories(sorted);
   }, [pack]);
 
+  const packTotalWeight = sortedCategories.reduce((acc, { totalWeight }) => {
+    return acc + totalWeight;
+  }, 0);
+
   // pack actions
   const copyShareLink = () => {
     if (!pack?.id) {
@@ -82,10 +87,11 @@ export const Pack = () => {
     navigator.clipboard.writeText(url);
   };
 
+  let navigate = useNavigate();
   const packActions = [
     {
       label: "Edit",
-      onClick: () => console.log("Edit"),
+      onClick: () => navigate(`/packs/${pack?.id}/edit`),
     },
     {
       label: "Copy share link",
@@ -269,17 +275,22 @@ export const Pack = () => {
     <Layout>
       <main>
         <PackHeader>
-          <TextSansRegular>{pack?.name} | weight</TextSansRegular>
+          <TextSansRegular>
+            {pack?.name} | {convertGramsToUnit(pack!.unit, packTotalWeight)}{" "}
+            {pack?.unit.toLowerCase()}
+          </TextSansRegular>
           <PackActions>
-            <IconButton icon="chat" variant="secondary" />
-            <IconButton icon="star" variant="secondary" />
+            {/* <IconButton icon="chat" variant="secondary" /> */}
+            {/* <IconButton icon="star" variant="secondary" /> */}
             <Dropdown useIconButton={true} items={packActions} />
           </PackActions>
         </PackHeader>
         <PackWrapper>
           <div>
             <HeadingOne as="h1">{pack?.name}</HeadingOne>
-            <TextSansRegular>Lorem ipsum</TextSansRegular>
+            <Space size="xxl" />
+            <TextSansRegular>{pack?.description}</TextSansRegular>
+            <Space size="xxl" />
             <DndContext
               sensors={sensors}
               collisionDetection={closestCenter}
@@ -299,6 +310,7 @@ export const Pack = () => {
                         <CategoryHeader
                           key={category.id}
                           category={category}
+                          packUnit={pack!.unit}
                           onDelete={onDeleteCategory(category)}
                           onEdit={onInitiateEditCategory(category)}
                           dragHandleProps={{ attributes, listeners }}

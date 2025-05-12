@@ -14,9 +14,11 @@ import {
   Quantity,
   Weight,
 } from "./CategoryHeader.styled";
+import { convertGramsToUnit } from "utils/unit-conversion/unit-conversion";
 
 type CategoryHeaderProps = {
   category: Category;
+  packUnit: Unit;
   dragHandleProps: {
     attributes: DraggableAttributes;
     listeners?: SyntheticListenerMap;
@@ -27,6 +29,7 @@ type CategoryHeaderProps = {
 
 export const CategoryHeader = ({
   category,
+  packUnit,
   dragHandleProps,
   onDelete,
   onEdit,
@@ -41,6 +44,9 @@ export const CategoryHeader = ({
       onClick: onDelete,
     },
   ];
+
+  const totalWeight = convertGramsToUnit(packUnit, category.totalWeight);
+
   return (
     <CategoryWrapper>
       <div {...dragHandleProps?.attributes} {...dragHandleProps?.listeners}>
@@ -49,9 +55,9 @@ export const CategoryHeader = ({
       <CategoryColor $color={category.color} />
       <CategoryName as="h2">{category.name}</CategoryName>
       <Weight>
-        {category.totalWeight} {Unit.G}
+        {totalWeight} {packUnit.toLowerCase()}
       </Weight>
-      <Quantity>x {category.totalWeight}</Quantity>
+      <Quantity>x {category.totalQuantity}</Quantity>
       <Dropdown useIconButton={true} items={actions} />
     </CategoryWrapper>
   );
