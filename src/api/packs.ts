@@ -127,7 +127,7 @@ export const packsApi = createApi({
       },
     }),
     updatePack: builder.mutation({
-      queryFn: async (pack: Partial<Pack>) => {
+      queryFn: async (pack: Partial<Pack>[]) => {
         const { data, error } = await supabase
           .from("packs")
           .upsert(pack)

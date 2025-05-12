@@ -1,31 +1,24 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 
-import { decode } from "lib/sqids";
+import { Unit } from "types/Unit";
 
 import { Category as CategoryType } from "api/categories";
 import { useGetPackQuery, useUpdatePackMutation } from "api/packs";
 
-import { PublicCategoryHeader } from "components/CategoryHeader";
-import { IconButton } from "components/IconButton";
-import { PublicItems } from "components/Items";
 import { Layout } from "components/Layout/Layout";
-import { HeadingOne, TextSansRegular } from "components/Typography";
-
-import {
-  PackActions,
-  PackHeader,
-  PackWrapper,
-} from "features/pack/pack.styled";
-import { convertGramsToUnit } from "utils/unit-conversion/unit-conversion";
-import { Input } from "components/Input";
-import { TextArea } from "components/TextArea";
-import { StyledForm } from "./pack-edit.styled";
-import { ActionsWrapper } from "components/Modal";
+import { TextSansRegular } from "components/Typography";
 import { Button } from "components/Button";
-import { Field, StackedFields } from "components/Field";
-import { Unit } from "types/Unit";
+import { Input } from "components/Input";
+import { Field } from "components/Field";
+import { ActionsWrapper } from "components/Modal";
 import { Select } from "components/Select";
+import { TextArea } from "components/TextArea";
+
+import { convertGramsToUnit } from "utils/unit-conversion/unit-conversion";
+
+import { PackHeader, PackWrapper } from "features/pack/pack.styled";
+import { StyledForm } from "./pack-edit.styled";
 
 export const PackEdit = () => {
   let { packId } = useParams();

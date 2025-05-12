@@ -40,12 +40,15 @@ import {
 
 import { useAuth } from "contexts/Authentication";
 
+import { convertGramsToUnit } from "utils/unit-conversion/unit-conversion";
+
 import { Layout } from "components/Layout/Layout";
 import { HeadingOne, TextSansRegular } from "components/Typography";
 import { Button } from "components/Button";
 import { Dropdown } from "components/Dropdown";
 import { CategoryHeader } from "components/CategoryHeader";
 import { Items } from "components/Items";
+import { Space } from "components/Space";
 
 import {
   AddItemToPack,
@@ -56,8 +59,6 @@ import {
 } from "./components";
 
 import { PackActions, PackHeader, PackWrapper } from "./pack.styled";
-import { convertGramsToUnit } from "utils/unit-conversion/unit-conversion";
-import { Space } from "components/Space";
 
 export const Pack = () => {
   const { session } = useAuth();
