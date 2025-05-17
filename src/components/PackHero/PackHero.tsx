@@ -2,6 +2,7 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { Buttons, Hero, HeroWrapper } from "./PackHero.styled";
 import { IconButton } from "components/IconButton";
 import { supabase } from "lib/supabaseClient";
+import { downloadImage } from "utils/download-image";
 
 type PackImageProps = {
   url?: null | string;
@@ -14,26 +15,11 @@ export const PackHero = ({ url, onUpload }: PackImageProps) => {
 
   useEffect(() => {
     if (url) {
-      downloadImage(url);
+      downloadImage(url, "pack-hero", setImageUrl);
     } else {
       setImageUrl(null);
     }
   }, [url]);
-
-  async function downloadImage(path: string) {
-    try {
-      const { data, error } = await supabase.storage
-        .from("pack-hero")
-        .download(path);
-      if (error) {
-        throw error;
-      }
-      const url = URL.createObjectURL(data);
-      setImageUrl(url);
-    } catch (error: any) {
-      console.log("Error downloading image: ", error.message);
-    }
-  }
 
   async function uploadImage(event: ChangeEvent<HTMLInputElement>) {
     try {

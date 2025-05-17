@@ -3,6 +3,7 @@ import { supabase } from "lib/supabaseClient";
 
 import { AvatarImage, AvatarNoImage } from "./Avatar.styled";
 import { TextSansBold } from "components/Typography";
+import { downloadImage } from "utils/download-image";
 
 type AvatarProps = {
   initial?: string;
@@ -14,23 +15,8 @@ export const Avatar = ({ initial = "?", size, url }: AvatarProps) => {
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
 
   useEffect(() => {
-    if (url) downloadImage(url);
+    if (url) downloadImage(url, "avatars", setAvatarUrl);
   }, [url]);
-
-  async function downloadImage(path: string) {
-    try {
-      const { data, error } = await supabase.storage
-        .from("avatars")
-        .download(path);
-      if (error) {
-        throw error;
-      }
-      const url = URL.createObjectURL(data);
-      setAvatarUrl(url);
-    } catch (error: any) {
-      console.log("Error downloading image: ", error.message);
-    }
-  }
 
   return (
     <div>
