@@ -70,7 +70,7 @@ export const Pack = () => {
 
   useEffect(() => {
     const sorted =
-      pack?.categories.slice().sort((a, b) => a.order - b.order) || [];
+      pack?.categories?.slice().sort((a, b) => a.order - b.order) || [];
     setSortedCategories(sorted);
   }, [pack]);
 

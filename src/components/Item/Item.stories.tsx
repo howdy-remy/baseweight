@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Item } from "./Item";
+import { Unit } from "types/Unit";
 
 const meta: Meta<typeof Item> = {
   title: "Item",
@@ -11,11 +12,16 @@ type Story = StoryObj<typeof Item>;
 
 export const Base: Story = {
   args: {
-    item: {
+    categoryItem: {
       id: 1,
-      type: "Type",
-      description: "Description",
-      weightInGrams: 88.88,
+      item: {
+        id: 1,
+        type: "Type",
+        description: "Description",
+        weightInGrams: 88.88,
+        unit: Unit.G,
+      },
+      order: 1,
       quantity: 100,
     },
   },

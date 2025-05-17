@@ -1,8 +1,8 @@
-import type { Meta, StoryObj } from "@storybook/react";
-import { Modal } from ".";
 import { useState } from "react";
+import type { Meta, StoryObj } from "@storybook/react";
+
+import { Modal } from ".";
 import { Button } from "../Button";
-import { DialogDescription, DialogTitle } from "@headlessui/react";
 import { ActionsWrapper, StyledDialogTitle } from "./Modal.styled";
 
 const meta: Meta<typeof Modal> = {

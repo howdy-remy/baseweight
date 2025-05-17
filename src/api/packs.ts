@@ -10,7 +10,8 @@ export type Pack = {
   name: string | null;
   description?: string | null;
   unit: Unit;
-  categories: Category[];
+  categories?: Category[];
+  weight?: number | null;
 };
 
 type dbPack = Partial<Database["public"]["Tables"]["packs"]["Row"]>;
@@ -24,6 +25,29 @@ type pack = dbPack & {
   categories: (dbCategory & {
     category_item: (dbCategoryItem & { items: dbItem[] })[];
   })[];
+};
+
+const packsMapper: (packs: pack[]) => Pack[] = (packs) => {
+  return packs.map((pack) => {
+    const packWeight = pack.categories.reduce((acc, category) => {
+      const categoryWeight = category.category_item.reduce(
+        (acc, categoryItem) => {
+          const item = categoryItem.items as dbItem;
+          return (acc += item.weight_in_grams || 0);
+        },
+        0,
+      );
+      return (acc += categoryWeight);
+    }, 0);
+
+    return {
+      id: pack.id || 0,
+      name: pack.name || "",
+      description: pack.description || "",
+      unit: pack.unit as Unit,
+      weight: packWeight,
+    };
+  });
 };
 
 const packMapper: (pack: pack) => Pack = (pack) => {
@@ -78,13 +102,28 @@ export const packsApi = createApi({
         const { data: userData } = await supabase.auth.getUser();
         const { data, error } = await supabase
           .from("packs")
-          .select("name, id")
+          .select(
+            `
+            id,
+            name, 
+            description,
+            unit,
+            categories(
+              category_item(
+                items(
+                  weight_in_grams,
+                  unit
+                )
+              )
+            )
+          `,
+          )
           .eq("profile_id", userData.user?.id);
         if (error) {
           return { error };
         }
 
-        return { data };
+        return { data: packsMapper(data) };
       },
     }),
     getPack: builder.query({
@@ -126,6 +165,26 @@ export const packsApi = createApi({
         return { data: packMapper(data) };
       },
     }),
+    createPack: builder.mutation({
+      queryFn: async (pack) => {
+        const { data: userData } = await supabase.auth.getUser();
+
+        const { data, error } = await supabase
+          .from("packs")
+          .insert({
+            ...pack,
+            profile_id: userData.user?.id,
+          })
+          .select();
+
+        if (error) {
+          console.error(error);
+          return { error };
+        }
+
+        return { data };
+      },
+    }),
     updatePack: builder.mutation({
       queryFn: async (pack: Partial<Pack>[]) => {
         const { data, error } = await supabase
@@ -144,5 +203,9 @@ export const packsApi = createApi({
   }),
 });
 
-export const { useGetPacksQuery, useGetPackQuery, useUpdatePackMutation } =
-  packsApi;
+export const {
+  useGetPacksQuery,
+  useGetPackQuery,
+  useCreatePackMutation,
+  useUpdatePackMutation,
+} = packsApi;

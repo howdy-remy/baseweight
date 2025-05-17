@@ -1,12 +1,17 @@
-import React, { useState } from "react";
-import { Link } from "react-router";
+import { useState } from "react";
 
-import { Pack, useGetPacksQuery } from "api/packs";
+import {
+  Pack as PackType,
+  useCreatePackMutation,
+  useGetPacksQuery,
+} from "api/packs";
 import { useAuth } from "contexts/Authentication";
 
 import { Layout } from "components/Layout/Layout";
 import { Button } from "components/Button";
 import { PackModal } from "./components/CreatePackModal";
+import { Pack } from "components/Pack/Pack";
+import { PacksWrapper } from "components/Pack/Pack.styled";
 
 export const Packs = () => {
   const { session } = useAuth();
@@ -14,7 +19,7 @@ export const Packs = () => {
     userId: session?.user.id,
   });
 
-  const [packToEdit, setPackToEdit] = useState<Pack | null>(null);
+  const [packToEdit, setPackToEdit] = useState<PackType | null>(null);
   const [isPackModalOpen, setIsPackModalOpen] = useState<boolean>(false);
 
   const onClosePackModal = () => {
@@ -22,8 +27,14 @@ export const Packs = () => {
     setIsPackModalOpen(false);
   };
 
-  const onSubmitPackModal = async ({ name, unit, id }: Partial<Pack>) => {
-    console.log("submit");
+  const [createPack] = useCreatePackMutation();
+  const onSubmitPackModal = async ({ name, unit, id }: Partial<PackType>) => {
+    if (!id) {
+      createPack({
+        name,
+        unit,
+      });
+    }
   };
 
   if (isLoading) {
@@ -43,12 +54,9 @@ export const Packs = () => {
           >
             Add pack
           </Button>
-
-          {packs?.map((pack) => (
-            <React.Fragment key={pack.id}>
-              <Link to={`packs/${pack.id}`}>{pack.name}</Link>
-            </React.Fragment>
-          ))}
+          <PacksWrapper>
+            {packs?.map((pack) => <Pack pack={pack} key={pack.id} />)}
+          </PacksWrapper>
 
           {/* modals ------------------------------------------------------- */}
           <PackModal
