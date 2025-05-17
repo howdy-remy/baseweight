@@ -8,7 +8,7 @@ export default function Avatar({
 }: {
   url: null | string;
   size: number;
-  onUpload: (event: SubmitEvent, filePath: string) => void;
+  onUpload: (event: ChangeEvent<HTMLInputElement>, filePath: string) => void;
 }) {
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [uploading, setUploading] = useState<boolean>(false);

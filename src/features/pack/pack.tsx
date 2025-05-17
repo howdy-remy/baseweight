@@ -20,7 +20,7 @@ import {
 
 import { encode } from "lib/sqids";
 
-import { useGetPackQuery } from "api/packs";
+import { useGetPackQuery, useUpdatePackMutation } from "api/packs";
 import {
   type Item as ItemType,
   useCreateItemMutation,
@@ -59,6 +59,7 @@ import {
 } from "./components";
 
 import { PackActions, PackHeader, PackWrapper } from "./pack.styled";
+import { PackHero } from "components/PackHero/PackHero";
 
 export const Pack = () => {
   const { session } = useAuth();
@@ -78,6 +79,7 @@ export const Pack = () => {
     return acc + totalWeight;
   }, 0);
 
+  // PACK ======================================================================
   // pack actions
   const copyShareLink = () => {
     if (!pack?.id) {
@@ -99,6 +101,19 @@ export const Pack = () => {
       onClick: copyShareLink,
     },
   ];
+
+  const [updatePack] = useUpdatePackMutation();
+
+  const updateHeroUrl = async (url: string | null) => {
+    if (!pack) return;
+    await updatePack([
+      {
+        id: pack.id,
+        hero_url: url,
+      },
+    ]);
+    refetch();
+  };
 
   // ITEMS =====================================================================
   // search for items not included in category ---------------------------------
@@ -286,6 +301,7 @@ export const Pack = () => {
             <Dropdown useIconButton={true} items={packActions} />
           </PackActions>
         </PackHeader>
+        <PackHero url={pack?.heroUrl} onUpload={updateHeroUrl} />
         <PackWrapper>
           <div>
             <HeadingOne as="h1">{pack?.name}</HeadingOne>

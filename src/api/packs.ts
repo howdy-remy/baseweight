@@ -12,6 +12,7 @@ export type Pack = {
   unit: Unit;
   categories?: Category[];
   weight?: number | null;
+  heroUrl?: string | null;
 };
 
 type dbPack = Partial<Database["public"]["Tables"]["packs"]["Row"]>;
@@ -42,6 +43,7 @@ const packsMapper: (packs: pack[]) => Pack[] = (packs) => {
 
     return {
       id: pack.id || 0,
+      heroUrl: pack.hero_url || null,
       name: pack.name || "",
       description: pack.description || "",
       unit: pack.unit as Unit,
@@ -86,6 +88,7 @@ const packMapper: (pack: pack) => Pack = (pack) => {
   });
   return {
     id: pack.id || 0,
+    heroUrl: pack.hero_url || null,
     name: pack.name || "",
     description: pack.description || "",
     unit: pack.unit as Unit,
@@ -108,6 +111,7 @@ export const packsApi = createApi({
             name, 
             description,
             unit,
+            hero_url,
             categories(
               category_item(
                 items(
@@ -136,6 +140,7 @@ export const packsApi = createApi({
           name,
           description,
           unit,
+          hero_url,
           categories(
             id, 
             name,
@@ -186,7 +191,7 @@ export const packsApi = createApi({
       },
     }),
     updatePack: builder.mutation({
-      queryFn: async (pack: Partial<Pack>[]) => {
+      queryFn: async (pack: Partial<dbPack>[]) => {
         const { data, error } = await supabase
           .from("packs")
           .upsert(pack)

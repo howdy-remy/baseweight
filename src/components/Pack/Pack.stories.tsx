@@ -1,10 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Pack } from "./Pack";
 import { Unit } from "types/Unit";
+import { withRouter } from "storybook-addon-remix-react-router";
 
 const meta: Meta<typeof Pack> = {
   title: "Pack",
   component: Pack,
+  decorators: [withRouter],
 };
 
 export default meta;

@@ -10,6 +10,7 @@ export const IconButtons = styled.div`
 
 export const IconButtonWrapper = styled(HeadlessButton)<{
   $variant: IconButtonProps["variant"];
+  htmlFor?: string;
 }>`
   all: unset;
 

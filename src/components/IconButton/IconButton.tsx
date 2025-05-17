@@ -2,16 +2,26 @@ import { TextMonoBold } from "../Typography";
 import { IconButtonWrapper } from "./IconButton.styled";
 
 export type IconButtonProps = {
-  icon: "caretdown" | "chat" | "menu" | "star" | "x" | "+" | "-";
+  as?: string;
+  icon: "caretdown" | "chat" | "menu" | "star" | "upload" | "x" | "+" | "-";
   variant: "primary" | "secondary";
   onClick?: (e: MouseEvent) => void;
+  htmlFor?: string;
 };
 
-export const IconButton = ({ icon, variant, onClick }: IconButtonProps) => {
+export const IconButton = ({
+  as,
+  htmlFor,
+  icon,
+  variant,
+  onClick,
+}: IconButtonProps) => {
   switch (icon) {
     case "caretdown":
       return (
         <IconButtonWrapper
+          as={as}
+          htmlFor={htmlFor}
           onClick={onClick}
           $variant={variant}
           aria-label="caret-down"
@@ -29,6 +39,8 @@ export const IconButton = ({ icon, variant, onClick }: IconButtonProps) => {
     case "chat":
       return (
         <IconButtonWrapper
+          as={as}
+          htmlFor={htmlFor}
           onClick={onClick}
           $variant={variant}
           aria-label="chat"
@@ -46,6 +58,8 @@ export const IconButton = ({ icon, variant, onClick }: IconButtonProps) => {
     case "menu":
       return (
         <IconButtonWrapper
+          as={as}
+          htmlFor={htmlFor}
           onClick={onClick}
           $variant={variant}
           aria-label="menu"
@@ -63,6 +77,8 @@ export const IconButton = ({ icon, variant, onClick }: IconButtonProps) => {
     case "star":
       return (
         <IconButtonWrapper
+          as={as}
+          htmlFor={htmlFor}
           onClick={onClick}
           $variant={variant}
           aria-label="star"
@@ -77,9 +93,34 @@ export const IconButton = ({ icon, variant, onClick }: IconButtonProps) => {
           />
         </IconButtonWrapper>
       );
+    case "upload":
+      return (
+        <IconButtonWrapper
+          as={as}
+          htmlFor={htmlFor}
+          onClick={onClick}
+          $variant={variant}
+          aria-label="upload"
+        >
+          <img
+            src={
+              variant === "primary"
+                ? "/icons/Upload-white.png"
+                : "/icons/Upload-moss.png"
+            }
+            alt="upload icon"
+          />
+        </IconButtonWrapper>
+      );
     case "x":
       return (
-        <IconButtonWrapper onClick={onClick} $variant={variant} aria-label="x">
+        <IconButtonWrapper
+          as={as}
+          htmlFor={htmlFor}
+          onClick={onClick}
+          $variant={variant}
+          aria-label="x"
+        >
           <img
             src={
               variant === "primary" ? "/icons/X-white.png" : "/icons/X-moss.png"
@@ -90,13 +131,25 @@ export const IconButton = ({ icon, variant, onClick }: IconButtonProps) => {
       );
     case "+":
       return (
-        <IconButtonWrapper onClick={onClick} $variant={variant} aria-label="x">
+        <IconButtonWrapper
+          as={as}
+          htmlFor={htmlFor}
+          onClick={onClick}
+          $variant={variant}
+          aria-label="x"
+        >
           <TextMonoBold color="moss">+</TextMonoBold>
         </IconButtonWrapper>
       );
     case "-":
       return (
-        <IconButtonWrapper onClick={onClick} $variant={variant} aria-label="x">
+        <IconButtonWrapper
+          as={as}
+          htmlFor={htmlFor}
+          onClick={onClick}
+          $variant={variant}
+          aria-label="x"
+        >
           <TextMonoBold color="moss">-</TextMonoBold>
         </IconButtonWrapper>
       );
