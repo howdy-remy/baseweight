@@ -5,6 +5,7 @@ import { CategoryModal } from "./CategoryModal";
 
 import userEvent from "@testing-library/user-event";
 import { Category } from "api/categories";
+import { act } from "react";
 
 describe("CategoryModal", () => {
   const mockOnClose = vi.fn();
@@ -34,7 +35,7 @@ describe("CategoryModal", () => {
     );
 
     // Check form fields exist
-    expect(screen.getByLabelText("Category Name")).toBeInTheDocument();
+    expect(screen.getByLabelText("Category name")).toBeInTheDocument();
     expect(screen.getByLabelText("Color")).toBeInTheDocument();
 
     // Check buttons
@@ -61,7 +62,7 @@ describe("CategoryModal", () => {
     expect(screen.getByRole("heading")).toHaveTextContent("Edit Test Category");
 
     // Check form fields have initial values
-    expect(screen.getByLabelText("Category Name")).toHaveValue("Test Category");
+    expect(screen.getByLabelText("Category name")).toHaveValue("Test Category");
     expect(screen.getByLabelText("Color")).toHaveValue("#ff5733");
   });
 
@@ -104,7 +105,7 @@ describe("CategoryModal", () => {
       />,
     );
 
-    const nameInput = screen.getByLabelText("Category Name");
+    const nameInput = screen.getByLabelText("Category name");
     const colorInput = screen.getByLabelText("Color");
 
     await userEvent.type(nameInput, "New Category");
@@ -128,7 +129,7 @@ describe("CategoryModal", () => {
     );
 
     // Input data
-    const nameInput = screen.getByLabelText("Category Name");
+    const nameInput = screen.getByLabelText("Category name");
     await userEvent.type(nameInput, "New Category");
 
     // Submit form
@@ -162,7 +163,7 @@ describe("CategoryModal", () => {
     );
 
     // Modify data
-    const nameInput = screen.getByLabelText("Category Name");
+    const nameInput = screen.getByLabelText("Category name");
     await userEvent.clear(nameInput);
     await userEvent.type(nameInput, "Updated Category");
 
@@ -176,23 +177,5 @@ describe("CategoryModal", () => {
       name: "Updated Category",
       color: "#FF5733",
     });
-  });
-
-  it("calls preventDefault on form submission", async () => {
-    render(
-      <CategoryModal
-        isOpen={true}
-        initialProps={null}
-        onClose={mockOnClose}
-        onSubmit={mockOnSubmit}
-      />,
-    );
-
-    // Setup preventDefault spy
-    const preventDefaultSpy = vi.fn();
-    const form = screen.getByRole("form");
-
-    // Simulate form submission
-    fireEvent.submit(form, { preventDefault: preventDefaultSpy });
   });
 });

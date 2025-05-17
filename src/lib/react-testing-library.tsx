@@ -11,5 +11,6 @@ const customRender: (
 
 // Re-export everything
 export * from "@testing-library/react";
+export * from "@testing-library/user-event";
 // Override render method
 export { customRender as render };

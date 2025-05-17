@@ -86,7 +86,7 @@ export const PackHero = ({ url, onUpload }: PackImageProps) => {
   return (
     <HeroWrapper>
       {imageUrl ? (
-        <Hero src={imageUrl} />
+        <Hero src={imageUrl} alt="hero image" />
       ) : (
         <Hero src="/topo.png" alt="topographic map pattern" />
       )}
@@ -96,6 +96,7 @@ export const PackHero = ({ url, onUpload }: PackImageProps) => {
           icon="upload"
           variant="primary"
           htmlFor="uploader"
+          data-testid="upload-button"
         />
         {imageUrl && (
           <IconButton icon="x" variant="primary" onClick={removeImage} />
@@ -108,6 +109,7 @@ export const PackHero = ({ url, onUpload }: PackImageProps) => {
           type="file"
           id="uploader"
           accept="image/*"
+          data-testid="hero-upload"
           onChange={uploadImage}
           disabled={uploading}
         />
