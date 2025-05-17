@@ -12,6 +12,7 @@ import { Button } from "components/Button";
 import { PackModal } from "./components/CreatePackModal";
 import { Pack } from "components/Pack/Pack";
 import { PacksWrapper } from "components/Pack/Pack.styled";
+import { AddPackButton } from "./components/AddPackButton.styled";
 
 export const Packs = () => {
   const { session } = useAuth();
@@ -45,16 +46,10 @@ export const Packs = () => {
     <div>
       <Layout>
         <div>
-          {/* add pack button ---------------------------------------------- */}
-          <Button
-            variant="secondary"
-            size="large"
-            expandWidth
-            onClick={() => setIsPackModalOpen(true)}
-          >
-            Add pack
-          </Button>
           <PacksWrapper>
+            <AddPackButton onClick={() => setIsPackModalOpen(true)}>
+              Add pack
+            </AddPackButton>
             {packs?.map((pack) => <Pack pack={pack} key={pack.id} />)}
           </PacksWrapper>
 

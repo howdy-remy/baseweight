@@ -17,6 +17,15 @@ export const HeadingTwo = styled.p`
   margin: 0;
 `;
 
+export const HeadingThree = styled.p`
+  font-family: "Rubik", serif;
+  font-size: ${({ theme }) => theme.fontsizes.l};
+  line-height: 1.4;
+  margin: 0;
+
+  font-weight: 600;
+`;
+
 // text serif -----------------------------------------------------------------/
 const TextSerif = styled.p`
   line-height: 1.4;
