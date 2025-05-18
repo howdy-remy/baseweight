@@ -1,5 +1,5 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router";
+import { useParams } from "react-router";
 
 import {
   closestCenter,
@@ -95,6 +95,7 @@ import {
 import "./mdxeditor.styles.css";
 import { Unit } from "types/Unit";
 import { useToast } from "contexts/Toast";
+import { PieChart } from "components/PieChart";
 
 export const Pack = () => {
   const { session } = useAuth();
@@ -364,6 +365,15 @@ export const Pack = () => {
     }
   };
 
+  // CHART =====================================================================
+  const chartData = sortedCategories.map((category) => ({
+    label: category.name || "unnamed",
+    value: category.totalWeight,
+  }));
+  const chartColors = sortedCategories.map(
+    (category) => category.color || "#D13D1F",
+  );
+
   // render --------------------------------------------------------------------
   if (!pack || isLoading) {
     return "loading...";
@@ -486,7 +496,6 @@ export const Pack = () => {
 
         <PackWrapper $columns={2}>
           <div>
-            <Space size="xxl" />
             <DndContext
               sensors={sensors}
               collisionDetection={closestCenter}
@@ -566,6 +575,12 @@ export const Pack = () => {
               onSubmit={onUpsertCategory}
             />
           </div>
+          <PieChart
+            width={296}
+            height={296}
+            data={chartData}
+            colors={chartColors}
+          />
         </PackWrapper>
       </main>
     </Layout>
