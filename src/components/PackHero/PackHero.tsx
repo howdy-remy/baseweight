@@ -6,7 +6,7 @@ import { downloadImage } from "utils/download-image";
 
 type PackImageProps = {
   url?: null | string;
-  onUpload: (filePath: string | null) => void;
+  onUpload?: (filePath: string | null) => void;
 };
 
 export const PackHero = ({ url, onUpload }: PackImageProps) => {
@@ -76,30 +76,32 @@ export const PackHero = ({ url, onUpload }: PackImageProps) => {
       ) : (
         <Hero src="/topo.png" alt="topographic map pattern" />
       )}
-      <Buttons>
-        <IconButton
-          as="label"
-          icon="upload"
-          variant="primary"
-          htmlFor="uploader"
-          data-testid="upload-button"
-        />
-        {imageUrl && (
-          <IconButton icon="x" variant="primary" onClick={removeImage} />
-        )}
-        <input
-          style={{
-            visibility: "hidden",
-            position: "absolute",
-          }}
-          type="file"
-          id="uploader"
-          accept="image/*"
-          data-testid="hero-upload"
-          onChange={uploadImage}
-          disabled={uploading}
-        />
-      </Buttons>
+      {onUpload && (
+        <Buttons>
+          <IconButton
+            as="label"
+            icon="upload"
+            variant="primary"
+            htmlFor="uploader"
+            data-testid="upload-button"
+          />
+          {imageUrl && (
+            <IconButton icon="x" variant="primary" onClick={removeImage} />
+          )}
+          <input
+            style={{
+              visibility: "hidden",
+              position: "absolute",
+            }}
+            type="file"
+            id="uploader"
+            accept="image/*"
+            data-testid="hero-upload"
+            onChange={uploadImage}
+            disabled={uploading}
+          />
+        </Buttons>
+      )}
     </HeroWrapper>
   );
 };
