@@ -12,3 +12,17 @@
   font-size: 16px;
   line-height: 1.4;
 }
+
+.content {
+  font-family: "ForrestRegular", serif;
+}
+
+.content strong,
+.display strong {
+  font-family: "ForrestBold", serif;
+}
+
+.content em,
+.display em {
+  font-family: "ForrestItalic", serif;
+}

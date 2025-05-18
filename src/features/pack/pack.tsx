@@ -29,9 +29,17 @@ import {
   UndoRedo,
   BoldItalicUnderlineToggles,
   toolbarPlugin,
+  BlockTypeSelect,
+  linkDialogPlugin,
+  CreateLink,
+  ListsToggle,
 } from "@mdxeditor/editor";
 import "@mdxeditor/editor/style.css";
+
 import Markdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import remarkMdx from "remark-mdx";
+import rehypeFormat from "rehype-format";
 
 import { encode } from "lib/sqids";
 
@@ -86,6 +94,7 @@ import "./mdxeditor.styles.css";
 export const Pack = () => {
   const { session } = useAuth();
   let { packId } = useParams();
+  let navigate = useNavigate();
 
   // get initial pack data -----------------------------------------------------
   const { data: pack, isLoading, refetch } = useGetPackQuery({ packId });
@@ -102,7 +111,6 @@ export const Pack = () => {
   }, 0);
 
   // PACK ======================================================================
-  // pack actions
   const copyShareLink = () => {
     if (!pack?.id) {
       return;
@@ -112,7 +120,6 @@ export const Pack = () => {
     navigator.clipboard.writeText(url);
   };
 
-  let navigate = useNavigate();
   const packActions = [
     {
       label: "Edit",
@@ -354,6 +361,7 @@ export const Pack = () => {
             <form onSubmit={(event) => saveMarkdown(event)}>
               <MDXEditor
                 className="editor"
+                contentEditableClassName="content"
                 markdown={pack?.description ?? ""}
                 onChange={(value) => setEditedDescription(value)}
                 spellCheck
@@ -361,15 +369,20 @@ export const Pack = () => {
                   headingsPlugin(),
                   listsPlugin(),
                   linkPlugin(),
+                  linkDialogPlugin(),
                   markdownShortcutPlugin(),
                   quotePlugin(),
                   thematicBreakPlugin(),
                   toolbarPlugin({
-                    toolbarClassName: "my-classname",
                     toolbarContents: () => (
                       <>
                         <UndoRedo />
-                        <BoldItalicUnderlineToggles />
+                        <BoldItalicUnderlineToggles
+                          options={["Bold", "Italic"]}
+                        />
+                        <BlockTypeSelect />
+                        <CreateLink />
+                        <ListsToggle />
                       </>
                     ),
                   }),
@@ -390,10 +403,19 @@ export const Pack = () => {
             </form>
           ) : (
             <DescriptionWrapper onClick={switchToMarkdown} className="display">
-              <Markdown>{pack?.description}</Markdown>
+              <Markdown
+                remarkPlugins={[remarkMdx, remarkGfm]}
+                rehypePlugins={[rehypeFormat]}
+              >
+                {pack?.description}
+              </Markdown>
+              {!pack?.description && (
+                <TextSansRegular>Click to enter a description</TextSansRegular>
+              )}
             </DescriptionWrapper>
           )}
         </PackWrapper>
+
         <PackWrapper $columns={2}>
           <div>
             <Space size="xxl" />
@@ -406,7 +428,7 @@ export const Pack = () => {
                 items={sortedCategories.map((item) => item.id.toString())}
                 strategy={verticalListSortingStrategy}
               >
-                {sortedCategories.map((category, i) => (
+                {sortedCategories.map((category) => (
                   <Category
                     key={category.id.toString()}
                     id={category.id.toString()}
