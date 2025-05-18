@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router";
 
 import {
   Pack as PackType,
@@ -8,7 +9,6 @@ import {
 import { useAuth } from "contexts/Authentication";
 
 import { Layout } from "components/Layout/Layout";
-import { Button } from "components/Button";
 import { PackModal } from "./components/CreatePackModal";
 import { Pack } from "components/Pack/Pack";
 import { PacksWrapper } from "components/Pack/Pack.styled";
@@ -16,7 +16,13 @@ import { AddPackButton } from "./components/AddPackButton.styled";
 
 export const Packs = () => {
   const { session } = useAuth();
-  const { data: packs, isLoading } = useGetPacksQuery({
+  const navigate = useNavigate();
+
+  const {
+    data: packs,
+    isLoading,
+    refetch,
+  } = useGetPacksQuery({
     userId: session?.user.id,
   });
 
@@ -31,10 +37,13 @@ export const Packs = () => {
   const [createPack] = useCreatePackMutation();
   const onSubmitPackModal = async ({ name, unit, id }: Partial<PackType>) => {
     if (!id) {
-      createPack({
+      const { data } = await createPack({
         name,
         unit,
       });
+      const id = data?.[0].id;
+      navigate(`/packs/${id}`);
+      refetch();
     }
   };
 
