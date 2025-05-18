@@ -18,7 +18,7 @@ export const HeadingTwo = styled.p`
 `;
 
 export const HeadingThree = styled.p`
-  font-family: "Rubik", serif;
+  font-family: "Rubik", sans-serif;
   font-size: ${({ theme }) => theme.fontsizes.l};
   line-height: 1.4;
   margin: 0;
@@ -66,7 +66,7 @@ const TextSans = styled.p<{
   color?: keyof typeof theme.colors;
 }>`
   color: ${({ theme, color }) => (!!color ? theme.colors[color] : "inherit")};
-  font-family: "Rubik", serif;
+  font-family: "Rubik", sans-serif;
   font-size: ${({ theme, size }) => {
     switch (size) {
       case "micro":
