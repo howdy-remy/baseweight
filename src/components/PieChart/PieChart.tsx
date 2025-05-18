@@ -44,18 +44,15 @@ export const PieChart = ({ data, width, height, colors }: PieChartProps) => {
           cornerRadius={3}
           padAngle={0.05}
         >
-          {(pie) => {
-            console.log(pie);
-            return (
-              <Group className="visx-pie-arcs-group">
-                {pie.arcs.map((arc, i) => (
-                  <g key={`pie-arc-${i}`}>
-                    <path d={pie.path(arc) || ""} fill={getColor(arc.data)} />
-                  </g>
-                ))}
-              </Group>
-            );
-          }}
+          {(pie) => (
+            <Group className="visx-pie-arcs-group">
+              {pie.arcs.map((arc, i) => (
+                <g key={`pie-arc-${i}`}>
+                  <path d={pie.path(arc) || ""} fill={getColor(arc.data)} />
+                </g>
+              ))}
+            </Group>
+          )}
         </Pie>
       </Group>
     </svg>
