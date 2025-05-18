@@ -79,7 +79,7 @@ const packMapper: (pack: pack) => Pack = (pack) => {
     return {
       id: category.id || 0,
       name: category.name || "",
-      color: category.color || "#000000",
+      color: category.color || "#D13D1F",
       categoryItems,
       totalWeight,
       totalQuantity,

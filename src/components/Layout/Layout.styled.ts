@@ -70,3 +70,8 @@ export const Username = styled(TextSansRegular)`
     color: ${({ theme }) => theme.colors.moss};
   }
 `;
+
+export const SignInCta = styled.div`
+  margin-top: ${({ theme }) => theme.spacing.l}px;
+  margin-left: ${({ theme }) => theme.spacing.m}px;
+`;

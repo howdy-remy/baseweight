@@ -14,8 +14,10 @@ import {
   Username,
   SidebarLink,
   SidebarLinks,
+  SignInCta,
 } from "./Layout.styled";
-import { TextSansBold } from "components/Typography";
+import { Button } from "components/Button";
+import { TextSansBold, TextSansRegular } from "components/Typography";
 
 export const Layout = ({ children }: { children: ReactNode }) => {
   const { session } = useAuth();
@@ -36,34 +38,43 @@ export const Layout = ({ children }: { children: ReactNode }) => {
           </LogoType>
         </Link>
 
-        {session ? (
-          <SidebarLinks>
-            <SidebarLink to="/">
-              <TextSansBold>All Gear</TextSansBold>
-            </SidebarLink>
-            <SidebarLink to="/">
-              <TextSansBold>Packs</TextSansBold>
-            </SidebarLink>
-            {packs?.map((pack) => (
-              <SidebarLink to={`/packs/${pack.id}`} key={pack.id}>
-                {pack.name}
+        {session && (
+          <>
+            <SidebarLinks>
+              <SidebarLink to="/">
+                <TextSansBold>All Gear</TextSansBold>
               </SidebarLink>
-            ))}
-          </SidebarLinks>
-        ) : (
-          <p>sign up</p>
-        )}
+              <SidebarLink to="/">
+                <TextSansBold>Packs</TextSansBold>
+              </SidebarLink>
+              {packs?.map((pack) => (
+                <SidebarLink to={`/packs/${pack.id}`} key={pack.id}>
+                  {pack.name}
+                </SidebarLink>
+              ))}
+            </SidebarLinks>
 
-        <Link to="/account" style={{ textDecoration: "none" }}>
-          <AccountInfo>
-            <Username>{profile?.username}</Username>
-            <Avatar
-              url={profile?.avatar_url || null}
-              size={40}
-              initial={profile?.username[0]}
-            />
-          </AccountInfo>
-        </Link>
+            <Link to="/account" style={{ textDecoration: "none" }}>
+              <AccountInfo>
+                <Username>{profile?.username}</Username>
+                <Avatar
+                  url={profile?.avatar_url || null}
+                  size={40}
+                  initial={profile?.username[0]}
+                />
+              </AccountInfo>
+            </Link>
+          </>
+        )}
+        {!session && (
+          <SignInCta>
+            <Link to="/login" style={{ textDecoration: "none" }}>
+              <Button variant="primary" size="large">
+                Sign in
+              </Button>
+            </Link>
+          </SignInCta>
+        )}
       </Sidebar>
       {children}
     </Wrapper>

@@ -41,7 +41,7 @@ export const PackHero = ({ url, onUpload }: PackImageProps) => {
       if (uploadError) {
         throw uploadError;
       }
-      onUpload(filePath);
+      onUpload?.(filePath);
     } catch (error: any) {
       alert(error.message);
     } finally {
@@ -61,7 +61,7 @@ export const PackHero = ({ url, onUpload }: PackImageProps) => {
       if (uploadError) {
         throw uploadError;
       }
-      onUpload(null);
+      onUpload?.(null);
     } catch (error: any) {
       alert(error.message);
     } finally {

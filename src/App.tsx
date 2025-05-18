@@ -11,6 +11,7 @@ import { Packs } from "features/packs";
 import { PublicPack } from "features/public-pack";
 
 import { ProtectedRoute } from "components/ProtectedRoute";
+import { Login } from "features/login";
 
 function App() {
   const { isLoadingSession } = useAuth();
@@ -22,7 +23,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/login" element={<Auth />} />
+        <Route path="/login" element={<Login />} />
         <Route index element={<Packs />} />
         <Route
           path="/account"

@@ -77,7 +77,7 @@ export const PublicPack = () => {
           <div>
             {sortedCategories.map((category, i) => (
               <>
-                <PublicCategoryHeader category={category} />
+                <PublicCategoryHeader category={category} unit={pack.unit} />
                 <PublicItems items={category.categoryItems} />
               </>
             ))}

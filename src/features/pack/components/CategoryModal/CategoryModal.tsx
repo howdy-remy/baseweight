@@ -29,7 +29,7 @@ export const CategoryModal = ({
     "",
   );
   const [categoryColor, setCategoryColor] = useState<string | null | undefined>(
-    "#44584B",
+    "#D13D1F",
   );
 
   useEffect(() => {
