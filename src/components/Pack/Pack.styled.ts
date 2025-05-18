@@ -20,7 +20,7 @@ export const PackWrapper = styled.div`
 
   background-color: ${({ theme }) => theme.colors.white};
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: box-shadow 0.1s ease-in-out 0s;
+  transition: box-shadow 0.25s ease-in-out 0s;
 
   border-radius: ${({ theme }) => theme.spacing.l}px;
   text-decoration: none;

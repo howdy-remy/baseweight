@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 
 import {
@@ -17,6 +17,21 @@ import {
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
+
+import {
+  headingsPlugin,
+  linkPlugin,
+  listsPlugin,
+  markdownShortcutPlugin,
+  MDXEditor,
+  quotePlugin,
+  thematicBreakPlugin,
+  UndoRedo,
+  BoldItalicUnderlineToggles,
+  toolbarPlugin,
+} from "@mdxeditor/editor";
+import "@mdxeditor/editor/style.css";
+import Markdown from "react-markdown";
 
 import { encode } from "lib/sqids";
 
@@ -49,6 +64,8 @@ import { Dropdown } from "components/Dropdown";
 import { CategoryHeader } from "components/CategoryHeader";
 import { Items } from "components/Items";
 import { Space } from "components/Space";
+import { PackHero } from "components/PackHero";
+import { ActionsWrapper } from "components/Modal";
 
 import {
   AddItemToPack,
@@ -58,8 +75,13 @@ import {
   OnSubmitItemProps,
 } from "./components";
 
-import { PackActions, PackHeader, PackWrapper } from "./pack.styled";
-import { PackHero } from "components/PackHero/PackHero";
+import {
+  DescriptionWrapper,
+  PackActions,
+  PackHeader,
+  PackWrapper,
+} from "./pack.styled";
+import "./mdxeditor.styles.css";
 
 export const Pack = () => {
   const { session } = useAuth();
@@ -113,6 +135,30 @@ export const Pack = () => {
       },
     ]);
     refetch();
+  };
+
+  const [isEditingDescription, setIsEditingDescription] = useState(false);
+  const [editedDescription, setEditedDescription] = useState<string | null>(
+    null,
+  );
+
+  const switchToMarkdown = () => setIsEditingDescription(true);
+  const saveMarkdown = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (!pack) return;
+    await updatePack([
+      {
+        id: pack.id,
+        description: editedDescription,
+      },
+    ]);
+    refetch();
+    setIsEditingDescription(false);
+  };
+  const cancelMarkdownChanges = () => {
+    setEditedDescription(null);
+    setIsEditingDescription(false);
   };
 
   // ITEMS =====================================================================
@@ -302,11 +348,54 @@ export const Pack = () => {
           </PackActions>
         </PackHeader>
         <PackHero url={pack?.heroUrl} onUpload={updateHeroUrl} />
-        <PackWrapper>
+        <PackWrapper $columns={1}>
+          <HeadingOne as="h1">{pack?.name}</HeadingOne>
+          {isEditingDescription ? (
+            <form onSubmit={(event) => saveMarkdown(event)}>
+              <MDXEditor
+                className="editor"
+                markdown={pack?.description ?? ""}
+                onChange={(value) => setEditedDescription(value)}
+                spellCheck
+                plugins={[
+                  headingsPlugin(),
+                  listsPlugin(),
+                  linkPlugin(),
+                  markdownShortcutPlugin(),
+                  quotePlugin(),
+                  thematicBreakPlugin(),
+                  toolbarPlugin({
+                    toolbarClassName: "my-classname",
+                    toolbarContents: () => (
+                      <>
+                        <UndoRedo />
+                        <BoldItalicUnderlineToggles />
+                      </>
+                    ),
+                  }),
+                ]}
+              />
+              <ActionsWrapper>
+                <Button
+                  variant="secondary"
+                  size="medium"
+                  onClick={cancelMarkdownChanges}
+                >
+                  Cancel
+                </Button>
+                <Button variant="primary" size="medium" type="submit">
+                  Save
+                </Button>
+              </ActionsWrapper>
+            </form>
+          ) : (
+            <DescriptionWrapper onClick={switchToMarkdown} className="display">
+              <Markdown>{pack?.description}</Markdown>
+            </DescriptionWrapper>
+          )}
+        </PackWrapper>
+        <PackWrapper $columns={2}>
           <div>
-            <HeadingOne as="h1">{pack?.name}</HeadingOne>
-            <Space size="xxl" />
-            <TextSansRegular>{pack?.description}</TextSansRegular>
             <Space size="xxl" />
             <DndContext
               sensors={sensors}

@@ -1,16 +1,28 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
-export const PackWrapper = styled.div`
+export const PackWrapper = styled.div<{ $columns: number }>`
   display: grid;
-  grid-template-columns: 1fr 296px;
   gap: ${({ theme }) => theme.spacing.xl}px;
-
   margin: ${({ theme }) => theme.spacing.xl}px;
+
+  ${({ $columns }) => {
+    switch ($columns) {
+      case 1:
+        return null;
+      case 2:
+        return css`
+          grid-template-columns: 1fr 296px;
+        `;
+      default:
+        return null;
+    }
+  }};
 `;
 
 export const PackHeader = styled.header`
   position: sticky;
   top: 0;
+  z-index: 5;
 
   display: grid;
   align-items: center;
@@ -26,4 +38,8 @@ export const PackActions = styled.div`
   display: flex;
   align-items: center;
   gap: ${({ theme }) => theme.spacing.m}px;
+`;
+
+export const DescriptionWrapper = styled.div`
+  cursor: pointer;
 `;

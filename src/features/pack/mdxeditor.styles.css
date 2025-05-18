@@ -1,0 +1,14 @@
+.editor {
+  border: 1px solid #cacecb;
+  border-radius: 8px;
+
+  font-family: "ForrestRegular", serif;
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+.display {
+  font-family: "ForrestRegular", serif;
+  font-size: 16px;
+  line-height: 1.4;
+}
