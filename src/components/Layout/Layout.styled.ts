@@ -28,6 +28,8 @@ export const SidebarLinks = styled.div`
 export const LogoType = styled(HeadingOne)`
   color: ${({ theme }) => theme.colors.moss};
   margin: 0;
+  padding-left: ${({ theme: { spacing } }) => spacing.m}px;
+
   line-height: 1.4;
 
   & > span {

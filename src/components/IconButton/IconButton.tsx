@@ -3,7 +3,16 @@ import { IconButtonWrapper } from "./IconButton.styled";
 
 export type IconButtonProps = {
   as?: string;
-  icon: "caretdown" | "chat" | "menu" | "star" | "upload" | "x" | "+" | "-";
+  icon:
+    | "caretdown"
+    | "chat"
+    | "menu"
+    | "share"
+    | "star"
+    | "upload"
+    | "x"
+    | "+"
+    | "-";
   variant: "primary" | "secondary";
   onClick?: (e: MouseEvent) => void;
   htmlFor?: string;
@@ -71,6 +80,25 @@ export const IconButton = ({
                 : "/icons/Menu-moss.png"
             }
             alt="menu icon"
+          />
+        </IconButtonWrapper>
+      );
+    case "share":
+      return (
+        <IconButtonWrapper
+          as={as}
+          htmlFor={htmlFor}
+          onClick={onClick}
+          $variant={variant}
+          aria-label="share"
+        >
+          <img
+            src={
+              variant === "primary"
+                ? "/icons/Share-white.png"
+                : "/icons/Share-moss.png"
+            }
+            alt="share icon"
           />
         </IconButtonWrapper>
       );

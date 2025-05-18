@@ -11,7 +11,6 @@ import { Packs } from "features/packs";
 import { PublicPack } from "features/public-pack";
 
 import { ProtectedRoute } from "components/ProtectedRoute";
-import { PackEdit } from "features/pack-edit";
 
 function App() {
   const { isLoadingSession } = useAuth();
@@ -39,15 +38,6 @@ function App() {
             element={
               <ProtectedRoute>
                 <Pack />
-              </ProtectedRoute>
-            }
-          />
-
-          <Route
-            path=":packId/edit"
-            element={
-              <ProtectedRoute>
-                <PackEdit />
               </ProtectedRoute>
             }
           />

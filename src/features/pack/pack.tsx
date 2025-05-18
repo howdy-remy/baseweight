@@ -90,6 +90,8 @@ import {
   PackWrapper,
 } from "./pack.styled";
 import "./mdxeditor.styles.css";
+import { Input } from "components/Input";
+import { IconButton } from "components/IconButton";
 
 export const Pack = () => {
   const { session } = useAuth();
@@ -120,17 +122,6 @@ export const Pack = () => {
     navigator.clipboard.writeText(url);
   };
 
-  const packActions = [
-    {
-      label: "Edit",
-      onClick: () => navigate(`/packs/${pack?.id}/edit`),
-    },
-    {
-      label: "Copy share link",
-      onClick: copyShareLink,
-    },
-  ];
-
   const [updatePack] = useUpdatePackMutation();
 
   const updateHeroUrl = async (url: string | null) => {
@@ -142,6 +133,29 @@ export const Pack = () => {
       },
     ]);
     refetch();
+  };
+
+  const [isEditingName, setIsEditingName] = useState(false);
+  const [editedName, setEditedName] = useState<string | null>(
+    pack?.name || null,
+  );
+
+  const saveName = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    if (!pack) return;
+    await updatePack([
+      {
+        id: pack.id,
+        name: editedName,
+      },
+    ]);
+    refetch();
+    setIsEditingName(false);
+  };
+  const cancelNameChanges = () => {
+    setEditedName(null);
+    setIsEditingName(false);
   };
 
   const [isEditingDescription, setIsEditingDescription] = useState(false);
@@ -349,14 +363,40 @@ export const Pack = () => {
             {pack?.unit.toLowerCase()}
           </TextSansRegular>
           <PackActions>
-            {/* <IconButton icon="chat" variant="secondary" /> */}
-            {/* <IconButton icon="star" variant="secondary" /> */}
-            <Dropdown useIconButton={true} items={packActions} />
+            <IconButton
+              icon="share"
+              variant="primary"
+              onClick={copyShareLink}
+            />
           </PackActions>
         </PackHeader>
         <PackHero url={pack?.heroUrl} onUpload={updateHeroUrl} />
         <PackWrapper $columns={1}>
-          <HeadingOne as="h1">{pack?.name}</HeadingOne>
+          {isEditingName ? (
+            <form onSubmit={(event) => saveName(event)}>
+              <Input
+                type="text"
+                value={editedName ?? ""}
+                onChange={(event) => setEditedName(event.target.value)}
+              />
+              <ActionsWrapper>
+                <Button
+                  variant="secondary"
+                  size="medium"
+                  onClick={cancelNameChanges}
+                >
+                  Cancel
+                </Button>
+                <Button variant="primary" size="medium" type="submit">
+                  Save
+                </Button>
+              </ActionsWrapper>
+            </form>
+          ) : (
+            <HeadingOne as="h1" onClick={() => setIsEditingName(true)}>
+              {pack?.name}
+            </HeadingOne>
+          )}
           {isEditingDescription ? (
             <form onSubmit={(event) => saveMarkdown(event)}>
               <MDXEditor
