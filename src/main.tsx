@@ -7,15 +7,18 @@ import { Provider } from "react-redux";
 import { store } from "./store";
 import { ThemeProvider } from "styled-components";
 import theme from "./styles/theme";
+import { ToastProvider } from "contexts/Toast";
 
 createRoot(document.getElementById("root") as HTMLDivElement).render(
   <StrictMode>
     <ThemeProvider theme={theme}>
       <Provider store={store}>
         <AuthProvider>
-          <App />
+          <ToastProvider>
+            <App />
+          </ToastProvider>
         </AuthProvider>
       </Provider>
     </ThemeProvider>
-  </StrictMode>
+  </StrictMode>,
 );

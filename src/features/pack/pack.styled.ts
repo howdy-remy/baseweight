@@ -40,6 +40,11 @@ export const PackActions = styled.div`
   gap: ${({ theme }) => theme.spacing.m}px;
 `;
 
+export const HeaderWrapper = styled.div`
+  display: grid;
+  grid-template-columns: 1fr max-content;
+  gap: ${({ theme }) => theme.spacing.xl}px;
+`;
 export const DescriptionWrapper = styled.div`
   cursor: pointer;
 `;

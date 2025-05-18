@@ -68,12 +68,14 @@ import { convertGramsToUnit } from "utils/unit-conversion/unit-conversion";
 import { Layout } from "components/Layout/Layout";
 import { HeadingOne, TextSansRegular } from "components/Typography";
 import { Button } from "components/Button";
-import { Dropdown } from "components/Dropdown";
-import { CategoryHeader } from "components/CategoryHeader";
-import { Items } from "components/Items";
+import { IconButton } from "components/IconButton";
+import { Input } from "components/Input";
+import { Select } from "components/Select";
+import { ActionsWrapper } from "components/Modal";
 import { Space } from "components/Space";
 import { PackHero } from "components/PackHero";
-import { ActionsWrapper } from "components/Modal";
+import { CategoryHeader } from "components/CategoryHeader";
+import { Items } from "components/Items";
 
 import {
   AddItemToPack,
@@ -85,18 +87,18 @@ import {
 
 import {
   DescriptionWrapper,
+  HeaderWrapper,
   PackActions,
   PackHeader,
   PackWrapper,
 } from "./pack.styled";
 import "./mdxeditor.styles.css";
-import { Input } from "components/Input";
-import { IconButton } from "components/IconButton";
+import { Unit } from "types/Unit";
+import { useToast } from "contexts/Toast";
 
 export const Pack = () => {
   const { session } = useAuth();
   let { packId } = useParams();
-  let navigate = useNavigate();
 
   // get initial pack data -----------------------------------------------------
   const { data: pack, isLoading, refetch } = useGetPackQuery({ packId });
@@ -113,6 +115,7 @@ export const Pack = () => {
   }, 0);
 
   // PACK ======================================================================
+  const { addToast } = useToast();
   const copyShareLink = () => {
     if (!pack?.id) {
       return;
@@ -120,6 +123,7 @@ export const Pack = () => {
     const id = encode(pack.id);
     const url = `${window.location.origin}/p/${id}`;
     navigator.clipboard.writeText(url);
+    addToast("Share link copied to clipboard!");
   };
 
   const [updatePack] = useUpdatePackMutation();
@@ -130,6 +134,17 @@ export const Pack = () => {
       {
         id: pack.id,
         hero_url: url,
+      },
+    ]);
+    refetch();
+  };
+
+  const updateUnit = async (unit: Unit) => {
+    if (!pack) return;
+    await updatePack([
+      {
+        id: pack.id,
+        unit,
       },
     ]);
     refetch();
@@ -350,7 +365,7 @@ export const Pack = () => {
   };
 
   // render --------------------------------------------------------------------
-  if (isLoading) {
+  if (!pack || isLoading) {
     return "loading...";
   }
 
@@ -359,8 +374,8 @@ export const Pack = () => {
       <main>
         <PackHeader>
           <TextSansRegular>
-            {pack?.name} | {convertGramsToUnit(pack!.unit, packTotalWeight)}{" "}
-            {pack?.unit.toLowerCase()}
+            {pack.name} | {convertGramsToUnit(pack.unit, packTotalWeight)}{" "}
+            {pack.unit.toLowerCase()}
           </TextSansRegular>
           <PackActions>
             <IconButton
@@ -370,33 +385,46 @@ export const Pack = () => {
             />
           </PackActions>
         </PackHeader>
-        <PackHero url={pack?.heroUrl} onUpload={updateHeroUrl} />
+        <PackHero url={pack.heroUrl} onUpload={updateHeroUrl} />
         <PackWrapper $columns={1}>
-          {isEditingName ? (
-            <form onSubmit={(event) => saveName(event)}>
-              <Input
-                type="text"
-                value={editedName ?? ""}
-                onChange={(event) => setEditedName(event.target.value)}
-              />
-              <ActionsWrapper>
-                <Button
-                  variant="secondary"
-                  size="medium"
-                  onClick={cancelNameChanges}
-                >
-                  Cancel
-                </Button>
-                <Button variant="primary" size="medium" type="submit">
-                  Save
-                </Button>
-              </ActionsWrapper>
-            </form>
-          ) : (
-            <HeadingOne as="h1" onClick={() => setIsEditingName(true)}>
-              {pack?.name}
-            </HeadingOne>
-          )}
+          <HeaderWrapper>
+            {isEditingName ? (
+              <form onSubmit={(event) => saveName(event)}>
+                <Input
+                  type="text"
+                  value={editedName ?? ""}
+                  onChange={(event) => setEditedName(event.target.value)}
+                />
+                <ActionsWrapper>
+                  <Button
+                    variant="secondary"
+                    size="medium"
+                    onClick={cancelNameChanges}
+                  >
+                    Cancel
+                  </Button>
+                  <Button variant="primary" size="medium" type="submit">
+                    Save
+                  </Button>
+                </ActionsWrapper>
+              </form>
+            ) : (
+              <HeadingOne as="h1" onClick={() => setIsEditingName(true)}>
+                {pack?.name}
+              </HeadingOne>
+            )}
+            <Select
+              variant="primary"
+              buttonSize="large"
+              onChange={(e) => updateUnit(e.target.value as Unit)}
+              value={pack.unit}
+            >
+              <option value={Unit.OZ}>oz</option>
+              <option value={Unit.LB}>lb</option>
+              <option value={Unit.G}>g</option>
+              <option value={Unit.KG}>kg</option>
+            </Select>
+          </HeaderWrapper>
           {isEditingDescription ? (
             <form onSubmit={(event) => saveMarkdown(event)}>
               <MDXEditor

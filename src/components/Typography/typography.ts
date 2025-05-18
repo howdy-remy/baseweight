@@ -5,7 +5,7 @@ import theme from "../../styles/theme";
 export const HeadingOne = styled.p`
   font-family: "ForrestBold", serif;
   font-size: ${({ theme }) => theme.fontsizes.xl};
-  line-height: 0.7;
+  line-height: 1;
   margin: 0;
   margin-bottom: 7px;
 `;
