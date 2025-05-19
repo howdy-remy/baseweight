@@ -2,8 +2,7 @@ import { BrowserRouter, Route, Routes } from "react-router";
 
 import { useAuth } from "contexts/Authentication";
 
-import Auth from "./Auth";
-import Account from "./Account";
+import { Account } from "features/account";
 import { Profile } from "./Profile";
 
 import { Pack } from "features/pack";

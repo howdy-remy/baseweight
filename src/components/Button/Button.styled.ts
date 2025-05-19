@@ -10,6 +10,7 @@ export const Buttons = styled.div`
 `;
 
 export const StyledButton = styled(HeadlessButton)<{
+  htmlFor?: string;
   $variant: ButtonProps["variant"];
   $size?: ButtonProps["size"];
   $expandWidth: ButtonProps["expandWidth"];
