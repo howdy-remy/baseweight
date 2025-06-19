@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router";
+import { BrowserRouter, Route, Routes, useNavigate } from "react-router";
 
 import { useAuth } from "contexts/Authentication";
 
@@ -13,7 +13,7 @@ import { ProtectedRoute } from "components/ProtectedRoute";
 import { Login } from "features/login";
 
 function App() {
-  const { isLoadingSession } = useAuth();
+  const { isLoadingSession, session } = useAuth();
 
   if (isLoadingSession) {
     return <div>...loading...</div>;

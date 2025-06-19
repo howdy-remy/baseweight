@@ -18,6 +18,10 @@ export const Packs = () => {
   const { session } = useAuth();
   const navigate = useNavigate();
 
+  if (!session) {
+    navigate("/login");
+  }
+
   const {
     data: packs,
     isLoading,
