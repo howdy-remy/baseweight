@@ -10,6 +10,7 @@ import { Layout } from "components/Layout";
 import { HeadingOne } from "components/Typography";
 import { GearItem } from "components/GearItem";
 import { Space } from "components/Space";
+import { Dialog } from "components/Dialog";
 
 import { GearWrapper } from "./gear.styled";
 import { EditGearItemModal } from "./components/EditGearItemModal";
@@ -31,10 +32,19 @@ export const Gear = () => {
 
   // delete gear item ----------------------------------------------------------
   const [deleteItem] = useDeleteItemMutation();
-  const confirmDelete = () => {};
-  const deleteGearItem = async (id: number) => {
-    await deleteItem(id);
+
+  const [itemIdToDelete, setItemIdToDelete] = useState<number | null>(null);
+  const [isConfirmDeleteOpen, setIsConfirmDeleteOpen] = useState(false);
+
+  const deleteGearItem = (id: number) => {
+    setItemIdToDelete(id);
+    setIsConfirmDeleteOpen(true);
+  };
+
+  const confirmDelete = async () => {
+    await deleteItem(itemIdToDelete);
     refetch();
+    setIsConfirmDeleteOpen(false);
   };
 
   // edit gear item ------------------------------------------------------------
@@ -68,6 +78,14 @@ export const Gear = () => {
           />
         ))}
       </GearWrapper>
+      <Dialog
+        isOpen={isConfirmDeleteOpen}
+        onClose={() => setIsConfirmDeleteOpen(false)}
+        onConfirm={confirmDelete}
+        title="Confirm delete"
+        content="Are you sure you want to delete this item? This will remove the item from all packs it has been associated with. This action cannot be undone."
+        buttonText="Delete"
+      />
       <EditGearItemModal
         item={itemToEdit}
         isOpen={isEditGearItemModalOpen}
