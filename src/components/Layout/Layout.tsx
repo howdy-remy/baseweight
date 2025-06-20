@@ -68,16 +68,6 @@ export const Layout = ({ children }: { children: ReactNode }) => {
                   {pack.name}
                 </SidebarLink>
               ))}
-              {packs?.map((pack) => (
-                <SidebarLink to={`/packs/${pack.id}`} key={pack.id}>
-                  {pack.name}
-                </SidebarLink>
-              ))}
-              {packs?.map((pack) => (
-                <SidebarLink to={`/packs/${pack.id}`} key={pack.id}>
-                  {pack.name}
-                </SidebarLink>
-              ))}
             </SidebarLinks>
 
             <Link to="/account" style={{ textDecoration: "none" }}>
