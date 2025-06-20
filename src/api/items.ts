@@ -28,9 +28,12 @@ export const itemsApi = createApi({
   endpoints: (builder) => ({
     searchItems: builder.query({
       queryFn: async ({ searchString, excludeIds = [] }) => {
+        const { data: userData } = await supabase.auth.getUser();
+
         const { data, error } = await supabase
           .from("items")
           .select()
+          .eq("profile_id", userData.user?.id)
           .not("id", "in", `(${excludeIds.join(",")})`)
           .ilike("type_description", `%${searchString}%`);
 
