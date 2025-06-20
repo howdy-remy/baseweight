@@ -5,6 +5,7 @@ export type IconButtonProps = {
   as?: string;
   icon:
     | "caretdown"
+    | "caretup"
     | "chat"
     | "menu"
     | "share"
@@ -40,6 +41,25 @@ export const IconButton = ({
               variant === "primary"
                 ? "/icons/CaretDown-white.png"
                 : "/icons/CaretDown-moss.png"
+            }
+            alt="caret-down icon"
+          />
+        </IconButtonWrapper>
+      );
+    case "caretup":
+      return (
+        <IconButtonWrapper
+          as={as}
+          htmlFor={htmlFor}
+          onClick={onClick}
+          $variant={variant}
+          aria-label="caret-up"
+        >
+          <img
+            src={
+              variant === "primary"
+                ? "/icons/CaretUp-white.png"
+                : "/icons/CaretUp-moss.png"
             }
             alt="caret-down icon"
           />

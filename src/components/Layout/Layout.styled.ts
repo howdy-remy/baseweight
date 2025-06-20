@@ -3,25 +3,47 @@ import { HeadingOne, TextSansRegular } from "components/Typography";
 import { Link } from "react-router";
 
 // layout
-export const Wrapper = styled.div`
+export const Wrapper = styled.div<{ isMobile?: boolean }>`
   display: grid;
-  grid-template-columns: 296px 1fr;
-  /* column-gap: 24px; */
+  grid-template-columns: ${({ isMobile }) =>
+    isMobile ? " 1fr;" : "296px 1fr;"};
   width: 100%;
 `;
 
-export const Sidebar = styled.div`
+export const Sidebar = styled.div.attrs<{ width?: number }>((props) => ({
+  style: {
+    width: props.width || "296px",
+  },
+}))`
   position: sticky;
   top: 0;
 
   height: 100vh;
-  width: 296px;
   padding: ${({ theme }) => theme.spacing.l}px;
   background-color: ${({ theme }) => theme.colors.flour};
+
+  overflow: scroll;
 `;
 
 export const SidebarLinks = styled.div`
-  margin-top: ${({ theme }) => theme.spacing.l}px;
+  margin: ${({ theme: { spacing } }) => `${spacing.l}px 0 64px`};
+`;
+
+// mobile
+export const MobileHeader = styled.header`
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  height: 64px;
+  width: 100%;
+  padding: ${({ theme }) => theme.spacing.l}px;
+
+  background-color: ${({ theme }) => theme.colors.flour};
 `;
 
 // bits
@@ -51,17 +73,22 @@ export const SidebarLink = styled(Link)`
   }
 `;
 
-export const AccountInfo = styled.div`
-  position: absolute;
-  bottom: ${({ theme }) => theme.spacing.l}px;
+export const AccountInfo = styled.div<{ width?: number }>`
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 1000;
 
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: ${({ theme }) => theme.spacing.m}px;
 
-  width: ${({ theme }) => `calc(100% - ${theme.spacing.l * 2}px)`};
-  height: 40px;
+  height: 64px;
+  width: ${({ width }) => (!!width ? `${width}px` : "296px")};
+  padding: ${({ theme }) => theme.spacing.l}px;
+
+  background-color: ${({ theme }) => theme.colors.flour};
 `;
 
 export const Username = styled(TextSansRegular)`

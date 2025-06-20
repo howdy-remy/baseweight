@@ -1,4 +1,4 @@
-import { type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import { Link } from "react-router";
 
 import { useAuth } from "contexts/Authentication";
@@ -14,10 +14,11 @@ import {
   Username,
   SidebarLink,
   SidebarLinks,
-  SignInCta,
+  MobileHeader,
 } from "./Layout.styled";
-import { Button } from "components/Button";
-import { TextSansBold, TextSansRegular } from "components/Typography";
+import { TextSansBold } from "components/Typography";
+import useScreenSize from "hooks/useScreenSize/useScreenSize";
+import { IconButton } from "components/IconButton";
 
 export const Layout = ({ children }: { children: ReactNode }) => {
   const { session } = useAuth();
@@ -29,17 +30,32 @@ export const Layout = ({ children }: { children: ReactNode }) => {
   );
   const { data: packs } = useGetPacksQuery({}, { skip: !session });
 
-  return (
-    <Wrapper>
-      <Sidebar>
-        <Link to="/" style={{ textDecoration: "none" }}>
-          <LogoType as="h1">
-            base<span>weight</span>
-          </LogoType>
-        </Link>
+  const { width } = useScreenSize();
+  const [showNav, setShowNav] = useState(false);
+  const toggleNav = () => {
+    setShowNav((prev) => !prev);
+  };
 
-        {session && (
-          <>
+  if (width < 768) {
+    return (
+      <Wrapper isMobile>
+        <MobileHeader>
+          <Link to="/" style={{ textDecoration: "none" }}>
+            <LogoType as="h1">
+              base<span>weight</span>
+            </LogoType>
+          </Link>
+
+          <IconButton
+            icon={showNav ? "caretup" : "menu"}
+            variant="primary"
+            onClick={toggleNav}
+            aria-label="Toggle navigation"
+          />
+        </MobileHeader>
+
+        {showNav && (
+          <Sidebar width={width}>
             <SidebarLinks>
               <SidebarLink to="/">
                 <TextSansBold>All Gear</TextSansBold>
@@ -52,10 +68,20 @@ export const Layout = ({ children }: { children: ReactNode }) => {
                   {pack.name}
                 </SidebarLink>
               ))}
+              {packs?.map((pack) => (
+                <SidebarLink to={`/packs/${pack.id}`} key={pack.id}>
+                  {pack.name}
+                </SidebarLink>
+              ))}
+              {packs?.map((pack) => (
+                <SidebarLink to={`/packs/${pack.id}`} key={pack.id}>
+                  {pack.name}
+                </SidebarLink>
+              ))}
             </SidebarLinks>
 
             <Link to="/account" style={{ textDecoration: "none" }}>
-              <AccountInfo>
+              <AccountInfo width={width}>
                 <Username>{profile?.username}</Username>
                 <Avatar
                   url={profile?.avatar_url || null}
@@ -64,17 +90,46 @@ export const Layout = ({ children }: { children: ReactNode }) => {
                 />
               </AccountInfo>
             </Link>
-          </>
+          </Sidebar>
         )}
-        {!session && (
-          <SignInCta>
-            <Link to="/login" style={{ textDecoration: "none" }}>
-              <Button variant="primary" size="large">
-                Sign in
-              </Button>
-            </Link>
-          </SignInCta>
-        )}
+        {children}
+      </Wrapper>
+    );
+  }
+
+  return (
+    <Wrapper>
+      <Sidebar>
+        <Link to="/" style={{ textDecoration: "none" }}>
+          <LogoType as="h1">
+            base<span>weight</span>
+          </LogoType>
+        </Link>
+
+        <SidebarLinks>
+          <SidebarLink to="/">
+            <TextSansBold>All Gear</TextSansBold>
+          </SidebarLink>
+          <SidebarLink to="/">
+            <TextSansBold>Packs</TextSansBold>
+          </SidebarLink>
+          {packs?.map((pack) => (
+            <SidebarLink to={`/packs/${pack.id}`} key={pack.id}>
+              {pack.name}
+            </SidebarLink>
+          ))}
+        </SidebarLinks>
+
+        <Link to="/account" style={{ textDecoration: "none" }}>
+          <AccountInfo>
+            <Username>{profile?.username}</Username>
+            <Avatar
+              url={profile?.avatar_url || null}
+              size={40}
+              initial={profile?.username[0]}
+            />
+          </AccountInfo>
+        </Link>
       </Sidebar>
       {children}
     </Wrapper>

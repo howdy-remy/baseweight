@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { Link } from "react-router";
+import { TextSansBold } from "components/Typography";
 
 export const PacksWrapper = styled.div`
   display: flex;
@@ -41,5 +42,22 @@ export const Hero = styled.img`
 `;
 
 export const Content = styled.div`
-  padding: ${({ theme }) => theme.spacing.m}px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  height: 50%;
+  padding: ${({ theme: { spacing } }) =>
+    `${spacing.m}px ${spacing.m}px ${spacing.l}px`};
+`;
+
+export const Title = styled(TextSansBold)`
+  display: -webkit-box;
+
+  height: 65px;
+  overflow: hidden;
+
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
 `;

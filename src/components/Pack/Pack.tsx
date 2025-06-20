@@ -5,8 +5,8 @@ import type { Pack as PackType } from "api/packs";
 import { convertGramsToUnit } from "utils/unit-conversion";
 import { downloadImage } from "utils/download-image";
 
-import { TextMonoRegularItalic, TextSansBold } from "components/Typography";
-import { Content, Hero, PackWrapper, StyledLink } from "./Pack.styled";
+import { TextMonoRegularItalic } from "components/Typography";
+import { Content, Hero, PackWrapper, StyledLink, Title } from "./Pack.styled";
 
 type PackProps = {
   pack: PackType;
@@ -31,7 +31,7 @@ export const Pack = ({ pack }: PackProps) => {
           <Hero src="/topo.png" alt="topographic map pattern" />
         )}
         <Content>
-          <TextSansBold>{pack.name}</TextSansBold>
+          <Title>{pack.name}</Title>
           <TextMonoRegularItalic>
             {weightInUnit} {pack.unit.toLowerCase()}
           </TextMonoRegularItalic>
