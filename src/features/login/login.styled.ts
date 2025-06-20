@@ -21,6 +21,7 @@ export const LoginWrapper = styled.div`
 
   width: 480px;
   padding: ${({ theme }) => theme.spacing.xl}px;
+  margin: ${({ theme }) => theme.spacing.xl}px;
 
   background-color: ${({ theme }) => theme.colors.white};
   border-radius: ${({ theme }) => theme.spacing.m}px;

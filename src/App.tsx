@@ -23,7 +23,14 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/login" element={<Login />} />
-        <Route index element={<Packs />} />
+        <Route
+          index
+          element={
+            <ProtectedRoute>
+              <Packs />
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="/account"
           element={
