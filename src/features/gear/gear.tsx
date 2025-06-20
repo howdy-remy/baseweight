@@ -1,5 +1,10 @@
 import { useState } from "react";
-import { Item, useEditItemMutation, useGetItemsQuery } from "api/items";
+import {
+  Item,
+  useDeleteItemMutation,
+  useEditItemMutation,
+  useGetItemsQuery,
+} from "api/items";
 
 import { Layout } from "components/Layout";
 import { HeadingOne } from "components/Typography";
@@ -24,9 +29,12 @@ export const Gear = () => {
     return 0;
   });
 
-  const deleteGearItem = (id: number) => {
-    console.log(`Delete item with id: ${id}`);
-    // Implement deletion logic here
+  // delete gear item ----------------------------------------------------------
+  const [deleteItem] = useDeleteItemMutation();
+  const confirmDelete = () => {};
+  const deleteGearItem = async (id: number) => {
+    await deleteItem(id);
+    refetch();
   };
 
   // edit gear item ------------------------------------------------------------
@@ -41,7 +49,7 @@ export const Gear = () => {
   };
 
   const submitEditItem = async (item: Item) => {
-    editGearItemMutation(item);
+    await editGearItemMutation(item);
     refetch();
     setIsCreateItemModalOpen(false);
   };

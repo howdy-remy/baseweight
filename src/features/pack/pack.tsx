@@ -577,6 +577,7 @@ export const Pack = () => {
               onSubmit={onUpsertCategory}
             />
           </div>
+
           <PieChart
             width={296}
             height={296}

@@ -107,12 +107,49 @@ export const itemsApi = createApi({
         return { data: mappedData };
       },
     }),
+    deleteItem: builder.mutation({
+      queryFn: async (itemId) => {
+        // get all category items associated with the item
+        const { data: categoryItems } = await supabase
+          .from("category_item")
+          .select("id")
+          .eq("item_id", itemId);
+
+        // remove category items associated with the item
+        if (categoryItems?.length) {
+          const { error: categoryItemsError } = await supabase
+            .from("category_item")
+            .delete()
+            .in(
+              "id",
+              categoryItems.map(({ id }) => id),
+            );
+          if (categoryItemsError) {
+            console.error(categoryItemsError);
+            return { error: categoryItemsError };
+          }
+        }
+
+        const { error } = await supabase
+          .from("items")
+          .delete()
+          .eq("id", itemId);
+
+        if (error) {
+          console.error(error);
+          return { error };
+        }
+
+        return { data: null };
+      },
+    }),
   }),
 });
 
 export const {
   useGetItemsQuery,
   useEditItemMutation,
+  useDeleteItemMutation,
   useCreateItemMutation,
   useLazySearchItemsQuery,
 } = itemsApi;
