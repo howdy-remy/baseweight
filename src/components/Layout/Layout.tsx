@@ -38,7 +38,7 @@ export const Layout = ({ children }: { children: ReactNode }) => {
 
   if (width < 768) {
     return (
-      <Wrapper isMobile>
+      <Wrapper>
         <MobileHeader>
           <Link to="/" style={{ textDecoration: "none" }}>
             <LogoType as="h1">
@@ -55,7 +55,7 @@ export const Layout = ({ children }: { children: ReactNode }) => {
         </MobileHeader>
 
         {showNav && (
-          <Sidebar width={width}>
+          <Sidebar>
             <SidebarLinks>
               <SidebarLink to="/">
                 <TextSansBold>All Gear</TextSansBold>

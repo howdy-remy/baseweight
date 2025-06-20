@@ -17,6 +17,15 @@ export const PackWrapper = styled.div<{ $columns: number }>`
         return null;
     }
   }};
+
+  @media (max-width: 1060px) {
+    grid-template-columns: 1fr;
+    & > :first-child {
+      position: static;
+      order: 2;
+    }
+    /* margin: ${({ theme }) => theme.spacing.s}px; */
+  }
 `;
 
 export const PackHeader = styled.header`

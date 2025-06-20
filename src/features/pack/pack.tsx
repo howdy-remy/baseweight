@@ -96,10 +96,12 @@ import "./mdxeditor.styles.css";
 import { Unit } from "types/Unit";
 import { useToast } from "contexts/Toast";
 import { PieChart } from "components/PieChart";
+import useScreenSize from "hooks/useScreenSize/useScreenSize";
 
 export const Pack = () => {
   const { session } = useAuth();
   let { packId } = useParams();
+  const { width } = useScreenSize();
 
   // get initial pack data -----------------------------------------------------
   const { data: pack, isLoading, refetch } = useGetPackQuery({ packId });

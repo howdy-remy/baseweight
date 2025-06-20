@@ -3,33 +3,36 @@ import { HeadingOne, TextSansRegular } from "components/Typography";
 import { Link } from "react-router";
 
 // layout
-export const Wrapper = styled.div<{ isMobile?: boolean }>`
+export const Wrapper = styled.div`
   display: grid;
-  grid-template-columns: ${({ isMobile }) =>
-    isMobile ? " 1fr;" : "296px 1fr;"};
+  grid-template-columns: 296px 1fr;
   width: 100%;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
 `;
 
-export const Sidebar = styled.div.attrs<{ width?: number }>((props) => ({
-  style: {
-    width: props.width || "296px",
-  },
-}))`
+export const Sidebar = styled.div`
   position: sticky;
   top: 0;
 
   height: 100vh;
+  width: 296px;
   padding: ${({ theme }) => theme.spacing.l}px;
   background-color: ${({ theme }) => theme.colors.flour};
 
   overflow: scroll;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 export const SidebarLinks = styled.div`
   margin: ${({ theme: { spacing } }) => `${spacing.l}px 0 64px`};
 `;
 
-// mobile
 export const MobileHeader = styled.header`
   position: sticky;
   top: 0;
@@ -41,7 +44,8 @@ export const MobileHeader = styled.header`
 
   height: 64px;
   width: 100%;
-  padding: ${({ theme }) => theme.spacing.l}px;
+  padding: ${({ theme: { spacing } }) =>
+    `${spacing.l}px ${spacing.s}px ${spacing.l}px ${spacing.l}px`};
 
   background-color: ${({ theme }) => theme.colors.flour};
 `;

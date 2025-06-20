@@ -1,6 +1,7 @@
 import Pie from "@visx/shape/lib/shapes/Pie";
 import { scaleOrdinal } from "@visx/scale";
 import { Group } from "@visx/group";
+import { PieChartSvg, PieChartWrapper } from "./PieChart.styled";
 
 interface Datum {
   label: string;
@@ -27,34 +28,29 @@ export const PieChart = ({ data, width, height, colors }: PieChartProps) => {
   });
 
   return (
-    <svg
-      width={width}
-      height={height}
-      style={{
-        position: "sticky",
-        top: "56px",
-      }}
-    >
-      <Group top={centerY} left={centerX}>
-        <Pie
-          data={data}
-          pieValue={accessor}
-          outerRadius={radius}
-          innerRadius={radius - donutThickness}
-          cornerRadius={3}
-          padAngle={0.05}
-        >
-          {(pie) => (
-            <Group className="visx-pie-arcs-group">
-              {pie.arcs.map((arc, i) => (
-                <g key={`pie-arc-${i}`}>
-                  <path d={pie.path(arc) || ""} fill={getColor(arc.data)} />
-                </g>
-              ))}
-            </Group>
-          )}
-        </Pie>
-      </Group>
-    </svg>
+    <PieChartWrapper>
+      <PieChartSvg width={width} height={height}>
+        <Group top={centerY} left={centerX}>
+          <Pie
+            data={data}
+            pieValue={accessor}
+            outerRadius={radius}
+            innerRadius={radius - donutThickness}
+            cornerRadius={3}
+            padAngle={0.05}
+          >
+            {(pie) => (
+              <Group className="visx-pie-arcs-group">
+                {pie.arcs.map((arc, i) => (
+                  <g key={`pie-arc-${i}`}>
+                    <path d={pie.path(arc) || ""} fill={getColor(arc.data)} />
+                  </g>
+                ))}
+              </Group>
+            )}
+          </Pie>
+        </Group>
+      </PieChartSvg>
+    </PieChartWrapper>
   );
 };
