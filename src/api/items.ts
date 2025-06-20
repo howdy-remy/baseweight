@@ -26,6 +26,24 @@ export const itemsApi = createApi({
   reducerPath: "itemsApi",
   baseQuery: supabaseBaseQuery,
   endpoints: (builder) => ({
+    getItems: builder.query({
+      queryFn: async () => {
+        const { data: userData } = await supabase.auth.getUser();
+
+        const { data, error } = await supabase
+          .from("items")
+          .select()
+          .eq("profile_id", userData.user?.id);
+
+        if (error) {
+          console.error(error);
+          return { error };
+        }
+
+        const mappedData = data.map(itemMapper);
+        return { data: mappedData };
+      },
+    }),
     searchItems: builder.query({
       queryFn: async ({ searchString, excludeIds = [] }) => {
         const { data: userData } = await supabase.auth.getUser();
@@ -67,7 +85,34 @@ export const itemsApi = createApi({
         return { data: mappedData };
       },
     }),
+    editItem: builder.mutation({
+      queryFn: async (item) => {
+        const { data, error } = await supabase
+          .from("items")
+          .update({
+            type: item.type,
+            description: item.description,
+            weight_in_grams: item.weightInGrams,
+            unit: item.unit,
+          })
+          .eq("id", item.id)
+          .select();
+
+        if (error) {
+          console.error(error);
+          return { error };
+        }
+
+        const mappedData = data.map(itemMapper);
+        return { data: mappedData };
+      },
+    }),
   }),
 });
 
-export const { useCreateItemMutation, useLazySearchItemsQuery } = itemsApi;
+export const {
+  useGetItemsQuery,
+  useEditItemMutation,
+  useCreateItemMutation,
+  useLazySearchItemsQuery,
+} = itemsApi;

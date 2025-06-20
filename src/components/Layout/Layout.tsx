@@ -57,7 +57,7 @@ export const Layout = ({ children }: { children: ReactNode }) => {
         {showNav && (
           <Sidebar>
             <SidebarLinks>
-              <SidebarLink to="/">
+              <SidebarLink to="/gear">
                 <TextSansBold>All Gear</TextSansBold>
               </SidebarLink>
               <SidebarLink to="/">
@@ -97,7 +97,7 @@ export const Layout = ({ children }: { children: ReactNode }) => {
         </Link>
 
         <SidebarLinks>
-          <SidebarLink to="/">
+          <SidebarLink to="/gear">
             <TextSansBold>All Gear</TextSansBold>
           </SidebarLink>
           <SidebarLink to="/">

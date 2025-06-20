@@ -3,7 +3,6 @@ import { convertGramsToUnit } from "utils/unit-conversion/unit-conversion";
 import {
   Description,
   ItemWrapper,
-  Quantity,
   QuantityText,
   Type,
   Weight,

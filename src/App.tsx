@@ -11,6 +11,7 @@ import { PublicPack } from "features/public-pack";
 
 import { ProtectedRoute } from "components/ProtectedRoute";
 import { Login } from "features/login";
+import { Gear } from "features/gear";
 
 function App() {
   const { isLoadingSession, session } = useAuth();
@@ -49,6 +50,14 @@ function App() {
             }
           />
         </Route>
+        <Route
+          path="/gear"
+          element={
+            <ProtectedRoute>
+              <Gear />
+            </ProtectedRoute>
+          }
+        />
 
         <Route path="/u/:username" element={<Profile />} />
         <Route path="/p/:packId" element={<PublicPack />} />
