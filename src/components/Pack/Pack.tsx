@@ -7,12 +7,15 @@ import { downloadImage } from "utils/download-image";
 
 import { TextMonoRegularItalic } from "components/Typography";
 import { Content, Hero, PackWrapper, StyledLink, Title } from "./Pack.styled";
+import useScreenSize from "hooks/useScreenSize/useScreenSize";
 
 type PackProps = {
   pack: PackType;
 };
 
 export const Pack = ({ pack }: PackProps) => {
+  const { width } = useScreenSize();
+
   const weightInUnit = convertGramsToUnit(pack.unit, pack.weight || 0);
 
   const [imageUrl, setImageUrl] = useState<string | null>(null);
@@ -24,7 +27,7 @@ export const Pack = ({ pack }: PackProps) => {
 
   return (
     <StyledLink to={`packs/${pack.id}`}>
-      <PackWrapper>
+      <PackWrapper isMobile={width < 544}>
         {imageUrl ? (
           <Hero src={imageUrl} alt="hero image" />
         ) : (

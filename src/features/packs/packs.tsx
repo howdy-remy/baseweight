@@ -13,6 +13,7 @@ import { PackModal } from "./components/CreatePackModal";
 import { Pack } from "components/Pack/Pack";
 import { PacksWrapper } from "components/Pack/Pack.styled";
 import { AddPackButton } from "./components/AddPackButton.styled";
+import useScreenSize from "hooks/useScreenSize/useScreenSize";
 
 export const Packs = () => {
   const { session } = useAuth();
@@ -51,6 +52,8 @@ export const Packs = () => {
     }
   };
 
+  const { width } = useScreenSize();
+
   if (isLoading) {
     return "loading...";
   }
@@ -60,7 +63,10 @@ export const Packs = () => {
       <Layout>
         <div>
           <PacksWrapper>
-            <AddPackButton onClick={() => setIsPackModalOpen(true)}>
+            <AddPackButton
+              isMobile={width < 544}
+              onClick={() => setIsPackModalOpen(true)}
+            >
               Add pack
             </AddPackButton>
             {packs?.map((pack) => <Pack pack={pack} key={pack.id} />)}

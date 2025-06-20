@@ -15,8 +15,8 @@ export const StyledLink = styled(Link)`
   text-decoration: none;
 `;
 
-export const PackWrapper = styled.div`
-  width: 160px;
+export const PackWrapper = styled.div<{ isMobile: boolean }>`
+  width: ${({ isMobile }) => (isMobile ? "calc(50vw - 36px)" : "160px")};
   height: 240px;
 
   background-color: ${({ theme }) => theme.colors.white};

@@ -1,13 +1,15 @@
 import styled from "styled-components";
 
-export const AddPackButton = styled.button`
+export const AddPackButton = styled.button<{ isMobile: boolean }>`
   all: unset;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  width: 160px;
+  /* width: 160px; */
+  width: ${({ isMobile }) => (isMobile ? "calc(50vw - 36px)" : "160px")};
+
   height: 240px;
 
   background-color: ${({ theme }) => theme.colors.moss};
