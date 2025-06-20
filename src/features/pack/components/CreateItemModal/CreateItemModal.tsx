@@ -40,7 +40,7 @@ export const CreateItemModal: React.FC<CreateItemModalProps> = ({
   const [description, setDescription] = useState("");
   const [weight, setWeight] = useState(0);
   const [unit, setUnit] = useState<Unit>(Unit.G);
-  const [quantity, setQuantity] = useState(0);
+  const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
     setType(initialType);
