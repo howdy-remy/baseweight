@@ -10,10 +10,10 @@ import { Layout } from "components/Layout";
 import { HeadingOne } from "components/Typography";
 import { GearItem } from "components/GearItem";
 import { Space } from "components/Space";
-import { Dialog } from "components/Dialog";
 
 import { GearWrapper } from "./gear.styled";
 import { EditGearItemModal } from "./components/EditGearItemModal";
+import { ConfirmDeleteGearItemModal } from "./components/ConfirmDeleteGearItemModal";
 
 export const Gear = () => {
   const { data: gear, refetch } = useGetItemsQuery({});
@@ -78,13 +78,10 @@ export const Gear = () => {
           />
         ))}
       </GearWrapper>
-      <Dialog
+      <ConfirmDeleteGearItemModal
         isOpen={isConfirmDeleteOpen}
+        onSubmit={confirmDelete}
         onClose={() => setIsConfirmDeleteOpen(false)}
-        onConfirm={confirmDelete}
-        title="Confirm delete"
-        content="Are you sure you want to delete this item? This will remove the item from all packs it has been associated with. This action cannot be undone."
-        buttonText="Delete"
       />
       <EditGearItemModal
         item={itemToEdit}
