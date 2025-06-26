@@ -1,7 +1,12 @@
+import { ReactNode } from "react";
 import Pie from "@visx/shape/lib/shapes/Pie";
 import { scaleOrdinal } from "@visx/scale";
 import { Group } from "@visx/group";
-import { PieChartSvg, PieChartWrapper } from "./PieChart.styled";
+import {
+  PieChartCenter,
+  PieChartSvg,
+  PieChartWrapper,
+} from "./PieChart.styled";
 
 interface Datum {
   label: string;
@@ -13,10 +18,17 @@ type PieChartProps = {
   width: number;
   height: number;
   colors: string[];
+  children?: ReactNode;
 };
 const accessor = (d: Datum) => d.value;
 
-export const PieChart = ({ data, width, height, colors }: PieChartProps) => {
+export const PieChart = ({
+  data,
+  width,
+  height,
+  colors,
+  children,
+}: PieChartProps) => {
   const radius = Math.min(width, height) / 2;
   const centerY = height / 2;
   const centerX = width / 2;
@@ -51,6 +63,7 @@ export const PieChart = ({ data, width, height, colors }: PieChartProps) => {
           </Pie>
         </Group>
       </PieChartSvg>
+      <PieChartCenter>{children}</PieChartCenter>
     </PieChartWrapper>
   );
 };

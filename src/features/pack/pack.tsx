@@ -583,7 +583,13 @@ export const Pack = () => {
             height={296}
             data={chartData}
             colors={chartColors}
-          />
+          >
+            <HeadingOne as="p">
+              {convertGramsToUnit(pack.unit, packTotalWeight)}{" "}
+              {pack.unit.toLowerCase()}
+            </HeadingOne>
+            {/* <TextSansRegular>ULTRALIGHT</TextSansRegular> */}
+          </PieChart>
         </PackWrapper>
       </main>
     </Layout>
