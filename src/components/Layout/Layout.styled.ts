@@ -10,6 +10,7 @@ export const Wrapper = styled.div`
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
+    /* width: calc(100% - 48px); */
   }
 `;
 
@@ -43,9 +44,7 @@ export const MobileHeader = styled.header`
   justify-content: space-between;
 
   height: 64px;
-  width: 100%;
-  padding: ${({ theme: { spacing } }) =>
-    `${spacing.l}px ${spacing.s}px ${spacing.l}px ${spacing.l}px`};
+  padding: ${({ theme }) => theme.spacing.l}px;
 
   background-color: ${({ theme }) => theme.colors.flour};
 `;

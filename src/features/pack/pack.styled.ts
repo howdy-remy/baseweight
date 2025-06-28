@@ -19,12 +19,16 @@ export const PackWrapper = styled.div<{ $columns: number }>`
   }};
 
   @media (max-width: 1060px) {
+    width: ${({ theme }) => `calc(100vw - ${296 + theme.spacing.xl * 2}px)`};
     grid-template-columns: 1fr;
     & > :first-child {
       position: static;
       order: 2;
     }
-    /* margin: ${({ theme }) => theme.spacing.s}px; */
+  }
+
+  @media (max-width: 768px) {
+    width: ${({ theme }) => `calc(100vw - ${theme.spacing.xl * 2}px)`};
   }
 `;
 

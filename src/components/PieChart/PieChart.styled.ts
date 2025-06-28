@@ -9,6 +9,11 @@ export const PieChartWrapper = styled.div`
 
   width: 100%;
   height: fit-content;
+
+  @media (max-width: 1060px) {
+    position: relative;
+    top: 0;
+  }
 `;
 
 export const PieChartCenter = styled.div`
