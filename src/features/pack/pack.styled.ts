@@ -19,6 +19,7 @@ export const PackWrapper = styled.div<{ $columns: number }>`
   }};
 
   @media (max-width: 1060px) {
+    // 296 = sidebar width
     width: ${({ theme }) => `calc(100vw - ${296 + theme.spacing.xl * 2}px)`};
     grid-template-columns: 1fr;
     & > :first-child {

@@ -34,7 +34,8 @@ const packsMapper: (packs: pack[]) => Pack[] = (packs) => {
       const categoryWeight = category.category_item.reduce(
         (acc, categoryItem) => {
           const item = categoryItem.items as dbItem;
-          return (acc += item.weight_in_grams || 0);
+          return (acc +=
+            (item.weight_in_grams || 0) * (categoryItem.quantity || 1));
         },
         0,
       );
@@ -59,7 +60,7 @@ const packMapper: (pack: pack) => Pack = (pack) => {
 
     const categoryItems = category.category_item.map((categoryItem) => {
       const item = categoryItem.items as dbItem;
-      totalWeight += item.weight_in_grams || 0;
+      totalWeight += (item.weight_in_grams || 0) * (categoryItem.quantity || 1);
       totalQuantity += categoryItem.quantity || 0;
 
       return {
@@ -114,6 +115,7 @@ export const packsApi = createApi({
             hero_url,
             categories(
               category_item(
+                quantity,
                 items(
                   weight_in_grams,
                   unit

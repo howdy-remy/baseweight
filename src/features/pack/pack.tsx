@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router";
 
 import {
@@ -376,6 +376,20 @@ export const Pack = () => {
     (category) => category.color || "#D13D1F",
   );
 
+  const weightRanking = useMemo(() => {
+    const packWeightInPounds = convertGramsToUnit(Unit.LB, packTotalWeight);
+    switch (true) {
+      case packWeightInPounds < 5:
+        return "SUPERULTRALIGHT";
+      case packWeightInPounds < 10:
+        return "ULTRALIGHT";
+      case packWeightInPounds < 20:
+        return "LIGHTWEIGHT";
+      default:
+        return "TRADITIONAL";
+    }
+  }, [packTotalWeight]);
+
   // render --------------------------------------------------------------------
   if (!pack || isLoading) {
     return "loading...";
@@ -588,7 +602,7 @@ export const Pack = () => {
               {convertGramsToUnit(pack.unit, packTotalWeight)}{" "}
               {pack.unit.toLowerCase()}
             </HeadingOne>
-            {/* <TextSansRegular>ULTRALIGHT</TextSansRegular> */}
+            <TextSansRegular>{weightRanking}</TextSansRegular>
           </PieChart>
         </PackWrapper>
       </main>
