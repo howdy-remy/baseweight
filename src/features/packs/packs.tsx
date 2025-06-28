@@ -20,6 +20,7 @@ import {
   HeadingTwo,
   TextSansBold,
   TextSansRegular,
+  TextSansRegularItalic,
 } from "components/Typography";
 import { Button } from "components/Button";
 import { Space } from "components/Space";
@@ -80,36 +81,40 @@ export const Packs = () => {
                 Track every ounce. Perfect your pack
               </HeadingThree>
               <Space size="xxxl" />
-              <TextSansBold color="cayenne">
+              <TextSansRegular color="cayenne">
                 Baseweight helps ultralight backpackers optimize their gear by
                 tracking weight distribution across categories. See exactly
                 where your heaviest items are and make informed decisions about
                 what stays and what goes.
-              </TextSansBold>
+              </TextSansRegular>
               <Space size="xl" />
 
               <HeadingTwo>Let's get you started</HeadingTwo>
               <Space size="m" />
 
-              <HeadingThree>First, make it yours</HeadingThree>
+              <TextSansBold>First, make it yours</TextSansBold>
               <Space size="m" />
 
               <TextSansRegular>
                 Set up your profile so other backpackers can find and follow
-                your gear lists.
+                your gear lists. Coming soon!
               </TextSansRegular>
               <Space size="xl" />
               <TextSansRegular>
-                <TextSansBold as="span">Add your username</TextSansBold> –
-                Choose something memorable
+                <TextSansRegularItalic as="span">
+                  Add your username
+                </TextSansRegularItalic>{" "}
+                – Choose something memorable
               </TextSansRegular>
               <TextSansRegular>
-                <TextSansBold as="span">Upload an avatar</TextSansBold> – Show
-                your trail personality
+                <TextSansRegularItalic as="span">
+                  Upload an avatar
+                </TextSansRegularItalic>{" "}
+                – Show your trail personality
               </TextSansRegular>
               <Space size="xl" />
 
-              <HeadingThree>Ready to weigh in?</HeadingThree>
+              <TextSansBold>Ready to weigh in?</TextSansBold>
               <TextSansRegular>
                 Create your first pack and start building your ideal gear list.
                 Add items, set weights, and watch your baseweight come together
@@ -120,14 +125,14 @@ export const Packs = () => {
               <ButtonsWrapper>
                 <Button
                   variant="primary"
-                  size="medium"
+                  size="large"
                   onClick={() => navigate("/account")}
                 >
                   Set Up Profile
                 </Button>
                 <Button
                   variant="secondary"
-                  size="medium"
+                  size="large"
                   onClick={() => setIsPackModalOpen(true)}
                 >
                   Create First Pack

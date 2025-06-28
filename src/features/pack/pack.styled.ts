@@ -24,13 +24,21 @@ export const PackWrapper = styled.div<{ $columns: number }>`
     grid-template-columns: 1fr;
     & > :first-child {
       position: static;
-      order: 2;
+      ${({ $columns }) =>
+        $columns === 2 &&
+        css`
+          order: 2;
+        `};
     }
   }
 
   @media (max-width: 768px) {
     width: ${({ theme }) => `calc(100vw - ${theme.spacing.xl * 2}px)`};
   }
+`;
+
+export const PackIntroContent = styled.div`
+  margin: ${({ theme }) => theme.spacing.xl}px;
 `;
 
 export const PackHeader = styled.header`

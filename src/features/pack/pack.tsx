@@ -66,13 +66,19 @@ import { useAuth } from "contexts/Authentication";
 import { convertGramsToUnit } from "utils/unit-conversion/unit-conversion";
 
 import { Layout } from "components/Layout/Layout";
-import { HeadingOne, TextSansRegular } from "components/Typography";
+import {
+  HeadingOne,
+  HeadingThree,
+  HeadingTwo,
+  TextSansBold,
+  TextSansRegular,
+  TextSansRegularItalic,
+} from "components/Typography";
 import { Button } from "components/Button";
 import { IconButton } from "components/IconButton";
 import { Input } from "components/Input";
 import { Select } from "components/Select";
 import { ActionsWrapper } from "components/Modal";
-import { Space } from "components/Space";
 import { PackHero } from "components/PackHero";
 import { CategoryHeader } from "components/CategoryHeader";
 import { Items } from "components/Items";
@@ -90,6 +96,7 @@ import {
   HeaderWrapper,
   PackActions,
   PackHeader,
+  PackIntroContent,
   PackWrapper,
 } from "./pack.styled";
 import "./mdxeditor.styles.css";
@@ -97,6 +104,7 @@ import { Unit } from "types/Unit";
 import { useToast } from "contexts/Toast";
 import { PieChart } from "components/PieChart";
 import useScreenSize from "hooks/useScreenSize/useScreenSize";
+import { Space } from "components/Space";
 
 export const Pack = () => {
   const { session } = useAuth();
@@ -510,6 +518,49 @@ export const Pack = () => {
           )}
         </PackWrapper>
 
+        {pack.categories?.length === 0 && (
+          <PackIntroContent>
+            <HeadingTwo>Your pack is ready to fill</HeadingTwo>
+            <Space size="xl" />
+            <TextSansBold>
+              Start building your gear list by adding categories.
+            </TextSansBold>
+            <TextSansRegular>
+              Categories help organize your gear and make it easy to see weight
+              distribution. Common ultralight categories include Shelter, Sleep
+              System, Cooking, Clothing, and Electronics – but you can create
+              whatever works for your setup.
+            </TextSansRegular>
+            <Space size="xl" />
+
+            <HeadingThree>Get started</HeadingThree>
+            <TextSansRegular>
+              <TextSansRegularItalic as="span">
+                Add your first category
+              </TextSansRegularItalic>{" "}
+              – Try starting with your heaviest gear group
+            </TextSansRegular>
+
+            <TextSansRegular>
+              <TextSansRegularItalic as="span">
+                Then add items
+              </TextSansRegularItalic>{" "}
+              – Input each piece of gear with its weight{" "}
+            </TextSansRegular>
+            <TextSansRegular>
+              <TextSansRegularItalic as="span">
+                See the breakdown
+              </TextSansRegularItalic>{" "}
+              – Watch your pie chart update as you build{" "}
+            </TextSansRegular>
+            <Space size="xl" />
+            <TextSansRegular>
+              Your baseweight calculation will update automatically as you add
+              gear.
+            </TextSansRegular>
+          </PackIntroContent>
+        )}
+
         <PackWrapper $columns={2}>
           <div>
             <DndContext
@@ -592,18 +643,20 @@ export const Pack = () => {
             />
           </div>
 
-          <PieChart
-            width={296}
-            height={296}
-            data={chartData}
-            colors={chartColors}
-          >
-            <HeadingOne as="p">
-              {convertGramsToUnit(pack.unit, packTotalWeight)}{" "}
-              {pack.unit.toLowerCase()}
-            </HeadingOne>
-            <TextSansRegular>{weightRanking}</TextSansRegular>
-          </PieChart>
+          {pack?.categories?.length != 0 && (
+            <PieChart
+              width={296}
+              height={296}
+              data={chartData}
+              colors={chartColors}
+            >
+              <HeadingOne as="p">
+                {convertGramsToUnit(pack.unit, packTotalWeight)}{" "}
+                {pack.unit.toLowerCase()}
+              </HeadingOne>
+              <TextSansRegular>{weightRanking}</TextSansRegular>
+            </PieChart>
+          )}
         </PackWrapper>
       </main>
     </Layout>
