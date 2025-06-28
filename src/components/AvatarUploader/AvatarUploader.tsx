@@ -5,6 +5,7 @@ import { TextSansBold } from "components/Typography";
 import { downloadImage } from "utils/download-image";
 import { IconButton } from "components/IconButton";
 import { Button } from "components/Button";
+import { Space } from "components/Space";
 
 type AvatarUploaderProps = {
   url: null | string;
@@ -64,7 +65,7 @@ export const AvatarUploader = ({
           <TextSansBold>{initial}</TextSansBold>
         </AvatarNoImage>
       )}
-
+      <Space size="l" />
       <Button
         as="label"
         variant="primary"

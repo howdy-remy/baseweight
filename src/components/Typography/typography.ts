@@ -2,28 +2,36 @@ import styled from "styled-components";
 import theme from "../../styles/theme";
 
 // headings -------------------------------------------------------------------/
-export const HeadingOne = styled.p`
+export const HeadingOne = styled.p<{
+  color?: keyof typeof theme.colors;
+}>`
   font-family: "ForrestBold", serif;
   font-size: ${({ theme }) => theme.fontsizes.xl};
   line-height: 1;
   margin: 0;
   margin-bottom: 7px;
+  color: ${({ theme, color }) => (!!color ? theme.colors[color] : "inherit")};
 `;
 
-export const HeadingTwo = styled.p`
+export const HeadingTwo = styled.p<{
+  color?: keyof typeof theme.colors;
+}>`
   font-family: "ForrestBold", serif;
   font-size: ${({ theme }) => theme.fontsizes.l};
   line-height: 1.4;
   margin: 0;
+  color: ${({ theme, color }) => (!!color ? theme.colors[color] : "inherit")};
 `;
 
-export const HeadingThree = styled.p`
+export const HeadingThree = styled.p<{
+  color?: keyof typeof theme.colors;
+}>`
   font-family: "Rubik", sans-serif;
   font-size: ${({ theme }) => theme.fontsizes.l};
+  font-weight: 200;
   line-height: 1.4;
   margin: 0;
-
-  font-weight: 600;
+  color: ${({ theme, color }) => (!!color ? theme.colors[color] : "inherit")};
 `;
 
 // text serif -----------------------------------------------------------------/

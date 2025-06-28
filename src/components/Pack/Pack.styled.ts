@@ -2,14 +2,6 @@ import styled from "styled-components";
 import { Link } from "react-router";
 import { TextSansBold } from "components/Typography";
 
-export const PacksWrapper = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: ${({ theme }) => theme.spacing.xl}px;
-
-  margin: ${({ theme }) => theme.spacing.xl}px;
-`;
-
 export const StyledLink = styled(Link)`
   color: inherit;
   text-decoration: none;

@@ -76,7 +76,9 @@ export const Layout = ({ children }: { children: ReactNode }) => {
                 <Avatar
                   url={profile?.avatar_url || null}
                   size={40}
-                  initial={profile?.username[0]}
+                  initial={
+                    !!profile?.username.length ? profile.username[0] : "?"
+                  }
                 />
               </AccountInfo>
             </Link>
@@ -116,7 +118,7 @@ export const Layout = ({ children }: { children: ReactNode }) => {
             <Avatar
               url={profile?.avatar_url || null}
               size={40}
-              initial={profile?.username[0]}
+              initial={!!profile?.username?.length ? profile.username[0] : "?"}
             />
           </AccountInfo>
         </Link>
