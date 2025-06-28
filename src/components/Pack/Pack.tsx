@@ -27,7 +27,7 @@ export const Pack = ({ pack }: PackProps) => {
 
   return (
     <StyledLink to={`packs/${pack.id}`}>
-      <PackWrapper isMobile={width < 544}>
+      <PackWrapper>
         {imageUrl ? (
           <Hero src={imageUrl} alt="hero image" />
         ) : (

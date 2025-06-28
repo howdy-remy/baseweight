@@ -1,14 +1,13 @@
 import styled from "styled-components";
 
-export const AddPackButton = styled.button<{ isMobile: boolean }>`
+export const AddPackButton = styled.button`
   all: unset;
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  /* width: 160px; */
-  width: ${({ isMobile }) => (isMobile ? "calc(50vw - 36px)" : "160px")};
+  width: 160px;
 
   height: 240px;
 
@@ -30,5 +29,9 @@ export const AddPackButton = styled.button<{ isMobile: boolean }>`
 
   &:hover {
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+
+  @media (max-width: 544px) {
+    width: calc(50vw - 36px);
   }
 `;

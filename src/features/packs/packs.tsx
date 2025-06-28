@@ -63,10 +63,7 @@ export const Packs = () => {
       <Layout>
         <div>
           <PacksWrapper>
-            <AddPackButton
-              isMobile={width < 544}
-              onClick={() => setIsPackModalOpen(true)}
-            >
+            <AddPackButton onClick={() => setIsPackModalOpen(true)}>
               Add pack
             </AddPackButton>
             {packs?.map((pack) => <Pack pack={pack} key={pack.id} />)}
