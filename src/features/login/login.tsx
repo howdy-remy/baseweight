@@ -5,7 +5,11 @@ import { Field } from "components/Field";
 import { Input } from "components/Input";
 import { ActionsWrapper } from "components/Modal";
 import { Button } from "components/Button";
-import { TextSansBold, TextSerifRegular } from "components/Typography";
+import {
+  TextSansBold,
+  TextSansRegular,
+  TextSerifRegular,
+} from "components/Typography";
 import { useToast } from "contexts/Toast";
 
 import { LogoType } from "components/Layout/Layout.styled";
@@ -38,7 +42,12 @@ export const Login = () => {
           No password needed! Sign in via magic link with your email below.
         </TextSerifRegular>
         {submitted ? (
-          <TextSansBold>Check your email for the login link!</TextSansBold>
+          <>
+            <TextSansBold>Check your email for the login link!</TextSansBold>
+            <TextSansRegular>
+              Look out for an email from Supabase Auth
+            </TextSansRegular>
+          </>
         ) : (
           <StyledForm onSubmit={handleLogin} role="form">
             <Field label="Email">
