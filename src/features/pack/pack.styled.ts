@@ -43,7 +43,7 @@ export const PackHeader = styled.header`
   grid-template-columns: 1fr max-content;
 
   height: 40px;
-  padding: ${({ theme: { spacing } }) => `0 ${spacing.s}px 0 ${spacing.xl}px`};
+  padding: ${({ theme: { spacing } }) => `0 ${spacing.l}px 0 ${spacing.xl}px`};
   background-color: ${({ theme }) => theme.colors.white};
   border-bottom: 1px solid ${({ theme }) => theme.colors.lichen};
 `;

@@ -13,6 +13,8 @@ export const PieChartWrapper = styled.div`
   @media (max-width: 1060px) {
     position: relative;
     top: 0;
+
+    width: calc(100% - 32px);
   }
 `;
 

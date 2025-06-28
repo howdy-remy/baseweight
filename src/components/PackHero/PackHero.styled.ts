@@ -13,7 +13,7 @@ export const HeroWrapper = styled.div`
 export const Buttons = styled.div`
   position: absolute;
   top: ${({ theme }) => theme.spacing.s}px;
-  right: ${({ theme }) => theme.spacing.s}px;
+  right: ${({ theme }) => theme.spacing.l}px;
 
   display: flex;
   gap: ${({ theme }) => theme.spacing.s}px;

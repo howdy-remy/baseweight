@@ -35,7 +35,7 @@ const packsMapper: (packs: pack[]) => Pack[] = (packs) => {
         (acc, categoryItem) => {
           const item = categoryItem.items as dbItem;
           return (acc +=
-            (item.weight_in_grams || 0) * (categoryItem.quantity || 1));
+            (item.weight_in_grams || 0) * (categoryItem.quantity || 0));
         },
         0,
       );
@@ -60,7 +60,7 @@ const packMapper: (pack: pack) => Pack = (pack) => {
 
     const categoryItems = category.category_item.map((categoryItem) => {
       const item = categoryItem.items as dbItem;
-      totalWeight += (item.weight_in_grams || 0) * (categoryItem.quantity || 1);
+      totalWeight += (item.weight_in_grams || 0) * (categoryItem.quantity || 0);
       totalQuantity += categoryItem.quantity || 0;
 
       return {

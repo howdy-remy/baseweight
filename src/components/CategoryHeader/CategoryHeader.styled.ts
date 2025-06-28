@@ -13,10 +13,10 @@ export const CategoryWrapper = styled.div<{ $isPublic?: boolean }>`
   ${({ $isPublic }) =>
     $isPublic
       ? css`
-          grid-template-columns: 24px 1fr 80px 48px;
+          grid-template-columns: 24px 1fr max-content 48px;
         `
       : css`
-          grid-template-columns: 24px 24px 1fr 80px 48px 24px;
+          grid-template-columns: 24px 24px 1fr max-content 48px 24px;
         `}
 
   width: 100%;
