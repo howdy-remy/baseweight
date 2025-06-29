@@ -13,6 +13,10 @@ export type Pack = {
   categories?: Category[];
   weight?: number | null;
   heroUrl?: string | null;
+  profile?: {
+    username?: string;
+    avatarUrl?: string | null;
+  };
 };
 
 type dbPack = Partial<Database["public"]["Tables"]["packs"]["Row"]>;
@@ -21,11 +25,13 @@ type dbCategoryItem = Partial<
   Database["public"]["Tables"]["category_item"]["Row"]
 >;
 type dbItem = Partial<Database["public"]["Tables"]["items"]["Row"]>;
+type dbProfiles = Partial<Database["public"]["Tables"]["profiles"]["Row"]>;
 
 type pack = dbPack & {
   categories: (dbCategory & {
     category_item: (dbCategoryItem & { items: dbItem[] })[];
   })[];
+  profiles?: dbProfiles | null | any;
 };
 
 const packsMapper: (packs: pack[]) => Pack[] = (packs) => {
@@ -94,6 +100,10 @@ const packMapper: (pack: pack) => Pack = (pack) => {
     description: pack.description || "",
     unit: pack.unit as Unit,
     categories: mappedCategories,
+    profile: {
+      username: pack.profiles?.username || "",
+      avatarUrl: pack.profiles?.avatar_url || null,
+    },
   };
 };
 
@@ -143,6 +153,10 @@ export const packsApi = createApi({
           description,
           unit,
           hero_url,
+          profiles (
+            username,
+            avatar_url
+          ),
           categories(
             id, 
             name,
@@ -161,6 +175,7 @@ export const packsApi = createApi({
               )
             )
           )
+
             `,
           )
           .eq("id", packId)

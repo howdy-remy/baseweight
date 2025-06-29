@@ -56,6 +56,12 @@ export const PackHeader = styled.header`
   border-bottom: 1px solid ${({ theme }) => theme.colors.lichen};
 `;
 
+export const PackHeaderAccount = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacing.s}px;
+`;
+
 export const PackActions = styled.div`
   display: flex;
   align-items: center;

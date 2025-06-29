@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 
 import Markdown from "react-markdown";
@@ -19,8 +19,13 @@ import { Layout } from "components/Layout/Layout";
 import { HeadingOne, TextSansRegular } from "components/Typography";
 import { PieChart } from "components/PieChart";
 
-import { PackHeader, PackWrapper } from "features/pack/pack.styled";
+import {
+  PackHeader,
+  PackHeaderAccount,
+  PackWrapper,
+} from "features/pack/pack.styled";
 import { PackHero } from "components/PackHero";
+import { Avatar } from "components/Avatar";
 
 export const PublicPack = () => {
   let { packId } = useParams();
@@ -59,6 +64,18 @@ export const PublicPack = () => {
             {pack.name} | {convertGramsToUnit(pack.unit, packTotalWeight)}{" "}
             {pack.unit.toLowerCase()}
           </TextSansRegular>
+          <PackHeaderAccount>
+            <TextSansRegular>{pack.profile?.username}</TextSansRegular>
+            <Avatar
+              url={pack.profile?.avatarUrl || null}
+              size={20}
+              initial={
+                !!pack.profile?.username?.length
+                  ? pack.profile.username[0]
+                  : "?"
+              }
+            />
+          </PackHeaderAccount>
         </PackHeader>
         <PackHero url={pack.heroUrl} />
 
@@ -76,10 +93,10 @@ export const PublicPack = () => {
         <PackWrapper $columns={2}>
           <div>
             {sortedCategories.map((category, i) => (
-              <>
+              <React.Fragment key={category.id}>
                 <PublicCategoryHeader category={category} unit={pack.unit} />
                 <PublicItems items={category.categoryItems} />
-              </>
+              </React.Fragment>
             ))}
           </div>
           <PieChart
