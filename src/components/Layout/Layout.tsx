@@ -64,7 +64,11 @@ export const Layout = ({ children }: { children: ReactNode }) => {
                 <TextSansBold>Packs</TextSansBold>
               </SidebarLink>
               {packs?.map((pack) => (
-                <SidebarLink to={`/packs/${pack.id}`} key={pack.id}>
+                <SidebarLink
+                  to={`/packs/${pack.id}`}
+                  key={pack.id}
+                  onClick={() => setShowNav(false)}
+                >
                   {pack.name}
                 </SidebarLink>
               ))}

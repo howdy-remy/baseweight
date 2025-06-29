@@ -13,6 +13,7 @@ export const ItemWrapper = styled.div<{
   display: grid;
   align-items: center;
   gap: ${({ theme }) => theme.spacing.m}px;
+  grid-template-areas: "draghandle type description weight quantity actions";
 
   ${({ $isPublic }) =>
     $isPublic
@@ -36,13 +37,25 @@ export const ItemWrapper = styled.div<{
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
       border: 0;
     `}
+
+  @media (max-width: 544px) {
+    grid-template-columns: 24px 1fr max-content 24px;
+    grid-template-areas:
+      "draghandle type type actions"
+      ". description description ."
+      ". weight quantity .";
+
+    height: 80px;
+  }
 `;
 
 export const Type = styled(TextSansBold)`
+  grid-area: type;
   white-space: nowrap;
 `;
 
 export const Description = styled(TextSansRegular)`
+  grid-area: description;
   min-width: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -50,10 +63,15 @@ export const Description = styled(TextSansRegular)`
 `;
 
 export const Weight = styled(TextMonoBoldItalic)`
+  grid-area: weight;
   text-align: right;
+  @media (max-width: 544px) {
+    text-align: left;
+  }
 `;
 
 export const Quantity = styled.div`
+  grid-area: quantity;
   display: grid;
   grid-template-columns: 24px 1fr 24px;
   gap: ${({ theme }) => theme.spacing.m}px;
