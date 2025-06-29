@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { Category } from "api/categories";
 
@@ -13,6 +13,7 @@ import { FieldsWrapper, StyledForm } from "./CategoryModal.styled";
 type CategoryModalProps = {
   isOpen: boolean;
   initialProps: Partial<Category> | null;
+  categoryNumber: number;
   onClose: () => void;
   onSubmit: (category: Partial<Category>) => void;
 };
@@ -20,6 +21,7 @@ type CategoryModalProps = {
 export const CategoryModal = ({
   isOpen,
   initialProps,
+  categoryNumber,
   onClose,
   onSubmit,
 }: CategoryModalProps) => {
@@ -28,8 +30,28 @@ export const CategoryModal = ({
   const [categoryName, setCategoryName] = useState<string | null | undefined>(
     "",
   );
+
+  const colors = [
+    "#FFC31B", // Golden Yellow
+    "#D13D1F", // Red Orange
+    "#1A495D", // Dark Blue
+    "#8B4513", // Saddle Brown
+    "#FF6B35", // Bright Orange
+    "#2E8B57", // Sea Green
+    "#9B59B6", // Purple
+    "#F39C12", // Orange
+    "#3498DB", // Blue
+    "#FA8072", // Salmon
+    "#34495E", // Dark Gray Blue
+    "#E67E22", // Carrot Orange
+  ];
+
+  const color = useMemo(() => {
+    return colors[(categoryNumber + 1) % colors.length];
+  }, [categoryNumber, colors]);
+
   const [categoryColor, setCategoryColor] = useState<string | null | undefined>(
-    "#D13D1F",
+    color,
   );
 
   useEffect(() => {
@@ -40,13 +62,13 @@ export const CategoryModal = ({
     } else {
       setIsEdit(false);
       setCategoryName("");
-      setCategoryColor("#44584B");
+      setCategoryColor(color);
     }
-  }, [initialProps?.name]);
+  }, [initialProps?.name, initialProps?.color, color]);
 
   const resetFormState = () => {
     setCategoryName("");
-    setCategoryColor("#44584B");
+    setCategoryColor(color);
   };
 
   // create category -----------------------------------------------------------

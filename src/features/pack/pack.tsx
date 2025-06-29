@@ -520,9 +520,9 @@ export const Pack = () => {
                 remarkPlugins={[remarkMdx, remarkGfm]}
                 rehypePlugins={[rehypeFormat]}
               >
-                {pack?.description}
+                {pack.description}
               </Markdown>
-              {!pack?.description && (
+              {!pack.description && (
                 <TextSansRegular>Click to enter a description</TextSansRegular>
               )}
             </DescriptionWrapper>
@@ -624,7 +624,7 @@ export const Pack = () => {
                         <CategoryHeader
                           key={category.id}
                           category={category}
-                          packUnit={pack!.unit}
+                          packUnit={pack.unit}
                           onDelete={onDeleteCategory(category)}
                           onEdit={onInitiateEditCategory(category)}
                           dragHandleProps={{ attributes, listeners }}
@@ -679,13 +679,14 @@ export const Pack = () => {
                     }
                   : null
               }
+              categoryNumber={pack.categories?.length || 0}
               isOpen={isCreateCategoryModalOpen}
               onClose={onCloseCategoryModal}
               onSubmit={onUpsertCategory}
             />
           </div>
 
-          {pack?.categories?.length != 0 && (
+          {pack.categories?.length != 0 && (
             <PieChart
               width={296}
               height={296}
