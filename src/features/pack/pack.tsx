@@ -43,7 +43,11 @@ import rehypeFormat from "rehype-format";
 
 import { encode } from "lib/sqids";
 
-import { useGetPackQuery, useUpdatePackMutation } from "api/packs";
+import {
+  useGetPackQuery,
+  useGetPacksQuery,
+  useUpdatePackMutation,
+} from "api/packs";
 import {
   type Item as ItemType,
   useCreateItemMutation,
@@ -103,13 +107,14 @@ import "./mdxeditor.styles.css";
 import { Unit } from "types/Unit";
 import { useToast } from "contexts/Toast";
 import { PieChart } from "components/PieChart";
-import useScreenSize from "hooks/useScreenSize/useScreenSize";
 import { Space } from "components/Space";
 
 export const Pack = () => {
   const { session } = useAuth();
   let { packId } = useParams();
-  const { width } = useScreenSize();
+
+  // get packs count -----------------------------------
+  const { data: packs } = useGetPacksQuery({}, { skip: !session });
 
   // get initial pack data -----------------------------------------------------
   const { data: pack, isLoading, refetch } = useGetPackQuery({ packId });
@@ -459,6 +464,7 @@ export const Pack = () => {
               <option value={Unit.KG}>kg</option>
             </Select>
           </HeaderWrapper>
+
           {isEditingDescription ? (
             <form onSubmit={(event) => saveMarkdown(event)}>
               <MDXEditor
@@ -518,7 +524,7 @@ export const Pack = () => {
           )}
         </PackWrapper>
 
-        {pack.categories?.length === 0 && (
+        {pack.categories?.length === 0 && packs?.length === 0 && (
           <PackIntroContent>
             <HeadingTwo>Your pack is ready to fill</HeadingTwo>
             <Space size="xl" />
@@ -557,6 +563,37 @@ export const Pack = () => {
             <TextSansRegular>
               Your baseweight calculation will update automatically as you add
               gear.
+            </TextSansRegular>
+          </PackIntroContent>
+        )}
+
+        {pack.categories?.length === 0 && (packs?.length || 1) > 0 && (
+          <PackIntroContent>
+            <HeadingTwo>Ready for your next build?</HeadingTwo>
+            <Space size="xl" />
+            <TextSansBold>
+              Time to optimize another pack configuration.
+            </TextSansBold>
+            <TextSansRegular>
+              Whether you're planning a different trip, testing new gear
+              combinations, or building a seasonal variant, this pack is ready
+              for your next ultralight experiment.
+            </TextSansRegular>
+            <Space size="xl" />
+
+            <TextSansBold>Build your setup</TextSansBold>
+            <TextSansRegular>
+              <TextSansRegularItalic as="span">
+                Add categories and gear{" "}
+              </TextSansRegularItalic>
+              – Start fresh with a new configuration
+            </TextSansRegular>
+            <TextSansRegular>
+              <TextSansRegularItalic as="span">
+                Reuse existing gear{" "}
+              </TextSansRegularItalic>
+              – As you type gear names, your previous items will appear as
+              suggestions
             </TextSansRegular>
           </PackIntroContent>
         )}
