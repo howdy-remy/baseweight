@@ -1,8 +1,97 @@
-# React + Vite
+# Baseweight.xyz
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A web application for ultralight backpackers to track and optimize their gear weight distribution. Built for the backpacking community to help achieve the perfect pack setup.
 
-Currently, two official plugins are available:
+## About
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Baseweight helps ultralight backpackers meticulously track their gear weights across different categories, visualize weight distribution through interactive pie charts, and optimize their pack configurations. Whether you're planning a thru-hike or fine-tuning your weekend setup, Baseweight provides the tools to analyze every ounce.
+
+## Features
+
+- **Gear Weight Tracking** - Add and categorize your gear with precise weights
+- **Visual Analytics** - Pie charts showing weight distribution across categories
+- **Multiple Pack Configurations** - Create different setups for various trips
+- **Gear Library** - Reuse previously entered gear across different packs
+- **Community Profiles** - Share your gear lists with other ultralight enthusiasts
+
+## Tech Stack
+
+- **Frontend**: React 18 with Vite
+- **Backend**: Supabase
+- **Styling**: Styled Components
+- **Testing**: Vitest
+- **Documentation**: Storybook
+
+## Available Scripts
+
+### Development
+
+```bash
+npm run dev
+```
+
+Starts the development server with hot reload at `http://localhost:5173`
+
+### Build
+
+```bash
+npm run build
+```
+
+Creates an optimized production build in the `dist` folder
+
+### Linting
+
+```bash
+npm run lint
+```
+
+Runs ESLint to check code quality and style
+
+### Testing
+
+```bash
+npm run test
+```
+
+Runs the test suite using Vitest
+
+### Storybook
+
+```bash
+npm run storybook
+```
+
+Starts Storybook development server at `http://localhost:6006`
+
+```bash
+npm run build-storybook
+```
+
+Builds Storybook for production deployment
+
+## Project Structure
+
+```
+src/
+├── api/             # Queries, mutations, mappers
+├── components/      # Reusable UI components
+├── contexts/        # Shared Contexts
+├── features/        # Page components
+├── hooks/           # Custom React hooks
+├── lib/             # External library configurations
+├── styles/          # Global themes
+└── utils/           # Utility functions
+```
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
