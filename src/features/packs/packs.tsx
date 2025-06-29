@@ -9,11 +9,6 @@ import {
 import { useAuth } from "contexts/Authentication";
 
 import { Layout } from "components/Layout/Layout";
-import { PackModal } from "./components/CreatePackModal";
-import { Pack } from "components/Pack/Pack";
-import { ButtonsWrapper, PacksWrapper, ZeroStateWrapper } from "./packs.styled";
-import { AddPackButton } from "./components/AddPackButton.styled";
-import useScreenSize from "hooks/useScreenSize/useScreenSize";
 import {
   HeadingOne,
   HeadingThree,
@@ -24,6 +19,12 @@ import {
 } from "components/Typography";
 import { Button } from "components/Button";
 import { Space } from "components/Space";
+import { FullPageLoader, Loader } from "components/Loader";
+import { Pack } from "components/Pack/Pack";
+
+import { ButtonsWrapper, PacksWrapper, ZeroStateWrapper } from "./packs.styled";
+import { PackModal } from "./components/CreatePackModal";
+import { AddPackButton } from "./components/AddPackButton.styled";
 
 export const Packs = () => {
   const { session } = useAuth();
@@ -62,10 +63,12 @@ export const Packs = () => {
     }
   };
 
-  const { width } = useScreenSize();
-
   if (isLoading) {
-    return "loading...";
+    return (
+      <FullPageLoader>
+        <Loader />
+      </FullPageLoader>
+    );
   }
 
   return (

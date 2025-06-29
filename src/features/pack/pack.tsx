@@ -66,6 +66,7 @@ import {
 } from "api/categories";
 
 import { useAuth } from "contexts/Authentication";
+import { useToast } from "contexts/Toast";
 
 import { convertGramsToUnit } from "utils/unit-conversion/unit-conversion";
 
@@ -86,6 +87,9 @@ import { ActionsWrapper } from "components/Modal";
 import { PackHero } from "components/PackHero";
 import { CategoryHeader } from "components/CategoryHeader";
 import { Items } from "components/Items";
+import { PieChart } from "components/PieChart";
+import { Space } from "components/Space";
+import { FullPageLoader, Loader } from "components/Loader";
 
 import {
   AddItemToPack,
@@ -105,9 +109,6 @@ import {
 } from "./pack.styled";
 import "./mdxeditor.styles.css";
 import { Unit } from "types/Unit";
-import { useToast } from "contexts/Toast";
-import { PieChart } from "components/PieChart";
-import { Space } from "components/Space";
 
 export const Pack = () => {
   const { session } = useAuth();
@@ -405,7 +406,11 @@ export const Pack = () => {
 
   // render --------------------------------------------------------------------
   if (!pack || isLoading) {
-    return "loading...";
+    return (
+      <FullPageLoader>
+        <Loader />
+      </FullPageLoader>
+    );
   }
 
   return (

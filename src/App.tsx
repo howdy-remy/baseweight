@@ -12,12 +12,17 @@ import { PublicPack } from "features/public-pack";
 import { ProtectedRoute } from "components/ProtectedRoute";
 import { Login } from "features/login";
 import { Gear } from "features/gear";
+import { FullPageLoader, Loader } from "components/Loader";
 
 function App() {
-  const { isLoadingSession, session } = useAuth();
+  const { isLoadingSession } = useAuth();
 
   if (isLoadingSession) {
-    return <div>...loading...</div>;
+    return (
+      <FullPageLoader>
+        <Loader />
+      </FullPageLoader>
+    );
   }
 
   return (

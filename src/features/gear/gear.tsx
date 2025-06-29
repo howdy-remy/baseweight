@@ -14,9 +14,11 @@ import { Space } from "components/Space";
 import { GearWrapper } from "./gear.styled";
 import { EditGearItemModal } from "./components/EditGearItemModal";
 import { ConfirmDeleteGearItemModal } from "./components/ConfirmDeleteGearItemModal";
+import { FullPageLoader } from "components/Loader";
+import { Loader } from "lucide-react";
 
 export const Gear = () => {
-  const { data: gear, refetch } = useGetItemsQuery({});
+  const { data: gear, refetch, isLoading } = useGetItemsQuery({});
 
   const sortedGear = [...(gear || [])].sort((a, b) => {
     const aType = a.type?.toLowerCase() || "";
@@ -63,6 +65,14 @@ export const Gear = () => {
     refetch();
     setIsCreateItemModalOpen(false);
   };
+
+  if (isLoading) {
+    return (
+      <FullPageLoader>
+        <Loader />
+      </FullPageLoader>
+    );
+  }
 
   return (
     <Layout>
