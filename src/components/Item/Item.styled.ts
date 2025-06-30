@@ -19,7 +19,8 @@ export const ItemWrapper = styled.div<{
   ${({ $isPublic }) =>
     $isPublic
       ? css`
-          grid-template-columns: max-content 1fr 80px 20px 100px;
+          grid-template-columns: max-content 1fr 80px 20px 48px;
+          grid-template-areas: "type description weight unit quantity";
         `
       : css`
           grid-template-columns: 24px max-content 1fr 80px 20px 100px 24px;
@@ -49,6 +50,23 @@ export const ItemWrapper = styled.div<{
     height: auto;
     padding: ${({ theme }) => theme.spacing.s}px 0
       ${({ theme }) => theme.spacing.m}px 0;
+
+    ${({ $isPublic }) =>
+      $isPublic
+        ? css`
+            grid-template-columns: 1fr 20px 48px;
+            grid-template-areas:
+              "type type type"
+              "description description description"
+              "weight unit quantity";
+          `
+        : css`
+            grid-template-columns: 24px 1fr max-content max-content 24px;
+            grid-template-areas:
+              "draghandle type type actions"
+              ". description description ."
+              ". quantity weight unit";
+          `}
   }
 `;
 
@@ -81,9 +99,6 @@ export const Description = styled(TextSansRegular)`
 export const Weight = styled(TextMonoBoldItalic)`
   grid-area: weight;
   text-align: right;
-  @media (max-width: 544px) {
-    text-align: left;
-  }
 `;
 
 export const Unit = styled(TextMonoBoldItalic)`

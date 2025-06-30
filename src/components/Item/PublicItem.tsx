@@ -5,6 +5,7 @@ import {
   ItemWrapper,
   QuantityText,
   Type,
+  Unit,
   Weight,
 } from "./Item.styled";
 
@@ -21,8 +22,8 @@ export const PublicItem = ({ categoryItem }: ItemProps) => (
         categoryItem.item.unit,
         categoryItem.item.weightInGrams || 0,
       )}{" "}
-      {categoryItem.item.unit.toLowerCase()}
     </Weight>
+    <Unit>{categoryItem.item.unit.toLowerCase()}</Unit>
     <QuantityText>x {categoryItem.quantity}</QuantityText>
   </ItemWrapper>
 );
