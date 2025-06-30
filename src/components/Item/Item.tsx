@@ -6,11 +6,14 @@ import { DragHandle } from "../DragHandle";
 import { Dropdown } from "../Dropdown";
 import { IconButton } from "../IconButton";
 import {
+  Actions,
   Description,
+  DragHandleWrapper,
   ItemWrapper,
   Quantity,
   QuantityText,
   Type,
+  Unit,
   Weight,
 } from "./Item.styled";
 import { convertGramsToUnit } from "utils/unit-conversion/unit-conversion";
@@ -64,9 +67,9 @@ export const Item = ({
   return (
     <div ref={setNodeRef} style={style}>
       <ItemWrapper>
-        <div {...attributes} {...listeners}>
+        <DragHandleWrapper {...attributes} {...listeners}>
           <DragHandle />
-        </div>
+        </DragHandleWrapper>
         <Type>{categoryItem.item.type}</Type>
         <Description>{categoryItem.item.description}</Description>
         <Weight>
@@ -74,14 +77,16 @@ export const Item = ({
             categoryItem.item.unit,
             categoryItem.item.weightInGrams || 0,
           )}{" "}
-          {categoryItem.item.unit.toLowerCase()}
         </Weight>
+        <Unit>{categoryItem.item.unit.toLowerCase()}</Unit>
         <Quantity>
           <IconButton variant="secondary" icon="-" onClick={reduceQuantity} />
           <QuantityText>{categoryItem.quantity}</QuantityText>
           <IconButton variant="secondary" icon="+" onClick={increaseQuantity} />
         </Quantity>
-        <Dropdown useIconButton={true} items={actions} />
+        <Actions>
+          <Dropdown useIconButton={true} items={actions} />
+        </Actions>
       </ItemWrapper>
     </div>
   );

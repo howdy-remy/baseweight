@@ -58,9 +58,6 @@ export const Layout = ({ children }: { children: ReactNode }) => {
         {showNav && (
           <Sidebar>
             <SidebarLinks>
-              <SidebarLink to="/gear">
-                <TextSansBold>All Gear</TextSansBold>
-              </SidebarLink>
               <SidebarLink to="/">
                 <TextSansBold>Packs</TextSansBold>
               </SidebarLink>
@@ -73,6 +70,9 @@ export const Layout = ({ children }: { children: ReactNode }) => {
                   {pack.name}
                 </SidebarLink>
               ))}
+              <SidebarLink to="/gear">
+                <TextSansBold>All Gear</TextSansBold>
+              </SidebarLink>
             </SidebarLinks>
 
             <Link to="/account" style={{ textDecoration: "none" }}>
@@ -101,9 +101,6 @@ export const Layout = ({ children }: { children: ReactNode }) => {
           </Link>
 
           <SidebarLinks>
-            <SidebarLink to="/gear">
-              <TextSansBold>All Gear</TextSansBold>
-            </SidebarLink>
             <SidebarLink to="/">
               <TextSansBold>Packs</TextSansBold>
             </SidebarLink>
@@ -112,6 +109,9 @@ export const Layout = ({ children }: { children: ReactNode }) => {
                 {pack.name}
               </SidebarLink>
             ))}
+            <SidebarLink to="/gear">
+              <TextSansBold>All Gear</TextSansBold>
+            </SidebarLink>
           </SidebarLinks>
 
           <Link to="/account" style={{ textDecoration: "none" }}>

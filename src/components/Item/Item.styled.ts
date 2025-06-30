@@ -13,15 +13,16 @@ export const ItemWrapper = styled.div<{
   display: grid;
   align-items: center;
   gap: ${({ theme }) => theme.spacing.m}px;
-  grid-template-areas: "draghandle type description weight quantity actions";
+  grid-row-gap: ${({ theme }) => theme.spacing.s}px;
+  grid-template-areas: "draghandle type description weight unit quantity actions";
 
   ${({ $isPublic }) =>
     $isPublic
       ? css`
-          grid-template-columns: max-content 1fr 80px 93px;
+          grid-template-columns: max-content 1fr 80px 20px 100px;
         `
       : css`
-          grid-template-columns: 24px max-content 1fr 80px 93px 24px;
+          grid-template-columns: 24px max-content 1fr 80px 20px 100px 24px;
         `}
 
   width: 100%;
@@ -39,13 +40,28 @@ export const ItemWrapper = styled.div<{
     `}
 
   @media (max-width: 544px) {
-    grid-template-columns: 24px 1fr max-content 24px;
+    grid-template-columns: 24px 1fr max-content max-content 24px;
     grid-template-areas:
       "draghandle type type actions"
       ". description description ."
-      ". weight quantity .";
+      ". quantity weight unit";
 
-    height: 80px;
+    height: auto;
+    padding: ${({ theme }) => theme.spacing.s}px 0
+      ${({ theme }) => theme.spacing.m}px 0;
+  }
+`;
+
+export const DragHandleWrapper = styled.div`
+  grid-area: draghandle;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+
+  @media (max-width: 544px) {
+    grid-row-start: 1;
+    grid-row-end: 4;
   }
 `;
 
@@ -70,14 +86,26 @@ export const Weight = styled(TextMonoBoldItalic)`
   }
 `;
 
+export const Unit = styled(TextMonoBoldItalic)`
+  grid-area: unit;
+`;
+
 export const Quantity = styled.div`
   grid-area: quantity;
   display: grid;
   grid-template-columns: 24px 1fr 24px;
   gap: ${({ theme }) => theme.spacing.m}px;
   width: 100%;
+
+  @media (max-width: 544px) {
+    width: 100px;
+  }
 `;
 
 export const QuantityText = styled(TextMonoRegularItalic)`
   text-align: right;
+`;
+
+export const Actions = styled.div`
+  grid-area: actions;
 `;
