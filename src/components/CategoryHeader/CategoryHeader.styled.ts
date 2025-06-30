@@ -16,7 +16,7 @@ export const CategoryWrapper = styled.div<{ $isPublic?: boolean }>`
           grid-template-columns: 24px 1fr max-content 48px;
         `
       : css`
-          grid-template-columns: 24px 24px 1fr max-content 48px 24px;
+          grid-template-columns: 24px 24px 1fr max-content 20px 100px 24px;
         `}
 
   width: 100%;
@@ -44,4 +44,6 @@ export const Weight = styled(TextMonoBoldItalic)`
 
 export const Quantity = styled(TextMonoRegularItalic)`
   text-align: right;
+  // button width plus gap spacing to line up with the items
+  margin-right: ${({ theme: { spacing } }) => spacing.xl + spacing.m}px;
 `;

@@ -15,6 +15,7 @@ import {
   Weight,
 } from "./CategoryHeader.styled";
 import { convertGramsToUnit } from "utils/unit-conversion/unit-conversion";
+import { TextMonoBoldItalic } from "components/Typography";
 
 type CategoryHeaderProps = {
   category: Category;
@@ -54,9 +55,8 @@ export const CategoryHeader = ({
       </div>
       <CategoryColor $color={category.color} />
       <CategoryName as="h2">{category.name}</CategoryName>
-      <Weight>
-        {totalWeight} {packUnit.toLowerCase()}
-      </Weight>
+      <Weight>{totalWeight}</Weight>
+      <TextMonoBoldItalic>{packUnit.toLowerCase()}</TextMonoBoldItalic>
       <Quantity>x {category.totalQuantity}</Quantity>
       <Dropdown useIconButton={true} items={actions} />
     </CategoryWrapper>
