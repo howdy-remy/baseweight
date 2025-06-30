@@ -1,7 +1,7 @@
 import { Item } from "api/items";
 import { convertGramsToUnit } from "utils/unit-conversion";
 
-import { Description, Type, Weight } from "components/Item";
+import { Description, Type, Unit, Weight } from "components/Item";
 import { Dropdown } from "components/Dropdown";
 import { GearWrapper } from "./GearItem.styled";
 
@@ -32,10 +32,8 @@ export const GearItem = ({
     <GearWrapper>
       <Type>{item.type}</Type>
       <Description>{item.description}</Description>
-      <Weight>
-        {convertGramsToUnit(item.unit, item.weightInGrams || 0)}{" "}
-        {item.unit.toLowerCase()}
-      </Weight>
+      <Weight>{convertGramsToUnit(item.unit, item.weightInGrams || 0)} </Weight>
+      <Unit>{item.unit.toLowerCase()}</Unit>
       <Dropdown useIconButton={true} items={actions} />
     </GearWrapper>
   );

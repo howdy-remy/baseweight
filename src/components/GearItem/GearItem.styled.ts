@@ -9,7 +9,8 @@ export const GearWrapper = styled.div`
   display: grid;
   align-items: center;
   gap: ${({ theme }) => theme.spacing.m}px;
-  grid-template-columns: max-content 1fr 80px 24px;
+  grid-template-columns: max-content 1fr 80px 20px 24px;
+  grid-template-areas: "type description weight unit actions";
 
   width: 100%;
   height: 40px;
