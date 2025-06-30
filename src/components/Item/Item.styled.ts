@@ -41,7 +41,7 @@ export const ItemWrapper = styled.div<{
     `}
 
   @media (max-width: 544px) {
-    grid-template-columns: 24px 1fr max-content max-content 24px;
+    grid-template-columns: 24px 1fr max-content 24px;
     grid-template-areas:
       "draghandle type type actions"
       ". description description ."
@@ -61,7 +61,7 @@ export const ItemWrapper = styled.div<{
               "weight unit quantity";
           `
         : css`
-            grid-template-columns: 24px 1fr max-content max-content 24px;
+            grid-template-columns: 24px 1fr max-content 24px;
             grid-template-areas:
               "draghandle type type actions"
               ". description description ."

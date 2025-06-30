@@ -27,7 +27,7 @@ export const PublicCategoryHeader = ({
       <Weight>
         {totalWeight} {unit.toLowerCase()}
       </Weight>
-      <Quantity>x {category.totalQuantity}</Quantity>
+      <Quantity $isPublic={true}>x {category.totalQuantity}</Quantity>
     </CategoryWrapper>
   );
 };

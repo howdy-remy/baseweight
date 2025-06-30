@@ -42,8 +42,12 @@ export const Weight = styled(TextMonoBoldItalic)`
   text-align: right;
 `;
 
-export const Quantity = styled(TextMonoRegularItalic)`
+export const Quantity = styled(TextMonoRegularItalic)<{ $isPublic?: boolean }>`
   text-align: right;
   // button width plus gap spacing to line up with the items
-  margin-right: ${({ theme: { spacing } }) => spacing.xl + spacing.m}px;
+  ${({ $isPublic, theme: { spacing } }) =>
+    !$isPublic &&
+    css`
+      margin-right: ${spacing.xl + spacing.m}px;
+    `}
 `;

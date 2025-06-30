@@ -1,4 +1,11 @@
-import { ChangeEvent, FormEvent, useEffect, useMemo, useState } from "react";
+import {
+  ChangeEvent,
+  FormEvent,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { useParams } from "react-router";
 
 import {
@@ -114,7 +121,7 @@ export const Pack = () => {
   const { session } = useAuth();
   let { packId } = useParams();
 
-  // get packs count -----------------------------------
+  // get packs count
   const { data: packs } = useGetPacksQuery({}, { skip: !session });
 
   // get initial pack data -----------------------------------------------------
@@ -168,9 +175,20 @@ export const Pack = () => {
   };
 
   const [isEditingName, setIsEditingName] = useState(false);
-  const [editedName, setEditedName] = useState<string | null>(
-    pack?.name || null,
-  );
+  const [editedName, setEditedName] = useState<string>(pack?.name || "");
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (!pack) return;
+    setEditedName(pack.name || "");
+  }, [pack]);
+
+  useEffect(() => {
+    if (isEditingName && inputRef.current) {
+      const input = inputRef.current.querySelector("input");
+      input?.focus();
+    }
+  }, [isEditingName]);
 
   const saveName = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -186,7 +204,7 @@ export const Pack = () => {
     setIsEditingName(false);
   };
   const cancelNameChanges = () => {
-    setEditedName(null);
+    setEditedName("");
     setIsEditingName(false);
   };
 
@@ -434,23 +452,16 @@ export const Pack = () => {
           <HeaderWrapper>
             {isEditingName ? (
               <form onSubmit={(event) => saveName(event)}>
-                <Input
-                  type="text"
-                  value={editedName ?? ""}
-                  onChange={(event) => setEditedName(event.target.value)}
-                />
-                <ActionsWrapper>
-                  <Button
-                    variant="secondary"
-                    size="medium"
-                    onClick={cancelNameChanges}
-                  >
-                    Cancel
-                  </Button>
-                  <Button variant="primary" size="medium" type="submit">
-                    Save
-                  </Button>
-                </ActionsWrapper>
+                <div ref={inputRef}>
+                  <Input
+                    type="text"
+                    value={editedName}
+                    onChange={(event) => setEditedName(event.target.value)}
+                  />
+                </div>
+                <TextSansBold size="micro" align="right">
+                  Hit return to save changes
+                </TextSansBold>
               </form>
             ) : (
               <HeadingOne as="h1" onClick={() => setIsEditingName(true)}>

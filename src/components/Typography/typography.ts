@@ -72,6 +72,7 @@ export const TextSerifBoldItalic = styled(TextSerif)`
 const TextSans = styled.p<{
   size?: "standard" | "mini" | "micro";
   color?: keyof typeof theme.colors;
+  align?: "left" | "center" | "right";
 }>`
   color: ${({ theme, color }) => (!!color ? theme.colors[color] : "inherit")};
   font-family: "Rubik", sans-serif;
@@ -87,6 +88,7 @@ const TextSans = styled.p<{
     }
   }};
   line-height: 1.4;
+  text-align: ${({ align }) => align || "left"};
   margin: 0;
 `;
 
@@ -109,6 +111,7 @@ export const TextSansBoldItalic = styled(TextSans)`
 const TextMono = styled.p<{
   size?: "standard" | "mini" | "micro";
   color?: keyof typeof theme.colors;
+  align?: "left" | "center" | "right";
 }>`
   color: ${({ theme, color }) => (!!color ? theme.colors[color] : "inherit")};
   font-family: "IBM Plex Mono", serif;
@@ -124,6 +127,7 @@ const TextMono = styled.p<{
     }
   }};
   line-height: 1.4;
+  text-align: ${({ align }) => align || "left"};
   margin: 0;
 `;
 
