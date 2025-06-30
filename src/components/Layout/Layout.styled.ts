@@ -9,8 +9,17 @@ export const Wrapper = styled.div`
   width: 100%;
 
   @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-    /* width: calc(100% - 48px); */
+    display: none;
+  }
+`;
+
+export const MobileWrapper = styled.div`
+  display: none;
+  grid-template-columns: 1fr;
+  width: 100%;
+
+  @media (max-width: 768px) {
+    display: grid;
   }
 `;
 
@@ -88,10 +97,14 @@ export const AccountInfo = styled.div<{ width?: number }>`
   gap: ${({ theme }) => theme.spacing.m}px;
 
   height: 64px;
-  width: ${({ width }) => (!!width ? `${width}px` : "296px")};
+  width: 296px;
   padding: ${({ theme }) => theme.spacing.l}px;
 
   background-color: ${({ theme }) => theme.colors.flour};
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 export const Username = styled(TextSansRegular)`

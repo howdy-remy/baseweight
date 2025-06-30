@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from "react";
+import React, { useState, type ReactNode } from "react";
 import { Link } from "react-router";
 
 import { useAuth } from "contexts/Authentication";
@@ -15,6 +15,7 @@ import {
   SidebarLink,
   SidebarLinks,
   MobileHeader,
+  MobileWrapper,
 } from "./Layout.styled";
 import { TextSansBold } from "components/Typography";
 import useScreenSize from "hooks/useScreenSize/useScreenSize";
@@ -30,15 +31,15 @@ export const Layout = ({ children }: { children: ReactNode }) => {
   );
   const { data: packs } = useGetPacksQuery({}, { skip: !session });
 
-  const { width } = useScreenSize();
+  // const { width } = useScreenSize();
   const [showNav, setShowNav] = useState(false);
   const toggleNav = () => {
     setShowNav((prev) => !prev);
   };
 
-  if (width < 768) {
-    return (
-      <Wrapper>
+  return (
+    <React.Fragment>
+      <MobileWrapper>
         <MobileHeader>
           <Link to="/" style={{ textDecoration: "none" }}>
             <LogoType as="h1">
@@ -75,7 +76,7 @@ export const Layout = ({ children }: { children: ReactNode }) => {
             </SidebarLinks>
 
             <Link to="/account" style={{ textDecoration: "none" }}>
-              <AccountInfo width={width}>
+              <AccountInfo>
                 <Username>{profile?.username}</Username>
                 <Avatar
                   url={profile?.avatar_url || null}
@@ -89,45 +90,45 @@ export const Layout = ({ children }: { children: ReactNode }) => {
           </Sidebar>
         )}
         {children}
-      </Wrapper>
-    );
-  }
+      </MobileWrapper>
 
-  return (
-    <Wrapper>
-      <Sidebar>
-        <Link to="/" style={{ textDecoration: "none" }}>
-          <LogoType as="h1">
-            base<span>weight</span>
-          </LogoType>
-        </Link>
+      <Wrapper>
+        <Sidebar>
+          <Link to="/" style={{ textDecoration: "none" }}>
+            <LogoType as="h1">
+              base<span>weight</span>
+            </LogoType>
+          </Link>
 
-        <SidebarLinks>
-          <SidebarLink to="/gear">
-            <TextSansBold>All Gear</TextSansBold>
-          </SidebarLink>
-          <SidebarLink to="/">
-            <TextSansBold>Packs</TextSansBold>
-          </SidebarLink>
-          {packs?.map((pack) => (
-            <SidebarLink to={`/packs/${pack.id}`} key={pack.id}>
-              {pack.name}
+          <SidebarLinks>
+            <SidebarLink to="/gear">
+              <TextSansBold>All Gear</TextSansBold>
             </SidebarLink>
-          ))}
-        </SidebarLinks>
+            <SidebarLink to="/">
+              <TextSansBold>Packs</TextSansBold>
+            </SidebarLink>
+            {packs?.map((pack) => (
+              <SidebarLink to={`/packs/${pack.id}`} key={pack.id}>
+                {pack.name}
+              </SidebarLink>
+            ))}
+          </SidebarLinks>
 
-        <Link to="/account" style={{ textDecoration: "none" }}>
-          <AccountInfo>
-            <Username>{profile?.username}</Username>
-            <Avatar
-              url={profile?.avatar_url || null}
-              size={40}
-              initial={!!profile?.username?.length ? profile.username[0] : "?"}
-            />
-          </AccountInfo>
-        </Link>
-      </Sidebar>
-      {children}
-    </Wrapper>
+          <Link to="/account" style={{ textDecoration: "none" }}>
+            <AccountInfo>
+              <Username>{profile?.username}</Username>
+              <Avatar
+                url={profile?.avatar_url || null}
+                size={40}
+                initial={
+                  !!profile?.username?.length ? profile.username[0] : "?"
+                }
+              />
+            </AccountInfo>
+          </Link>
+        </Sidebar>
+        {children}
+      </Wrapper>
+    </React.Fragment>
   );
 };
