@@ -59,7 +59,7 @@ export const PackHeader = styled.header`
 export const PackHeaderAccount = styled.div`
   display: flex;
   align-items: center;
-  gap: ${({ theme }) => theme.spacing.s}px;
+  gap: ${({ theme }) => theme.spacing.m}px;
 `;
 
 export const PackActions = styled.div`

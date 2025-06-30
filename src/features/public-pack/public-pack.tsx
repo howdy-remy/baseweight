@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router";
 
 import Markdown from "react-markdown";
@@ -26,6 +26,7 @@ import {
 } from "features/pack/pack.styled";
 import { PackHero } from "components/PackHero";
 import { Avatar } from "components/Avatar";
+import { Unit } from "types/Unit";
 
 export const PublicPack = () => {
   let { packId } = useParams();
@@ -52,6 +53,20 @@ export const PublicPack = () => {
     (category) => category.color || "#D13D1F",
   );
 
+  const weightRanking = useMemo(() => {
+    const packWeightInPounds = convertGramsToUnit(Unit.LB, packTotalWeight);
+    switch (true) {
+      case packWeightInPounds < 5:
+        return "SUPERULTRALIGHT";
+      case packWeightInPounds < 10:
+        return "ULTRALIGHT";
+      case packWeightInPounds < 20:
+        return "LIGHTWEIGHT";
+      default:
+        return "TRADITIONAL";
+    }
+  }, [packTotalWeight]);
+
   if (!pack) {
     return <p>pack not found</p>;
   }
@@ -68,7 +83,7 @@ export const PublicPack = () => {
             <TextSansRegular>{pack.profile?.username}</TextSansRegular>
             <Avatar
               url={pack.profile?.avatarUrl || null}
-              size={20}
+              size={32}
               initial={
                 !!pack.profile?.username?.length
                   ? pack.profile.username[0]
@@ -104,7 +119,13 @@ export const PublicPack = () => {
             height={296}
             data={chartData}
             colors={chartColors}
-          />
+          >
+            <HeadingOne as="p">
+              {convertGramsToUnit(pack.unit, packTotalWeight)}{" "}
+              {pack.unit.toLowerCase()}
+            </HeadingOne>
+            <TextSansRegular>{weightRanking}</TextSansRegular>
+          </PieChart>
         </PackWrapper>
       </main>
     </Layout>
