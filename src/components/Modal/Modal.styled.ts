@@ -5,6 +5,7 @@ export const Scrim = styled(DialogBackdrop)`
   position: fixed;
   top: 0;
   left: 0;
+  z-index: 1000;
 
   display: flex;
   justify-content: center;
@@ -20,6 +21,7 @@ export const StyledDialogPanel = styled(DialogPanel)`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  z-index: 1001;
 
   display: grid;
   grid-row-gap: ${({ theme }) => theme.spacing.xl}px;
