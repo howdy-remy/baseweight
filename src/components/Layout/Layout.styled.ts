@@ -25,7 +25,7 @@ export const MobileWrapper = styled.div`
 
 export const Sidebar = styled.div`
   position: sticky;
-  top: 64px;
+  top: 0px;
   z-index: 500;
 
   height: calc(100vh - 64px);
@@ -37,6 +37,7 @@ export const Sidebar = styled.div`
 
   @media (max-width: 768px) {
     width: 100%;
+    top: 64px;
   }
 `;
 
