@@ -1,21 +1,38 @@
 import { useState } from "react";
 import {
   Item,
+  useCreateItemMutation,
   useDeleteItemMutation,
   useEditItemMutation,
   useGetItemsQuery,
 } from "api/items";
+import { Unit } from "types/Unit";
 
 import { Layout } from "components/Layout";
-import { HeadingOne } from "components/Typography";
-import { GearItem } from "components/GearItem";
+import {
+  HeadingOne,
+  HeadingThree,
+  HeadingTwo,
+  TextSansRegular,
+  TextSansRegularItalic,
+} from "components/Typography";
 import { Space } from "components/Space";
+import { Button } from "components/Button";
+import { FullPageLoader, Loader } from "components/Loader";
+import { GearItem } from "components/GearItem";
 
-import { GearWrapper } from "./gear.styled";
 import { EditGearItemModal } from "./components/EditGearItemModal";
 import { ConfirmDeleteGearItemModal } from "./components/ConfirmDeleteGearItemModal";
-import { FullPageLoader } from "components/Loader";
-import { Loader } from "lucide-react";
+import { CreateGearItemModal } from "./components/CreateGearItemModal/CreateGearItemModal";
+
+import { GearWrapper, ZeroStateWrapper } from "./gear.styled";
+
+export type OnSubmitItemProps = {
+  type: string;
+  description: string;
+  weightInGrams: number;
+  unit: Unit;
+};
 
 export const Gear = () => {
   const { data: gear, refetch, isLoading } = useGetItemsQuery({});
@@ -31,6 +48,27 @@ export const Gear = () => {
     }
     return 0;
   });
+
+  // create gear item ----------------------------------------------------------
+  const [isCreateItemModalOpen, setIsCreateItemModalOpen] = useState(false);
+  const [createItem] = useCreateItemMutation();
+
+  const submitCreateItem = async ({
+    type,
+    description,
+    weightInGrams,
+    unit,
+  }: OnSubmitItemProps) => {
+    const { data } = await createItem({
+      type,
+      description,
+      weight_in_grams: weightInGrams,
+      unit,
+    });
+
+    setIsCreateItemModalOpen(false);
+    refetch();
+  };
 
   // delete gear item ----------------------------------------------------------
   const [deleteItem] = useDeleteItemMutation();
@@ -53,17 +91,17 @@ export const Gear = () => {
   const [editGearItemMutation] = useEditItemMutation();
 
   const [itemToEdit, setItemToEdit] = useState<Item | null>(null);
-  const [isEditGearItemModalOpen, setIsCreateItemModalOpen] = useState(false);
+  const [isEditGearItemModalOpen, setIsEditItemModalOpen] = useState(false);
 
   const editGearItem = (item: Item) => {
     setItemToEdit(item);
-    setIsCreateItemModalOpen(true);
+    setIsEditItemModalOpen(true);
   };
 
   const submitEditItem = async (item: Item) => {
     await editGearItemMutation(item);
     refetch();
-    setIsCreateItemModalOpen(false);
+    setIsEditItemModalOpen(false);
   };
 
   if (isLoading) {
@@ -74,10 +112,81 @@ export const Gear = () => {
     );
   }
 
+  if (!gear || gear.length === 0) {
+    return (
+      <Layout>
+        <ZeroStateWrapper>
+          <HeadingOne as="h1">Your gear library is empty</HeadingOne>
+          <HeadingThree as="h2">
+            Build your collection of ultralight essentials.
+          </HeadingThree>
+          <Space size="xxxl" />
+
+          <TextSansRegular>
+            This is where all your gear lives. Every item you add here becomes
+            part of your personal gear library, making it easy to reuse across
+            different pack configurations.
+          </TextSansRegular>
+          <Space size="xl" />
+
+          <HeadingTwo>Get started</HeadingTwo>
+          <TextSansRegular>
+            <TextSansRegularItalic as="span">
+              Add your first item
+            </TextSansRegularItalic>{" "}
+            – Input gear type, description, and weight.
+          </TextSansRegular>
+          <TextSansRegular>
+            <TextSansRegularItalic as="span">
+              Build your library
+            </TextSansRegularItalic>{" "}
+            – Add all your current gear to have it ready for future packs
+          </TextSansRegular>
+          <TextSansRegular>
+            <TextSansRegularItalic as="span">
+              Organize and optimize
+            </TextSansRegularItalic>{" "}
+            – See all your gear in one place to spot weight-saving opportunities
+          </TextSansRegular>
+          <Space size="xl" />
+
+          <TextSansRegular>
+            Once you start adding gear, you'll be able to quickly build new
+            packs by selecting from your existing items.
+          </TextSansRegular>
+          <Space size="xl" />
+
+          <Button
+            variant="secondary"
+            size="large"
+            expandWidth
+            onClick={() => setIsCreateItemModalOpen(true)}
+          >
+            Add item
+          </Button>
+          <CreateGearItemModal
+            isOpen={isCreateItemModalOpen}
+            onClose={() => setIsCreateItemModalOpen(false)}
+            onSubmit={submitCreateItem}
+          />
+        </ZeroStateWrapper>
+      </Layout>
+    );
+  }
+
   return (
     <Layout>
       <GearWrapper>
         <HeadingOne as="h1">All Gear</HeadingOne>
+        <Space size="xl" />
+        <Button
+          variant="secondary"
+          size="large"
+          expandWidth
+          onClick={() => setIsCreateItemModalOpen(true)}
+        >
+          Add item
+        </Button>
         <Space size="xl" />
         {sortedGear?.map((item) => (
           <GearItem
@@ -96,8 +205,13 @@ export const Gear = () => {
       <EditGearItemModal
         item={itemToEdit}
         isOpen={isEditGearItemModalOpen}
-        onClose={() => setIsCreateItemModalOpen(false)}
+        onClose={() => setIsEditItemModalOpen(false)}
         onSubmit={submitEditItem}
+      />
+      <CreateGearItemModal
+        isOpen={isCreateItemModalOpen}
+        onClose={() => setIsCreateItemModalOpen(false)}
+        onSubmit={submitCreateItem}
       />
     </Layout>
   );

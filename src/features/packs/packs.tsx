@@ -96,13 +96,11 @@ export const Packs = () => {
               <Space size="m" />
 
               <TextSansBold>First, make it yours</TextSansBold>
-              <Space size="m" />
-
               <TextSansRegular>
                 Set up your profile so other backpackers can find and follow
                 your gear lists. Coming soon!
               </TextSansRegular>
-              <Space size="xl" />
+              <Space size="l" />
               <TextSansRegular>
                 <TextSansRegularItalic as="span">
                   Add your username
