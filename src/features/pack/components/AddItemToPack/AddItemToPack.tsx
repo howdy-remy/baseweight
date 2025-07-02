@@ -26,6 +26,11 @@ export const AddItemToPack = ({
   onSearch,
   onSelect,
 }: AddItemToPackProps) => {
+  const sortedResults = [...results].sort((a, b) => {
+    if (!a.type || !b.type) return 0;
+    return a.type.localeCompare(b.type);
+  });
+
   const [isAddMode, setIsAddMode] = useState(false);
 
   useEffect(() => {
@@ -71,14 +76,14 @@ export const AddItemToPack = ({
             value={query}
             placeholder="Search for an item..."
           />
-          {(!!results.length || !!query.length) && (
+          {(!!sortedResults.length || !!query.length) && (
             <ResultList>
               {query && (
                 <Result onClick={handleOnInitiateCreate}>
                   <p>Create "{query}"</p>
                 </Result>
               )}
-              {results?.map((item) => (
+              {sortedResults?.map((item) => (
                 <Result onClick={() => handleOnSelect(item)} key={item.id}>
                   <p>
                     {item.type} – {item.description}

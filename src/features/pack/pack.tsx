@@ -300,7 +300,7 @@ export const Pack = () => {
       order: category.categoryItems.length,
     });
 
-    refetch();
+    await refetch();
   };
 
   // remove item from pack -----------------------------------------------------

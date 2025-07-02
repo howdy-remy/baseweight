@@ -25,9 +25,10 @@ export const MobileWrapper = styled.div`
 
 export const Sidebar = styled.div`
   position: sticky;
-  top: 0;
+  top: 64px;
+  z-index: 500;
 
-  height: 100vh;
+  height: calc(100vh - 64px);
   width: 296px;
   padding: ${({ theme }) => theme.spacing.l}px;
   background-color: ${({ theme }) => theme.colors.flour};

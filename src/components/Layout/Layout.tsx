@@ -18,7 +18,6 @@ import {
   MobileWrapper,
 } from "./Layout.styled";
 import { TextSansBold } from "components/Typography";
-import useScreenSize from "hooks/useScreenSize/useScreenSize";
 import { IconButton } from "components/IconButton";
 
 export const Layout = ({ children }: { children: ReactNode }) => {
@@ -31,7 +30,6 @@ export const Layout = ({ children }: { children: ReactNode }) => {
   );
   const { data: packs } = useGetPacksQuery({}, { skip: !session });
 
-  // const { width } = useScreenSize();
   const [showNav, setShowNav] = useState(false);
   const toggleNav = () => {
     setShowNav((prev) => !prev);

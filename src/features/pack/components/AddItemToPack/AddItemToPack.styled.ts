@@ -33,7 +33,11 @@ export const ResultList = styled.div`
 `;
 
 export const Result = styled.div`
+  display: flex;
+  align-items: center;
+
   height: 28px;
+  width: 100%;
 
   padding: ${({ theme }) => theme.spacing.s}px;
   border-radius: ${({ theme }) => theme.spacing.s}px;
@@ -41,7 +45,11 @@ export const Result = styled.div`
   cursor: pointer;
 
   & > p {
+    display: block;
     margin: 0;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
   }
 
   &:hover,
