@@ -19,6 +19,7 @@ export const Button = ({
   expandWidth,
   type,
   htmlFor,
+  disabled,
   onClick,
 }: ButtonProps & React.ButtonHTMLAttributes<HTMLButtonElement>) => {
   return (
@@ -28,6 +29,7 @@ export const Button = ({
       $variant={variant}
       $size={size}
       type={type}
+      disabled={disabled}
       $expandWidth={expandWidth}
       onClick={onClick}
     >

@@ -28,7 +28,7 @@ export const StyledDialogPanel = styled(DialogPanel)`
 
   width: 640px;
   padding: ${({ theme }) => theme.spacing.l}px;
-  border-radius: ${({ theme }) => theme.spacing.l}px;
+  border-radius: ${({ theme }) => theme.spacing.m}px;
   background-color: ${({ theme }) => theme.colors.white};
 
   box-shadow:

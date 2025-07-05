@@ -116,6 +116,29 @@ export const StyledButton = styled(HeadlessButton)<{
     }};
   }
 
+  &:disabled {
+    background-color: ${({ theme, $variant }) => {
+      switch ($variant) {
+        case "secondary":
+          return theme.colors.mist;
+        case "primary":
+        default:
+          return theme.colors.lichen;
+      }
+    }};
+    border: ${({ theme, $variant }) => {
+      switch ($variant) {
+        case "secondary":
+          return `1px solid ${theme.colors.mist}`;
+        case "primary":
+        default:
+          return `1px solid ${theme.colors.lichen}`;
+      }
+    }};
+    opacity: 0.4;
+    pointer-events: none;
+  }
+
   &:focus {
     outline: 1px solid rgb(2, 156, 253);
   }

@@ -27,6 +27,7 @@ export const CategoryModal = ({
 }: CategoryModalProps) => {
   // form state
   const [isEdit, setIsEdit] = useState(false);
+
   const [categoryName, setCategoryName] = useState<string | null | undefined>(
     "",
   );
@@ -65,6 +66,11 @@ export const CategoryModal = ({
       setCategoryColor(color);
     }
   }, [initialProps?.name, initialProps?.color, color]);
+
+  const isSaveDisabled = useMemo(
+    () => categoryName === "" || categoryColor === "",
+    [categoryName, categoryColor],
+  );
 
   const resetFormState = () => {
     setCategoryName("");
@@ -115,10 +121,15 @@ export const CategoryModal = ({
           </Field>
         </FieldsWrapper>
         <ActionsWrapper>
-          <Button variant="secondary" size="medium" onClick={onClose}>
+          <Button variant="secondary" size="large" onClick={onClose}>
             Cancel
           </Button>
-          <Button variant="primary" size="medium" type="submit">
+          <Button
+            variant="primary"
+            size="large"
+            type="submit"
+            disabled={isSaveDisabled}
+          >
             Save
           </Button>
         </ActionsWrapper>
