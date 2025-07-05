@@ -534,7 +534,9 @@ export const Pack = () => {
                 {pack.description}
               </Markdown>
               {!pack.description && (
-                <TextSansRegular>Click to enter a description</TextSansRegular>
+                <Button variant="secondary" size="large">
+                  Add description
+                </Button>
               )}
             </DescriptionWrapper>
           )}
