@@ -8,11 +8,13 @@ import { Input } from "components/Input";
 
 import {
   ButtonWrapper,
+  Centered,
   InputWrapper,
   Result,
   ResultList,
 } from "./AddItemToPack.styled";
 import { useDropdownPosition } from "hooks/useDropdownPosition/useDropdownPosition";
+import { TextSansBold, TextSansRegular } from "components/Typography";
 
 type AddItemToPackProps = {
   results: Item[];
@@ -86,6 +88,13 @@ export const AddItemToPack = ({
               <Result onClick={handleOnInitiateCreate}>
                 <p>Create "{query}"</p>
               </Result>
+            )}
+            {!query && !sortedResults.length && (
+              <Centered>
+                <TextSansRegular color="stone">
+                  Start searching to add an item
+                </TextSansRegular>
+              </Centered>
             )}
             {sortedResults?.map((item) => (
               <Result onClick={() => handleOnSelect(item)} key={item.id}>

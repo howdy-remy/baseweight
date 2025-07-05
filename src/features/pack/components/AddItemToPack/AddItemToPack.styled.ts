@@ -68,3 +68,11 @@ export const Result = styled.div`
     background-color: ${({ theme }) => theme.colors.flour};
   }
 `;
+
+export const Centered = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  height: 100%;
+`;
