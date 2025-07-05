@@ -515,12 +515,12 @@ export const Pack = () => {
               <ActionsWrapper>
                 <Button
                   variant="secondary"
-                  size="medium"
+                  size="large"
                   onClick={cancelMarkdownChanges}
                 >
                   Cancel
                 </Button>
-                <Button variant="primary" size="medium" type="submit">
+                <Button variant="primary" size="large" type="submit">
                   Save
                 </Button>
               </ActionsWrapper>

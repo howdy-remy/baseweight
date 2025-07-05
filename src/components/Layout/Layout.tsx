@@ -16,6 +16,7 @@ import {
   SidebarLinks,
   MobileHeader,
   MobileWrapper,
+  Hr,
 } from "./Layout.styled";
 import { TextSansBold } from "components/Typography";
 import { IconButton } from "components/IconButton";
@@ -68,6 +69,7 @@ export const Layout = ({ children }: { children: ReactNode }) => {
                   {pack.name}
                 </SidebarLink>
               ))}
+              <Hr />
               <SidebarLink to="/gear">
                 <TextSansBold>All Gear</TextSansBold>
               </SidebarLink>
@@ -107,6 +109,7 @@ export const Layout = ({ children }: { children: ReactNode }) => {
                 {pack.name}
               </SidebarLink>
             ))}
+            <Hr />
             <SidebarLink to="/gear">
               <TextSansBold>All Gear</TextSansBold>
             </SidebarLink>

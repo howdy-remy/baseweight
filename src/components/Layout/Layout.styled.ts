@@ -120,3 +120,9 @@ export const SignInCta = styled.div`
   margin-top: ${({ theme }) => theme.spacing.l}px;
   margin-left: ${({ theme }) => theme.spacing.m}px;
 `;
+
+export const Hr = styled.hr`
+  margin: ${({ theme }) => `${theme.spacing.m}px 0`};
+  border: none;
+  border-top: 1px solid ${({ theme }) => theme.colors.lichen};
+`;
