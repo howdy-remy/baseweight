@@ -1,5 +1,5 @@
-import { ReactNode } from "react";
-import Pie from "@visx/shape/lib/shapes/Pie";
+import React, { ReactNode } from "react";
+import Pie, { ProvidedProps, PieArcDatum } from "@visx/shape/lib/shapes/Pie";
 import { scaleOrdinal } from "@visx/scale";
 import { Group } from "@visx/group";
 import {
@@ -7,8 +7,9 @@ import {
   PieChartSvg,
   PieChartWrapper,
 } from "./PieChart.styled";
+import { Label } from "./Label";
 
-interface Datum {
+export interface Datum {
   label: string;
   value: number;
 }
@@ -54,9 +55,16 @@ export const PieChart = ({
             {(pie) => (
               <Group className="visx-pie-arcs-group">
                 {pie.arcs.map((arc, i) => (
-                  <g key={`pie-arc-${i}`}>
-                    <path d={pie.path(arc) || ""} fill={getColor(arc.data)} />
-                  </g>
+                  <React.Fragment key={`pie-arc-${i}`}>
+                    <g>
+                      <path d={pie.path(arc) || ""} fill={getColor(arc.data)} />
+                    </g>
+                    <Label
+                      path={pie.path}
+                      arc={arc as PieArcDatum<Datum>}
+                      label={arc.data.label}
+                    />
+                  </React.Fragment>
                 ))}
               </Group>
             )}
