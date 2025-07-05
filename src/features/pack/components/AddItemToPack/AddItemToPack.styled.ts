@@ -9,7 +9,7 @@ export const InputWrapper = styled.div`
   margin-left: ${({ theme }) => theme.spacing.xxl}px;
 `;
 
-export const ResultList = styled.div`
+export const ResultList = styled.div<{ $position?: "top" | "bottom" }>`
   position: absolute;
 
   display: grid;
@@ -17,10 +17,10 @@ export const ResultList = styled.div`
   grid-auto-flow: row;
 
   width: 100%;
-  max-height: 160px;
+  height: 160px;
   overflow-y: auto;
 
-  margin-top: ${({ theme }) => theme.spacing.s}px;
+  margin: ${({ theme }) => `${theme.spacing.s}px 0`};
   padding: ${({ theme }) => theme.spacing.s}px;
   background-color: ${({ theme }) => theme.colors.white};
   border-radius: ${({ theme }) => theme.spacing.m}px;
@@ -30,6 +30,17 @@ export const ResultList = styled.div`
     rgba(17, 17, 26, 0.1) 0px 4px 16px,
     rgba(17, 17, 26, 0.1) 0px 8px 24px,
     rgba(17, 17, 26, 0.1) 0px 16px 56px;
+
+  ${({ $position = "bottom" }) =>
+    $position === "bottom"
+      ? `
+      top: 34px;
+      bottom: auto;
+    `
+      : `
+      top: auto;
+      bottom: 34px;
+    `}
 `;
 
 export const Result = styled.div`

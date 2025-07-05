@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 
 import type { Item } from "api/items";
 import useOutsideClick from "hooks/useOutsideClick/useOutsideClick";
@@ -12,6 +12,7 @@ import {
   Result,
   ResultList,
 } from "./AddItemToPack.styled";
+import { useDropdownPosition } from "hooks/useDropdownPosition/useDropdownPosition";
 
 type AddItemToPackProps = {
   results: Item[];
@@ -26,11 +27,6 @@ export const AddItemToPack = ({
   onSearch,
   onSelect,
 }: AddItemToPackProps) => {
-  const sortedResults = [...results].sort((a, b) => {
-    if (!a.type || !b.type) return 0;
-    return a.type.localeCompare(b.type);
-  });
-
   const [isAddMode, setIsAddMode] = useState(false);
 
   useEffect(() => {
@@ -38,6 +34,12 @@ export const AddItemToPack = ({
       ref.current?.querySelector("input")?.focus();
     }
   }, [isAddMode]);
+
+  // add mode results ----------------------------------------------------------
+  const sortedResults = [...results].sort((a, b) => {
+    if (!a.type || !b.type) return 0;
+    return a.type.localeCompare(b.type);
+  });
 
   // query handler & initial search --------------------------------------------
   const [query, setQuery] = useState("");
@@ -66,6 +68,9 @@ export const AddItemToPack = ({
     reset();
   };
 
+  // dropdown position --------------------------------------------------------
+  const position = useDropdownPosition(ref, 160);
+
   // open state
   if (isAddMode) {
     return (
@@ -76,22 +81,20 @@ export const AddItemToPack = ({
             value={query}
             placeholder="Search for an item..."
           />
-          {(!!sortedResults.length || !!query.length) && (
-            <ResultList>
-              {query && (
-                <Result onClick={handleOnInitiateCreate}>
-                  <p>Create "{query}"</p>
-                </Result>
-              )}
-              {sortedResults?.map((item) => (
-                <Result onClick={() => handleOnSelect(item)} key={item.id}>
-                  <p>
-                    {item.type} – {item.description}
-                  </p>
-                </Result>
-              ))}
-            </ResultList>
-          )}
+          <ResultList $position={position}>
+            {query && (
+              <Result onClick={handleOnInitiateCreate}>
+                <p>Create "{query}"</p>
+              </Result>
+            )}
+            {sortedResults?.map((item) => (
+              <Result onClick={() => handleOnSelect(item)} key={item.id}>
+                <p>
+                  {item.type} – {item.description}
+                </p>
+              </Result>
+            ))}
+          </ResultList>
         </InputWrapper>
       </>
     );
