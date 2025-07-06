@@ -38,3 +38,12 @@ export const PieChartSvg = styled.svg.attrs<{ width: number; height: number }>(
     },
   }),
 )``;
+
+export const Text = styled.text`
+  margin: 0;
+
+  fill: ${({ theme }) => theme.colors.white};
+  font-family: "Rubik", sans-serif;
+  font-size: ${({ theme }) => theme.fontsizes.xs};
+  line-height: 1.4;
+`;

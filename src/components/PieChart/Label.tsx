@@ -1,5 +1,6 @@
 import { ProvidedProps, PieArcDatum } from "@visx/shape/lib/shapes/Pie";
 import { Datum } from "./PieChart";
+import { Text } from "./PieChart.styled";
 
 type LabelProps = {
   path: ProvidedProps<Datum>["path"];
@@ -12,17 +13,15 @@ export const Label = ({ path, arc, label }: LabelProps) => {
 
   if (hasSpaceForLabel) {
     return (
-      <text
-        fill="white"
+      <Text
         x={centroidX}
         y={centroidY}
         dy=".33em"
-        fontSize={9}
         textAnchor="middle"
         pointerEvents="none"
       >
         {label}
-      </text>
+      </Text>
     );
   }
 
