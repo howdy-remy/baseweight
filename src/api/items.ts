@@ -25,6 +25,7 @@ export const itemMapper: (
 export const itemsApi = createApi({
   reducerPath: "itemsApi",
   baseQuery: supabaseBaseQuery,
+  tagTypes: ["Item"], // Define tag types
   endpoints: (builder) => ({
     getItems: builder.query({
       queryFn: async () => {
@@ -43,6 +44,8 @@ export const itemsApi = createApi({
         const mappedData = data.map(itemMapper);
         return { data: mappedData };
       },
+      providesTags: (result) =>
+        result ? result.map((item) => ({ type: "Item", id: item.id })) : [], // Provide cache tags for fetched items
     }),
     searchItems: builder.query({
       queryFn: async ({ searchString, excludeIds = [] }) => {
@@ -63,6 +66,8 @@ export const itemsApi = createApi({
         const mappedData = data.map(itemMapper);
         return { data: mappedData };
       },
+      providesTags: (result) =>
+        result ? result.map((item) => ({ type: "Item", id: item.id })) : [], // Provide cache tags for searched items
     }),
     createItem: builder.mutation({
       queryFn: async (item) => {
@@ -84,6 +89,8 @@ export const itemsApi = createApi({
         const mappedData = data.map(itemMapper);
         return { data: mappedData };
       },
+      invalidatesTags: (result) =>
+        result ? result.map((item) => ({ type: "Item", id: item.id })) : [], // Invalidate cache tags for created items
     }),
     editItem: builder.mutation({
       queryFn: async (item) => {
@@ -106,6 +113,8 @@ export const itemsApi = createApi({
         const mappedData = data.map(itemMapper);
         return { data: mappedData };
       },
+      invalidatesTags: (result, error, item) =>
+        item.id ? [{ type: "Item", id: item.id }] : [], // Invalidate cache tags for edited items
     }),
     deleteItem: builder.mutation({
       queryFn: async (itemId) => {
@@ -142,6 +151,8 @@ export const itemsApi = createApi({
 
         return { data: null };
       },
+      invalidatesTags: (result, error, itemId) =>
+        itemId ? [{ type: "Item", id: itemId }] : [], // Invalidate cache tags for deleted items
     }),
   }),
 });

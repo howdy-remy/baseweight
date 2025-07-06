@@ -35,7 +35,7 @@ export type OnSubmitItemProps = {
 };
 
 export const Gear = () => {
-  const { data: gear, refetch, isLoading } = useGetItemsQuery({});
+  const { data: gear, isLoading } = useGetItemsQuery({});
 
   const sortedGear = [...(gear || [])].sort((a, b) => {
     const aType = a.type?.toLowerCase() || "";
@@ -67,7 +67,6 @@ export const Gear = () => {
     });
 
     setIsCreateItemModalOpen(false);
-    refetch();
   };
 
   // delete gear item ----------------------------------------------------------
@@ -83,7 +82,6 @@ export const Gear = () => {
 
   const confirmDelete = async () => {
     await deleteItem(itemIdToDelete);
-    refetch();
     setIsConfirmDeleteOpen(false);
   };
 
@@ -100,7 +98,6 @@ export const Gear = () => {
 
   const submitEditItem = async (item: Item) => {
     await editGearItemMutation(item);
-    refetch();
     setIsEditItemModalOpen(false);
   };
 
