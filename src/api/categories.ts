@@ -29,6 +29,7 @@ export const categoryMapper: (
 export const categoriesApi = createApi({
   reducerPath: "categoriesApi",
   baseQuery: supabaseBaseQuery,
+  tagTypes: ["Category"], // Define tag types
   endpoints: (builder) => ({
     createCategory: builder.mutation({
       queryFn: async (category) => {
@@ -44,6 +45,10 @@ export const categoriesApi = createApi({
         const mappedData = data.map(categoryMapper);
         return { data: mappedData };
       },
+      invalidatesTags: (result) =>
+        result
+          ? result.map((category) => ({ type: "Category", id: category.id }))
+          : [], // Invalidate cache tags for created categories
     }),
     upsertCategory: builder.mutation({
       queryFn: async (category) => {
@@ -59,6 +64,10 @@ export const categoriesApi = createApi({
         const mappedData = data.map(categoryMapper);
         return { data: mappedData };
       },
+      invalidatesTags: (result) =>
+        result
+          ? result.map((category) => ({ type: "Category", id: category.id }))
+          : [], // Invalidate cache tags for upserted categories
     }),
     deleteCategory: builder.mutation({
       queryFn: async (category: Category) => {
@@ -89,6 +98,8 @@ export const categoriesApi = createApi({
         }
         return { data: null };
       },
+      invalidatesTags: (result, error, category) =>
+        category.id ? [{ type: "Category", id: category.id }] : [], // Invalidate cache tags for deleted categories
     }),
     updateCategories: builder.mutation({
       queryFn: async (categories: Partial<Category>[]) => {
@@ -104,6 +115,10 @@ export const categoriesApi = createApi({
 
         return { data };
       },
+      invalidatesTags: (result) =>
+        result
+          ? result.map((category) => ({ type: "Category", id: category.id }))
+          : [], // Invalidate cache tags for updated categories
     }),
   }),
 });

@@ -15,6 +15,7 @@ export type CategoryItem = {
 export const categoriesItemApi = createApi({
   reducerPath: "categoriesItemApi",
   baseQuery: supabaseBaseQuery,
+  tagTypes: ["CategoryItem"], // Define tag types
   endpoints: (builder) => ({
     createCategoriesItem: builder.mutation({
       queryFn: async (categoriesItem) => {
@@ -35,6 +36,10 @@ export const categoriesItemApi = createApi({
 
         return { data };
       },
+      invalidatesTags: (result) =>
+        result
+          ? result.map((item) => ({ type: "CategoryItem", id: item.id }))
+          : [], // Invalidate cache tags for created category items
     }),
     deleteCategoriesItem: builder.mutation({
       queryFn: async (categoriesItemId) => {
@@ -50,6 +55,10 @@ export const categoriesItemApi = createApi({
 
         return { data };
       },
+      invalidatesTags: (result, error, categoriesItemId) =>
+        categoriesItemId
+          ? [{ type: "CategoryItem", id: categoriesItemId }]
+          : [], // Invalidate cache tags for deleted category items
     }),
     updateQuantity: builder.mutation({
       queryFn: async ({ categoryItemId, quantity }) => {
@@ -65,6 +74,8 @@ export const categoriesItemApi = createApi({
 
         return { data };
       },
+      invalidatesTags: (result, error, { categoryItemId }) =>
+        categoryItemId ? [{ type: "CategoryItem", id: categoryItemId }] : [], // Invalidate cache tags for updated quantity
     }),
     updateCategoryItems: builder.mutation({
       queryFn: async (categoryItems) => {
@@ -80,6 +91,10 @@ export const categoriesItemApi = createApi({
 
         return { data };
       },
+      invalidatesTags: (result) =>
+        result
+          ? result.map((item) => ({ type: "CategoryItem", id: item.id }))
+          : [], // Invalidate cache tags for updated category items
     }),
   }),
 });
