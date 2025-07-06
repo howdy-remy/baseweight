@@ -17,7 +17,7 @@ export const ResultList = styled.div<{ $position?: "top" | "bottom" }>`
   grid-auto-flow: row;
 
   width: 100%;
-  height: 160px;
+  max-height: 160px;
   overflow-y: auto;
 
   margin: ${({ theme }) => `${theme.spacing.s}px 0`};
