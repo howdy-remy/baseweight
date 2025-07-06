@@ -116,6 +116,8 @@ import {
 } from "./pack.styled";
 import "./mdxeditor.styles.css";
 import { Unit } from "types/Unit";
+import { FirstPack } from "./components/EmptyStates/FirstPack";
+import { NthPack } from "./components/EmptyStates/NthPack";
 
 export const Pack = () => {
   const { session } = useAuth();
@@ -531,80 +533,14 @@ export const Pack = () => {
           )}
         </PackWrapper>
 
-        {pack.categories?.length === 0 && packs?.length === 0 && (
-          <PackIntroContent>
-            <HeadingTwo>Your pack is ready to fill</HeadingTwo>
-            <Space size="xl" />
-            <TextSansBold>
-              Start building your gear list by adding categories.
-            </TextSansBold>
-            <TextSansRegular>
-              Categories help organize your gear and make it easy to see weight
-              distribution. Common ultralight categories include Shelter, Sleep
-              System, Cooking, Clothing, and Electronics – but you can create
-              whatever works for your setup.
-            </TextSansRegular>
-            <Space size="xl" />
-
-            <HeadingThree>Get started</HeadingThree>
-            <TextSansRegular>
-              <TextSansRegularItalic as="span">
-                Add your first category
-              </TextSansRegularItalic>{" "}
-              – Try starting with your heaviest gear group
-            </TextSansRegular>
-
-            <TextSansRegular>
-              <TextSansRegularItalic as="span">
-                Then add items
-              </TextSansRegularItalic>{" "}
-              – Input each piece of gear with its weight{" "}
-            </TextSansRegular>
-            <TextSansRegular>
-              <TextSansRegularItalic as="span">
-                See the breakdown
-              </TextSansRegularItalic>{" "}
-              – Watch your pie chart update as you build{" "}
-            </TextSansRegular>
-            <Space size="xl" />
-            <TextSansRegular>
-              Your baseweight calculation will update automatically as you add
-              gear.
-            </TextSansRegular>
-          </PackIntroContent>
-        )}
+        {/* empty states --------------------------------------------------- */}
+        {pack.categories?.length === 0 && packs?.length === 0 && <FirstPack />}
 
         {pack.categories?.length === 0 && (packs?.length || 1) > 0 && (
-          <PackIntroContent>
-            <HeadingTwo>Ready for your next build?</HeadingTwo>
-            <Space size="xl" />
-            <TextSansBold>
-              Time to optimize another pack configuration.
-            </TextSansBold>
-            <TextSansRegular>
-              Whether you're planning a different trip, testing new gear
-              combinations, or building a seasonal variant, this pack is ready
-              for your next ultralight experiment.
-            </TextSansRegular>
-            <Space size="xl" />
-
-            <TextSansBold>Build your setup</TextSansBold>
-            <TextSansRegular>
-              <TextSansRegularItalic as="span">
-                Add categories and gear{" "}
-              </TextSansRegularItalic>
-              – Start fresh with a new configuration
-            </TextSansRegular>
-            <TextSansRegular>
-              <TextSansRegularItalic as="span">
-                Reuse existing gear{" "}
-              </TextSansRegularItalic>
-              – As you type gear names, your previous items will appear as
-              suggestions
-            </TextSansRegular>
-          </PackIntroContent>
+          <NthPack />
         )}
 
+        {/* categories ----------------------------------------------------- */}
         <PackWrapper $columns={2}>
           <div>
             <DndContext
