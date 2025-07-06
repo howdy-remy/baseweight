@@ -125,7 +125,7 @@ export const Pack = () => {
   const { data: packs } = useGetPacksQuery({}, { skip: !session });
 
   // get initial pack data -----------------------------------------------------
-  const { data: pack, isLoading, refetch } = useGetPackQuery({ packId });
+  const { data: pack, isLoading } = useGetPackQuery({ packId });
   const [sortedCategories, setSortedCategories] = useState<CategoryType[]>([]);
 
   useEffect(() => {
@@ -160,7 +160,6 @@ export const Pack = () => {
         hero_url: url,
       },
     ]);
-    refetch();
   };
 
   const updateUnit = async (unit: Unit) => {
@@ -171,7 +170,6 @@ export const Pack = () => {
         unit,
       },
     ]);
-    refetch();
   };
 
   const [isEditingName, setIsEditingName] = useState(false);
@@ -200,7 +198,6 @@ export const Pack = () => {
         name: editedName,
       },
     ]);
-    refetch();
     setIsEditingName(false);
   };
   const cancelNameChanges = () => {
@@ -224,7 +221,6 @@ export const Pack = () => {
         description: editedDescription,
       },
     ]);
-    refetch();
     setIsEditingDescription(false);
   };
   const cancelMarkdownChanges = () => {
@@ -286,7 +282,6 @@ export const Pack = () => {
 
     setIsCreateItemModalOpen(false);
     setCategoryToAddTo(null);
-    refetch();
   };
 
   // add existing item to pack -------------------------------------------------
@@ -299,8 +294,6 @@ export const Pack = () => {
       quantity: 1,
       order: category.categoryItems.length,
     });
-
-    await refetch();
   };
 
   // remove item from pack -----------------------------------------------------
@@ -308,7 +301,6 @@ export const Pack = () => {
 
   const removeItem = async (id: number) => {
     await deleteCategoriesItem(id);
-    refetch();
   };
 
   // update item quantity ------------------------------------------------------
@@ -319,7 +311,6 @@ export const Pack = () => {
     quantity: number,
   ) => {
     await updateQuantity({ categoryItemId, quantity });
-    refetch();
   };
 
   // CATEGORIES ================================================================
@@ -351,7 +342,6 @@ export const Pack = () => {
       order: order || sortedCategories.length,
       pack_id: packId,
     });
-    refetch();
     setCategoryToEdit(null);
   };
 
@@ -365,7 +355,6 @@ export const Pack = () => {
 
   const onDeleteCategory = (category: CategoryType) => async () => {
     await deleteCategory(category);
-    refetch();
   };
 
   // drag and drop -------------------------------------------------------------

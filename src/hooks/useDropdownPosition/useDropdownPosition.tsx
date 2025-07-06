@@ -8,7 +8,6 @@ export const useDropdownPosition = (
 
   useEffect(() => {
     const calculatePosition = () => {
-      debugger;
       if (ref.current) {
         const rect = ref.current.getBoundingClientRect();
         const viewportHeight = window.innerHeight;

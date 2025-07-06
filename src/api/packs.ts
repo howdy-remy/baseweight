@@ -110,8 +110,13 @@ const packMapper: (pack: pack) => Pack = (pack) => {
 export const packsApi = createApi({
   reducerPath: "packsApi",
   baseQuery: supabaseBaseQuery,
+  tagTypes: ["Pack"],
   endpoints: (builder) => ({
     getPacks: builder.query({
+      providesTags: (result, error, arg) =>
+        result
+          ? [...result.map(({ id }) => ({ type: "Pack" as const, id })), "Pack"]
+          : ["Pack"],
       queryFn: async () => {
         const { data: userData } = await supabase.auth.getUser();
         const { data, error } = await supabase
@@ -143,6 +148,7 @@ export const packsApi = createApi({
       },
     }),
     getPack: builder.query({
+      providesTags: ["Pack"],
       queryFn: async ({ packId }) => {
         const { data, error } = await supabase
           .from("packs")
@@ -188,6 +194,7 @@ export const packsApi = createApi({
       },
     }),
     createPack: builder.mutation({
+      invalidatesTags: ["Pack"],
       queryFn: async (pack) => {
         const { data: userData } = await supabase.auth.getUser();
 
@@ -208,6 +215,7 @@ export const packsApi = createApi({
       },
     }),
     updatePack: builder.mutation({
+      invalidatesTags: ["Pack"],
       queryFn: async (pack: Partial<dbPack>[]) => {
         const { data, error } = await supabase
           .from("packs")
