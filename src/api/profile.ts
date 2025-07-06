@@ -5,6 +5,7 @@ import { supabaseBaseQuery } from "./baseQuery";
 export const profileApi = createApi({
   reducerPath: "profileApi",
   baseQuery: supabaseBaseQuery,
+  tagTypes: ["Profile"], // Define tag types
   endpoints: (builder) => ({
     getProfile: builder.query({
       queryFn: async ({ userId }) => {
@@ -18,6 +19,8 @@ export const profileApi = createApi({
         }
         return { data };
       },
+      providesTags: (result, error, { userId }) =>
+        result ? [{ type: "Profile", id: userId }] : [], // Provide cache tags
     }),
     updateProfile: builder.mutation({
       queryFn: async (profile) => {
@@ -27,6 +30,8 @@ export const profileApi = createApi({
         }
         return { data };
       },
+      invalidatesTags: (result, error, profile) =>
+        profile.id ? [{ type: "Profile", id: profile.id }] : [], // Invalidate cache tags
     }),
   }),
 });

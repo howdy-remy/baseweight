@@ -15,7 +15,7 @@ import { Space } from "components/Space";
 
 export const Account = () => {
   const { session } = useAuth();
-  const { data: profile, refetch } = useGetProfileQuery({
+  const { data: profile } = useGetProfileQuery({
     userId: session?.user.id,
   });
 
@@ -40,7 +40,6 @@ export const Account = () => {
       avatar_url: avatarUrl,
       updated_at: new Date(),
     });
-    refetch();
   };
 
   const updateProfile: FormEventHandler<HTMLFormElement> = async (event) => {
