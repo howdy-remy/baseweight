@@ -34,11 +34,7 @@ export const Packs = () => {
     navigate("/login");
   }
 
-  const {
-    data: packs,
-    isLoading,
-    refetch,
-  } = useGetPacksQuery({
+  const { data: packs, isLoading } = useGetPacksQuery({
     userId: session?.user.id,
   });
 
@@ -59,7 +55,6 @@ export const Packs = () => {
       });
       const id = data?.[0].id;
       navigate(`/packs/${id}`);
-      refetch();
     }
   };
 
