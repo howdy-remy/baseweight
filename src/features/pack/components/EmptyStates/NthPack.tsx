@@ -1,3 +1,4 @@
+import { Space } from "components/Space";
 import {
   HeadingTwo,
   TextSansBold,
@@ -5,7 +6,6 @@ import {
   TextSansRegularItalic,
 } from "components/Typography";
 import { PackIntroContent } from "features/pack/pack.styled";
-import { Space } from "lucide-react";
 
 export const NthPack = () => (
   <PackIntroContent>

@@ -55,7 +55,7 @@ export const Login = () => {
               />
             </Field>
             <ActionsWrapper>
-              <Button variant="primary" size="medium" type="submit">
+              <Button variant="primary" size="large" type="submit">
                 Send magic link
               </Button>
             </ActionsWrapper>
